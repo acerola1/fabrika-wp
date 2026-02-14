@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fabrika Ajandek - Termeszetes Organikus | Egyedi fa ajandekok Szarvasrol</title>
+  <meta name="description" content="Egyedi, kezzel keszult fa ajandekok Szarvasrol. Lezergravirozott kepek, fa tablak, hutomegnesek es egyedi ajandekok termeszetes anyagokbol." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/style.css" />
+  <style>
+    :root {
+      --sage: #7C9070;
+      --forest: #3D5A3A;
+      --sand: #E8DCC8;
+      --cream: #F9F5EE;
+      --olive: #8B8B3A;
+      --forest-dark: #2A3F28;
+    }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      color: #3A3A3A;
+      background-color: var(--cream);
+    }
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'DM Serif Display', serif;
+    }
+    .blob-1 {
+      border-radius: 60% 40% 55% 45% / 55% 60% 40% 45%;
+    }
+    .blob-2 {
+      border-radius: 45% 55% 40% 60% / 60% 45% 55% 40%;
+    }
+    .blob-3 {
+      border-radius: 50% 50% 40% 60% / 40% 60% 50% 50%;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-12px) rotate(3deg); }
+    }
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(-2deg); }
+    }
+    .float-anim { animation: float 6s ease-in-out infinite; }
+    .float-anim-slow { animation: floatSlow 8s ease-in-out infinite; }
+    .gallery-item img {
+      transition: transform 0.5s ease, filter 0.5s ease;
+    }
+    .gallery-item:hover img {
+      transform: scale(1.05);
+    }
+    .gallery-item .overlay {
+      transition: opacity 0.4s ease;
+    }
+    .gallery-item:hover .overlay {
+      opacity: 1;
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.4s ease;
+    }
+    .faq-answer.open {
+      max-height: 300px;
+    }
+    .faq-chevron {
+      transition: transform 0.3s ease;
+    }
+    .faq-item.active .faq-chevron {
+      transform: rotate(180deg);
+    }
+    .nav-link {
+      position: relative;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: var(--forest);
+      transition: width 0.3s ease, left 0.3s ease;
+      border-radius: 1px;
+    }
+    .nav-link:hover::after {
+      width: 80%;
+      left: 10%;
+    }
+    .organic-divider {
+      clip-path: ellipse(75% 100% at 50% 0%);
+    }
+    #back-to-top {
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .step-connector {
+      stroke-dasharray: 8, 8;
+      stroke-dashoffset: 0;
+      animation: dash 20s linear infinite;
+    }
+    @keyframes dash {
+      to { stroke-dashoffset: -200; }
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    .mobile-menu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+    .mobile-menu.open {
+      max-height: 400px;
+    }
+    .chip-hover {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .chip-hover:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(61, 90, 58, 0.15);
+    }
+  </style>
+</head>
+<body class="antialiased">
+
+  <!-- ========== NAVIGATION ========== -->
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" style="background: transparent;">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 md:h-20">
+        <!-- Logo -->
+        <a href="#" class="flex items-center gap-2 group">
+          <svg viewBox="0 0 100 100" fill="currentColor" class="w-8 h-8 transition-transform duration-300 group-hover:rotate-12" style="color: var(--forest);">
+            <path d="M50 5C30 20 10 45 15 75C20 95 45 95 50 95C55 95 80 95 85 75C90 45 70 20 50 5Z"/>
+          </svg>
+          <span class="text-xl font-bold" style="font-family: 'DM Serif Display', serif; color: var(--forest);">Fabrika Ajandek</span>
+        </a>
+
+        <!-- Desktop Nav -->
+        <div class="hidden md:flex items-center gap-1 rounded-full px-2 py-1.5" style="background: rgba(249, 245, 238, 0.85); backdrop-filter: blur(10px); box-shadow: 0 2px 15px rgba(61,90,58,0.08);">
+          <a href="#termekek" class="nav-link px-4 py-2 text-sm font-medium rounded-full transition-colors duration-200 hover:bg-white/60" style="color: var(--forest);">Termekeink</a>
+          <a href="#galeria" class="nav-link px-4 py-2 text-sm font-medium rounded-full transition-colors duration-200 hover:bg-white/60" style="color: var(--forest);">Galeria</a>
+          <a href="#rendeles" class="nav-link px-4 py-2 text-sm font-medium rounded-full transition-colors duration-200 hover:bg-white/60" style="color: var(--forest);">Rendeles</a>
+          <a href="#ajandekotletek" class="nav-link px-4 py-2 text-sm font-medium rounded-full transition-colors duration-200 hover:bg-white/60" style="color: var(--forest);">Ajandekotletek</a>
+          <a href="#kapcsolat" class="nav-link px-4 py-2 text-sm font-medium rounded-full transition-colors duration-200 text-white" style="background: var(--forest);">Kapcsolat</a>
+        </div>
+
+        <!-- Mobile Hamburger -->
+        <button id="mobile-menu-btn" class="md:hidden flex flex-col gap-1.5 p-2 rounded-xl" style="color: var(--forest);" aria-label="Menu">
+          <span class="block w-6 h-0.5 rounded-full transition-all duration-300" style="background: var(--forest);" id="bar1"></span>
+          <span class="block w-6 h-0.5 rounded-full transition-all duration-300" style="background: var(--forest);" id="bar2"></span>
+          <span class="block w-4 h-0.5 rounded-full transition-all duration-300" style="background: var(--forest);" id="bar3"></span>
+        </button>
+      </div>
+
+      <!-- Mobile Menu Panel -->
+      <div id="mobile-menu" class="mobile-menu md:hidden rounded-2xl mb-4" style="background: rgba(249, 245, 238, 0.95); backdrop-filter: blur(10px);">
+        <div class="flex flex-col p-4 gap-2">
+          <a href="#termekek" class="mobile-nav-link px-4 py-3 text-base font-medium rounded-xl transition-colors hover:bg-white/60" style="color: var(--forest);">Termekeink</a>
+          <a href="#galeria" class="mobile-nav-link px-4 py-3 text-base font-medium rounded-xl transition-colors hover:bg-white/60" style="color: var(--forest);">Galeria</a>
+          <a href="#rendeles" class="mobile-nav-link px-4 py-3 text-base font-medium rounded-xl transition-colors hover:bg-white/60" style="color: var(--forest);">Rendeles</a>
+          <a href="#ajandekotletek" class="mobile-nav-link px-4 py-3 text-base font-medium rounded-xl transition-colors hover:bg-white/60" style="color: var(--forest);">Ajandekotletek</a>
+          <a href="#kapcsolat" class="mobile-nav-link px-4 py-3 text-base font-medium rounded-xl text-center text-white" style="background: var(--forest);">Kapcsolat</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========== HERO ========== -->
+  <section id="hero" class="relative min-h-screen flex items-center overflow-hidden" style="background: linear-gradient(135deg, var(--cream) 0%, var(--sand) 50%, rgba(124,144,112,0.15) 100%);">
+    <!-- Organic blob shapes -->
+    <div class="absolute top-10 right-0 w-72 h-72 md:w-[500px] md:h-[500px] blob-1 opacity-15 float-anim" style="background: var(--sage);"></div>
+    <div class="absolute bottom-0 left-0 w-64 h-64 md:w-96 md:h-96 blob-2 opacity-10 float-anim-slow" style="background: var(--olive);"></div>
+    <div class="absolute top-1/3 left-1/4 w-40 h-40 blob-3 opacity-8 float-anim" style="background: var(--forest); animation-delay: 2s;"></div>
+
+    <!-- Leaf decorations -->
+    <svg viewBox="0 0 100 100" fill="currentColor" class="absolute top-24 right-12 w-16 h-16 md:w-24 md:h-24 opacity-10 float-anim-slow" style="color: var(--forest);">
+      <path d="M50 5C30 20 10 45 15 75C20 95 45 95 50 95C55 95 80 95 85 75C90 45 70 20 50 5Z"/>
+    </svg>
+    <svg viewBox="0 0 100 100" fill="currentColor" class="absolute bottom-32 right-1/4 w-12 h-12 opacity-8 float-anim" style="color: var(--sage); transform: rotate(45deg);">
+      <path d="M50 5C30 20 10 45 15 75C20 95 45 95 50 95C55 95 80 95 85 75C90 45 70 20 50 5Z"/>
+    </svg>
+    <svg viewBox="0 0 200 60" fill="none" class="absolute bottom-16 left-8 w-32 md:w-48 opacity-10" stroke="currentColor" stroke-width="1.5" style="color: var(--forest);">
+      <path d="M10 50 Q30 10 60 30 Q90 50 120 20 Q150 -10 180 25" />
+      <path d="M60 30 Q55 20 50 25" /><path d="M60 30 Q65 20 70 25" />
+      <path d="M120 20 Q115 10 110 15" /><path d="M120 20 Q125 10 130 15" />
+    </svg>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 md:py-40">
+      <div class="max-w-3xl">
+        <!-- Small leaf ornament -->
+        <div class="flex items-center gap-3 mb-6">
+          <svg viewBox="0 0 100 100" fill="currentColor" class="w-6 h-6" style="color: var(--sage);">
+            <path d="M50 5C30 20 10 45 15 75C20 95 45 95 50 95C55 95 80 95 85 75C90 45 70 20 50 5Z"/>
+          </svg>
+          <span class="text-sm font-medium tracking-wider uppercase" style="color: var(--sage);">Fabrika Ajandek &middot; Szarvas</span>
+        </div>
+
+        <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight mb-6" style="color: var(--forest);">
+          Termeszetbol meritve,<br />
+          <span class="italic" style="color: var(--sage);">kezzel alkotva</span>
+        </h1>
+        <p class="text-lg md:text-xl leading-relaxed mb-10 max-w-xl" style="color: #5A6B55;">
+          Egyedi ajandekok fabol, termeszetes anyagokbol &ndash; Szarvas szivebol a Te otthonodba.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="#kapcsolat" class="inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-white rounded-full shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5" style="background: var(--forest);">
+            Rendelj egyedit!
+            <svg viewBox="0 0 100 100" fill="currentColor" class="w-5 h-5 ml-2">
+              <path d="M50 5C30 20 10 45 15 75C20 95 45 95 50 95C55 95 80 95 85 75C90 45 70 20 50 5Z"/>
+            </svg>
+          </a>
+          <a href="#termekek" class="inline-flex items-center justify-center px-8 py-4 text-base font-semibold rounded-full border-2 transition-all duration-300 hover:-translate-y-0.5" style="color: var(--forest); border-color: var(--forest); background: transparent;">
+            Ismerd meg a termekeinket
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom organic wave -->
+    <div class="absolute bottom-0 left-0 right-0">
+      <svg viewBox="0 0 1440 120" fill="var(--cream)" preserveAspectRatio="none" class="w-full h-16 md:h-24">
+        <path d="M0,60 C240,120 480,0 720,60 C960,120 1200,0 1440,60 L1440,120 L0,120 Z"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ========== TERMEKEK ========== -->
+  <section id="termekek" class="py-20 md:py-28 relative" style="background: var(--cream);">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Section title -->
+      <div class="text-center mb-16">
+        <div class="flex items-center justify-center gap-3 mb-4">
+          <svg viewBox="0 0 60 30" fill="none" stroke="currentColor" stroke-width="1.5" class="w-12 h-6" style="color: var(--sage);">
+            <path d="M5 25 Q15 5 30 15 Q45 25 55 5" />
+            <path d="M30 15 Q27 8 24 12" /><path d="M30 15 Q33 8 36 12" />
+          </svg>
+          <svg viewBox="0 0 100 100" fill="currentColor" class="w-6 h-6" style="color: var(--sage);">
+            <path d="M50 5C30 20 10 45 15 75C20 95 45 95 50 95C55 95 80 95 85 75C90 45 70 20 50 5Z"/>
+          </svg>
+          <svg viewBox="0 0 60 30" fill="none" stroke="currentColor" stroke-width="1.5" class="w-12 h-6" style="color: var(--sage); transform: scaleX(-1);">
+            <path d="M5 25 Q15 5 30 15 Q45 25 55 5" />
+            <path d="M30 15 Q27 8 24 12" /><path d="M30 15 Q33 8 36 12" />
+          </svg>
+        </div>
+        <h2 class="text-3xl md:text-5xl mb-4" style="color: var(--forest);">Amit keszitunk</h2>
+        <p class="text-lg max-w-2xl mx-auto" style="color: var(--sage);">Minden termekunk egyedi, kezzel keszult es termeszetes anyagokbol valosul meg.</p>
+      </div>
+
+      <!-- Cards: 3-2 layout -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <!-- Card 1 -->
+        <div class="group rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1" style="background: var(--sand);">
+          <div class="aspect-[4/3] overflow-hidden">
+            <img src="/references/01-laser-engraved-magnet.jpg" alt="Lezergravirozott kepek" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl mb-2" style="color: var(--forest);">Lezergravirozott kepek</h3>
+            <p class="text-sm leading-relaxed" style="color: #6B7B66;">Egyedi portrek es kepek, lezertechnologiaval faba gravirozva &ndash; orok emlek.</p>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="group rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1" style="background: var(--sand);">
+          <div class="aspect-[4/3] overflow-hidden">
+            <img src="/references/03-handmade-wood-sign-shop-1.jpg" alt="Fa tablak es feliratok" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl mb-2" style="color: var(--forest);">Fa tablak / feliratok</h3>
+            <p class="text-sm leading-relaxed" style="color: #6B7B66;">Otthonra, eskuvore vagy ajandekba &ndash; szemelyre szabott fa feliratok.</p>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="group rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1" style="background: var(--sand);">
+          <div class="aspect-[4/3] overflow-hidden">
+            <img src="/references/05-fridge-magnets.jpg" alt="Kis ajandektargyak" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl mb-2" style="color: var(--forest);">Kis ajandektargyak</h3>
+            <p class="text-sm leading-relaxed" style="color: #6B7B66;">Hutomegnesek, kulcstartok, apro meglepetesek &ndash; tokeletes minden alkalomra.</p>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="group rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 sm:col-span-1 lg:col-span-1 lg:col-start-1 lg:ml-auto lg:mr-0" style="background: var(--sand);">
+          <div class="aspect-[4/3] overflow-hidden">
+            <img src="/references/07-terrariums-florist.jpg" alt="Kerti diszek es viragtartok" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl mb-2" style="color: var(--forest);">Kerti diszek / viragtartok</h3>
+            <p class="text-sm leading-relaxed" style="color: #6B7B66;">Termeszetkozeli dekoraciok es viragtartok a kertedbe.</p>
+          </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="group rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1" style="background: var(--sand);">
+          <div class="aspect-[4/3] overflow-hidden">
+            <img src="/references/09-california-travel-poster.jpg" alt="Szines nyomatok" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl mb-2" style="color: var(--forest);">Szines nyomatok</h3>
+            <p class="text-sm leading-relaxed" style="color: #6B7B66;">Vidam grafikak es illusztraciok, nyomtatva es keretezve.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== GALERIA ========== -->
+  <section id="galeria" class="py-20 md:py-28 relative" style="background: linear-gradient(180deg, var(--cream) 0%, var(--sand) 100%);">
+    <!-- Top botanical SVG -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
+      <svg viewBox="0 0 200 80" fill="none" stroke="currentColor" stroke-width="1.2" class="w-40 md:w-56 opacity-20" style="color: var(--forest);">
+        <path d="M20 70 Q50 20 100 40 Q150 60 180 10" />
+        <path d="M60 38 Q55 25 48 32" /><path d="M60 38 Q67 25 72 32" />
+        <path d="M140 32 Q135 18 128 26" /><path d="M140 32 Q147 18 152 26" />
+        <circle cx="100" cy="40" r="3" fill="currentColor" />
+      </svg>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <div class="flex items-center justify-center gap-2 mb-4">
+          <svg viewBox="0 0 100 100" fill="currentColor" class="w-5 h-5" style="color: var(--olive);">
+            <path d="M50 5C30 20 10 45 15 75C20 95 45 95 50 95C55 95 80 95 85 75C90 45 70 20 50 5Z"/>
+          </svg>
+        </div>
+        <h2 class="text-3xl md:text-5xl mb-4" style="color: var(--forest);">Galeria</h2>
+        <p class="text-lg max-w-2xl mx-auto" style="color: var(--sage);">Valogatott kepek a muhelyunkbol es a kesz termekeinkrol.</p>
+      </div>
+
+      <!-- Masonry-like grid -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 auto-rows-[180px] md:auto-rows-[220px]">
+        <!-- Large tile -->
+        <div class="gallery-item relative rounded-2xl overflow-hidden row-span-2 cursor-pointer">
+          <img src="/references/01-laser-engraved-magnet.jpg" alt="Lezergravirozott magnes" loading="lazy" class="w-full h-full object-cover" />
+          <div class="overlay absolute inset-0 opacity-0 flex items-center justify-center" style="background: rgba(61,90,58,0.4);">
+            <svg viewBox="0 0 100 100" fill="white" class="w-8 h-8"><path d="M50 5C30 20 10 45 15 75C20 95 45 95 50 95C55 95 80 95 85 75C90 45 70 20 50 5Z"/></svg>
+          </div>
+        </div>
+        <!-- Small -->
+        <div class="gallery-item relative rounded-2xl overflow-hidden cursor-pointer">
+          <img src="/references/02-laser-engraved-wall-plaque.jpg" alt="Lezergravirozott fali tabla" loading="lazy" class="w-full h-full object-cover" />
+          <div class="overlay absolute inset-0 opacity-0 flex items-center justify-center" style="background: rgba(61,90,58,0.4);">
+            <svg viewBox="0 0 100 100" fill="white" class="w-8 h-8"><path d="M50 5C30 20 10 45 15 75C20 95 45 95 50 95C55 95 80 95 85 75C90 45 70 20 50 5Z"/></svg>
+          </div>
+        </div>
+        <!-- Small -->
+        <div class="gallery-item relative rounded-2xl overflow-hidden cursor-pointer">
+          <img src="/references/03-handmade-wood-sign-shop-1.jpg" alt="Kezzel keszitett fa tabla" loading="lazy" class="w-full h-full object-cover" />
+          <div class="overlay absolute inset-0 opacity-0 flex items-center justify-center" style="background: rgba(61,90,58,0.4);">
+            <svg viewBox="0 0 100 100" fill="white" class="w-8 h-8"><path d="M50 5C30 20 10 45 15 75C20 95 45 95 50 95C55 95 80 95 85 75C90 45 70 20 50 5Z"/></svg>
+          </div>
+        </div>
+        <!-- Large tile -->
+        <div class="gallery-item relative rounded-2xl overflow-hidden row-span-2 cursor-pointer">
+          <img src="/references/04-waterfront-rules-wood-sign.jpg" alt="Fa tabla felirattal" loading="lazy" class="w-full h-full object-cover" />
+          <div class="overlay absolute inset-0 opacity-0 flex items-center justify-center" style="background: rgba(61,90,58,0.4);">
+            <svg viewBox="0 0 100 100" fill="white" class="w-8 h-8"><path d="M50 5C30 20 10 45 15 75C20 95 45 95 50 95C55 95 80 95 85 75C90 45 70 20 50 5Z"/></svg>
+          </div>
+        </div>
+        <!-- Small -->
+        <div class="gallery-item relative rounded-2xl overflow-hidden cursor-pointer">
+          <img src="/references/05-fridge-magnets.jpg" alt="Hutomegnesek" loading="lazy" class="w-full h-full object-cover" />
+          <div class="overlay absolute inset-0 opacity-0 flex items-center justify-center" style="background: rgba(61,90,58,0.4);">
+            <svg viewBox="0 0 100 100" fill="white" class="w-8 h-8"><path d="M50 5C30 20 10 45 15 75C20 95 45 95 50 95C55 95 80 95 85 75C90 45 70 20 50 5Z"/></svg>
+          </div>
+        </div>
+        <!-- Small -->
+        <div class="gallery-item relative rounded-2xl overflow-hidden cursor-pointer">
+          <img src="/references/06-picnic-basket-gifts.jpg" alt="Ajandekok" loading="lazy" class="w-full h-full object-cover" />
+          <div class="overlay absolute inset-0 opacity-0 flex items-center justify-center" style="background: rgba(61,90,58,0.4);">
+            <svg viewBox="0 0 100 100" fill="white" class="w-8 h-8"><path d="M50 5C30 20 10 45 15 75C20 95 45 95 50 95C55 95 80 95 85 75C90 45 70 20 50 5Z"/></svg>
+          </div>
+        </div>
+        <!-- Large -->
+        <div class="gallery-item relative rounded-2xl overflow-hidden col-span-2 cursor-pointer">
+          <img src="/references/07-terrariums-florist.jpg" alt="Noveny dekoraciok" loading="lazy" class="w-full h-full object-cover" />
+          <div class="overlay absolute inset-0 opacity-0 flex items-center justify-center" style="background: rgba(61,90,58,0.4);">
+            <svg viewBox="0 0 100 100" fill="white" class="w-8 h-8"><path d="M50 5C30 20 10 45 15 75C20 95 45 95 50 95C55 95 80 95 85 75C90 45 70 20 50 5Z"/></svg>
+          </div>
+        </div>
+        <!-- Small -->
+        <div class="gallery-item relative rounded-2xl overflow-hidden cursor-pointer">
+          <img src="/references/08-blue-painted-wall-planters.jpg" alt="Fali viragtartok" loading="lazy" class="w-full h-full object-cover" />
+          <div class="overlay absolute inset-0 opacity-0 flex items-center justify-center" style="background: rgba(61,90,58,0.4);">
+            <svg viewBox="0 0 100 100" fill="white" class="w-8 h-8"><path d="M50 5C30 20 10 45 15 75C20 95 45 95 50 95C55 95 80 95 85 75C90 45 70 20 50 5Z"/></svg>
+          </div>
+        </div>
+        <!-- Small -->
+        <div class="gallery-item relative rounded-2xl overflow-hidden cursor-pointer">
+          <img src="/references/09-california-travel-poster.jpg" alt="Szines nyomatok" loading="lazy" class="w-full h-full object-cover" />
+          <div class="overlay absolute inset-0 opacity-0 flex items-center justify-center" style="background: rgba(61,90,58,0.4);">
+            <svg viewBox="0 0 100 100" fill="white" class="w-8 h-8"><path d="M50 5C30 20 10 45 15 75C20 95 45 95 50 95C55 95 80 95 85 75C90 45 70 20 50 5Z"/></svg>
+          </div>
+        </div>
+        <!-- Large -->
+        <div class="gallery-item relative rounded-2xl overflow-hidden col-span-2 cursor-pointer">
+          <img src="/references/10-jane-avril-poster.jpg" alt="Muveszi nyomat" loading="lazy" class="w-full h-full object-cover" />
+          <div class="overlay absolute inset-0 opacity-0 flex items-center justify-center" style="background: rgba(61,90,58,0.4);">
+            <svg viewBox="0 0 100 100" fill="white" class="w-8 h-8"><path d="M50 5C30 20 10 45 15 75C20 95 45 95 50 95C55 95 80 95 85 75C90 45 70 20 50 5Z"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== HOGYAN RENDELHETSZ ========== -->
+  <section id="rendeles" class="py-20 md:py-28 relative overflow-hidden" style="background: var(--cream);">
+    <!-- Background blobs -->
+    <div class="absolute top-20 right-0 w-64 h-64 blob-2 opacity-5" style="background: var(--sage);"></div>
+    <div class="absolute bottom-20 left-0 w-48 h-48 blob-1 opacity-5" style="background: var(--olive);"></div>
+
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-5xl mb-4" style="color: var(--forest);">Hogyan rendelhetsz?</h2>
+        <p class="text-lg max-w-xl mx-auto" style="color: var(--sage);">Harom egyszeru lepes es megkapod az egyedi ajandekod.</p>
+      </div>
+
+      <div class="relative">
+        <!-- Curved connector line (desktop) -->
+        <svg class="hidden md:block absolute top-1/2 left-0 right-0 -translate-y-1/2 w-full h-32 pointer-events-none" viewBox="0 0 1000 120" fill="none" preserveAspectRatio="none">
+          <path d="M120 60 C300 10 400 110 500 60 C600 10 700 110 880 60" stroke="#7C9070" stroke-width="2" class="step-connector" fill="none" />
+        </svg>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 relative z-10">
+          <!-- Step 1 -->
+          <div class="text-center">
+            <div class="rounded-2xl p-8 shadow-md transition-all hover:shadow-lg hover:-translate-y-1" style="background: white;">
+              <div class="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-5 text-white text-xl font-bold" style="background: var(--forest);">1</div>
+              <div class="mb-4">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-10 h-10 mx-auto" style="color: var(--sage);">
+                  <path d="M12 20h9" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <h3 class="text-xl mb-3" style="color: var(--forest);">Ird meg az otleted</h3>
+              <p class="text-sm leading-relaxed" style="color: #6B7B66;">Valaszd ki a termeket, vagy meselj az egyedi elkepzelesedrol az urlapon.</p>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="text-center">
+            <div class="rounded-2xl p-8 shadow-md transition-all hover:shadow-lg hover:-translate-y-1" style="background: white;">
+              <div class="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-5 text-white text-xl font-bold" style="background: var(--sage);">2</div>
+              <div class="mb-4">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-10 h-10 mx-auto" style="color: var(--sage);">
+                  <path d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a2 2 0 01-2-2v-6a2 2 0 012-2h8z" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M3 4h8a2 2 0 012 2v6a2 2 0 01-2 2H7l-4 4V6a2 2 0 012-2z" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <h3 class="text-xl mb-3" style="color: var(--forest);">Egyeztetunk veled</h3>
+              <p class="text-sm leading-relaxed" style="color: #6B7B66;">Megbeszeljuk a reszleteket, az arat es az atvetel modjat.</p>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="text-center">
+            <div class="rounded-2xl p-8 shadow-md transition-all hover:shadow-lg hover:-translate-y-1" style="background: white;">
+              <div class="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-5 text-white text-xl font-bold" style="background: var(--olive);">3</div>
+              <div class="mb-4">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-10 h-10 mx-auto" style="color: var(--sage);">
+                  <path d="M20 12v6a2 2 0 01-2 2H6a2 2 0 01-2-2v-6" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 3v12m0 0l-4-4m4 4l4-4" stroke-linecap="round" stroke-linejoin="round" transform="rotate(180 12 12)"/>
+                  <rect x="2" y="7" width="20" height="5" rx="1" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <h3 class="text-xl mb-3" style="color: var(--forest);">Megkapod az ajandekot</h3>
+              <p class="text-sm leading-relaxed" style="color: #6B7B66;">Szemelyes atvetel Szarvason vagy postazas Magyarorszagon belul.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== AJANDEKOTLETEK ========== -->
+  <section id="ajandekotletek" class="py-20 md:py-28 relative overflow-hidden" style="background: var(--sand);">
+    <div class="absolute top-0 left-0 right-0">
+      <svg viewBox="0 0 1440 60" fill="var(--cream)" preserveAspectRatio="none" class="w-full h-8 md:h-12" style="transform: scaleY(-1);">
+        <path d="M0,30 C360,60 720,0 1080,30 C1260,45 1380,15 1440,30 L1440,0 L0,0 Z"/>
+      </svg>
+    </div>
+
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-5xl mb-4" style="color: var(--forest);">Mikor adj Fabrikat?</h2>
+        <p class="text-lg max-w-xl mx-auto" style="color: var(--sage);">Minden alkalomra talalsz nallunk tokeletes ajandekot.</p>
+      </div>
+
+      <div class="flex flex-wrap justify-center gap-4 md:gap-5">
+        <!-- Chip 1 -->
+        <div class="chip-hover rounded-2xl p-5 md:p-6 max-w-xs w-full sm:w-auto sm:min-w-[280px]" style="background: white; border: 2px solid rgba(124,144,112,0.2);">
+          <div class="flex items-start gap-4">
+            <span class="text-3xl flex-shrink-0 mt-1">&#127874;</span>
+            <div>
+              <h3 class="text-lg font-semibold mb-1" style="color: var(--forest);">Szuletesnap</h3>
+              <p class="text-sm" style="color: #6B7B66;">Gravirozott kepkeret vagy tabla nevvel, datummal.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chip 2 -->
+        <div class="chip-hover rounded-2xl p-5 md:p-6 max-w-xs w-full sm:w-auto sm:min-w-[280px]" style="background: white; border: 2px solid rgba(124,144,112,0.2);">
+          <div class="flex items-start gap-4">
+            <span class="text-3xl flex-shrink-0 mt-1">&#9962;</span>
+            <div>
+              <h3 class="text-lg font-semibold mb-1" style="color: var(--forest);">Eskuvo</h3>
+              <p class="text-sm" style="color: #6B7B66;">Egyedi eskuvoi emlektabla a nagy napra.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chip 3 -->
+        <div class="chip-hover rounded-2xl p-5 md:p-6 max-w-xs w-full sm:w-auto sm:min-w-[280px]" style="background: white; border: 2px solid rgba(124,144,112,0.2);">
+          <div class="flex items-start gap-4">
+            <span class="text-3xl flex-shrink-0 mt-1">&#127800;</span>
+            <div>
+              <h3 class="text-lg font-semibold mb-1" style="color: var(--forest);">Nevnap</h3>
+              <p class="text-sm" style="color: #6B7B66;">Kedves kis meglepetes: magnes vagy kulcstarto.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chip 4 -->
+        <div class="chip-hover rounded-2xl p-5 md:p-6 max-w-xs w-full sm:w-auto sm:min-w-[280px]" style="background: white; border: 2px solid rgba(124,144,112,0.2);">
+          <div class="flex items-start gap-4">
+            <span class="text-3xl flex-shrink-0 mt-1">&#127876;</span>
+            <div>
+              <h3 class="text-lg font-semibold mb-1" style="color: var(--forest);">Karacsony</h3>
+              <p class="text-sm" style="color: #6B7B66;">Fabol keszult diszek es ajandekok.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chip 5 -->
+        <div class="chip-hover rounded-2xl p-5 md:p-6 max-w-xs w-full sm:w-auto sm:min-w-[280px]" style="background: white; border: 2px solid rgba(124,144,112,0.2);">
+          <div class="flex items-start gap-4">
+            <span class="text-3xl flex-shrink-0 mt-1">&#128154;</span>
+            <div>
+              <h3 class="text-lg font-semibold mb-1" style="color: var(--forest);">Csak ugy</h3>
+              <p class="text-sm" style="color: #6B7B66;">A varatlan meglepetes a legjobb.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PIACI MEGJELENES ========== -->
+  <section id="piac" class="py-20 md:py-28 relative overflow-hidden" style="background: var(--forest);">
+    <!-- Leaf pattern overlay -->
+    <div class="absolute inset-0 opacity-5">
+      <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="leaf-pattern" x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse">
+            <path d="M40 5C28 15 15 30 18 50C21 65 36 65 40 65C44 65 59 65 62 50C65 30 52 15 40 5Z" fill="white" opacity="0.3" transform="scale(0.5) translate(20,20)"/>
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#leaf-pattern)"/>
+      </svg>
+    </div>
+
+    <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div class="flex items-center justify-center gap-3 mb-6">
+        <svg viewBox="0 0 100 100" fill="currentColor" class="w-8 h-8 text-white opacity-40">
+          <path d="M50 5C30 20 10 45 15 75C20 95 45 95 50 95C55 95 80 95 85 75C90 45 70 20 50 5Z"/>
+        </svg>
+      </div>
+      <h2 class="text-3xl md:text-5xl text-white mb-6">Talalkozz velunk!</h2>
+      <p class="text-lg md:text-xl leading-relaxed mb-4" style="color: var(--sand);">
+        A szarvasi es kornyekbeli piacokon, vasarokon rendszeresen ott vagyunk. Keresd a standunkat!
+      </p>
+      <p class="text-base leading-relaxed mb-8" style="color: rgba(232,220,200,0.7);">
+        Szemelyes atvetel egyeztetessel is lehetseges Szarvason.
+      </p>
+      <a href="#kapcsolat" class="inline-flex items-center px-8 py-4 text-base font-semibold rounded-full transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5" style="background: var(--sand); color: var(--forest);">
+        Kerj tajekoztatot!
+        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14m-7-7l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ========== KAPCSOLAT ========== -->
+  <section id="kapcsolat" class="py-20 md:py-28 relative" style="background: var(--cream);">
+    <div class="absolute bottom-0 right-0 w-72 h-72 blob-1 opacity-5" style="background: var(--sage);"></div>
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-5xl mb-4" style="color: var(--forest);">Irj nekunk!</h2>
+        <p class="text-lg max-w-xl mx-auto" style="color: var(--sage);">Kerdesed van? Egyedi termeket szeretnel? Kuldj uzenetet!</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 md:gap-12">
+        <!-- Form -->
+        <div class="lg:col-span-3">
+          <form class="rounded-2xl p-6 md:p-10 shadow-lg" style="background: var(--sand);">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+              <div>
+                <label for="nev" class="block text-sm font-medium mb-2" style="color: var(--forest);">Nev *</label>
+                <input type="text" id="nev" name="nev" required class="w-full px-4 py-3 rounded-xl border-2 text-sm transition-colors focus:outline-none" style="border-color: rgba(124,144,112,0.3); background: white; color: var(--forest-dark);" placeholder="Kovacs Anna" />
+              </div>
+              <div>
+                <label for="email" class="block text-sm font-medium mb-2" style="color: var(--forest);">E-mail *</label>
+                <input type="email" id="email" name="email" required class="w-full px-4 py-3 rounded-xl border-2 text-sm transition-colors focus:outline-none" style="border-color: rgba(124,144,112,0.3); background: white; color: var(--forest-dark);" placeholder="anna@pelda.hu" />
+              </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+              <div>
+                <label for="telefon" class="block text-sm font-medium mb-2" style="color: var(--forest);">Telefon <span class="opacity-60">(opcionalis)</span></label>
+                <input type="tel" id="telefon" name="telefon" class="w-full px-4 py-3 rounded-xl border-2 text-sm transition-colors focus:outline-none" style="border-color: rgba(124,144,112,0.3); background: white; color: var(--forest-dark);" placeholder="+36 30 123 4567" />
+              </div>
+              <div>
+                <label for="kategoria" class="block text-sm font-medium mb-2" style="color: var(--forest);">Kategoria</label>
+                <select id="kategoria" name="kategoria" class="w-full px-4 py-3 rounded-xl border-2 text-sm transition-colors focus:outline-none appearance-none" style="border-color: rgba(124,144,112,0.3); background: white; color: var(--forest-dark);">
+                  <option value="">Valassz kategoriat...</option>
+                  <option value="lezer">Lezergravirozott kepek</option>
+                  <option value="tabla">Fa tablak / feliratok</option>
+                  <option value="ajandek">Kis ajandektargyak</option>
+                  <option value="kert">Kerti diszek / viragtartok</option>
+                  <option value="nyomat">Szines nyomatok</option>
+                  <option value="egyedi">Egyedi elkepzeles</option>
+                </select>
+              </div>
+            </div>
+            <div class="mb-6">
+              <label for="uzenet" class="block text-sm font-medium mb-2" style="color: var(--forest);">Uzenet *</label>
+              <textarea id="uzenet" name="uzenet" required rows="5" class="w-full px-4 py-3 rounded-xl border-2 text-sm transition-colors focus:outline-none resize-none" style="border-color: rgba(124,144,112,0.3); background: white; color: var(--forest-dark);" placeholder="Ird le, miben segithetunk..."></textarea>
+            </div>
+            <button type="submit" class="w-full sm:w-auto px-8 py-4 text-base font-semibold text-white rounded-full shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 cursor-pointer" style="background: var(--forest);">
+              Uzenet kuldese &#127807;
+            </button>
+          </form>
+        </div>
+
+        <!-- Contact info -->
+        <div class="lg:col-span-2 flex flex-col justify-center">
+          <div class="rounded-2xl p-6 md:p-8" style="background: white; border: 2px solid rgba(124,144,112,0.15);">
+            <h3 class="text-xl mb-6" style="color: var(--forest);">Elerhetosegeink</h3>
+
+            <div class="space-y-5">
+              <!-- Email -->
+              <div class="flex items-start gap-4">
+                <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style="background: rgba(124,144,112,0.15);">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="color: var(--forest);">
+                    <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-sm font-medium" style="color: var(--forest);">E-mail</p>
+                  <a href="mailto:info@fabrikaajandek.hu" class="text-sm hover:underline" style="color: var(--sage);">info@fabrikaajandek.hu</a>
+                </div>
+              </div>
+
+              <!-- Facebook -->
+              <div class="flex items-start gap-4">
+                <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style="background: rgba(124,144,112,0.15);">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" style="color: var(--forest);">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-sm font-medium" style="color: var(--forest);">Facebook</p>
+                  <a href="#" class="text-sm hover:underline" style="color: var(--sage);">Fabrika Ajandek</a>
+                </div>
+              </div>
+
+              <!-- Viber -->
+              <div class="flex items-start gap-4">
+                <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style="background: rgba(124,144,112,0.15);">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" style="color: var(--forest);">
+                    <path d="M11.398.002C9.473.028 5.331.344 3.014 2.467 1.294 4.177.509 6.764.381 9.983c-.128 3.223-.297 9.269 5.647 10.887l.007.003h.006l-.007 2.488s-.048.997.617 1.198c.805.244 1.278-.518 2.049-1.352.423-.457.999-1.129 1.437-1.642 3.96.334 7.005-.428 7.348-.539.793-.26 5.275-.834 6.007-6.807.756-6.172-.362-10.07-2.394-11.841l-.003-.003C19.678 1.096 15.689-.06 11.398.002zM11.5 1.601c3.86-.052 7.354.903 8.742 2.155l.003.003c1.695 1.479 2.73 4.946 2.043 10.543-.634 5.156-4.398 5.555-5.089 5.78-.288.094-2.946.748-6.34.539 0 0-2.514 3.037-3.302 3.825-.123.123-.267.18-.364.156-.136-.034-.173-.196-.172-.433l.025-4.152c-.005 0-.008 0-.013-.002-5.134-1.4-4.83-6.639-4.717-9.424.11-2.782.774-5.024 2.237-6.473C6.575 2.248 8.927 1.635 11.5 1.601zm.472 2.903c-.154 0-.282.126-.282.283a.284.284 0 00.283.282c1.473.01 2.86.576 3.913 1.596a5.475 5.475 0 011.65 3.87.283.283 0 00.565.009 6.046 6.046 0 00-1.822-4.274 6.087 6.087 0 00-4.307-1.766zm-3.464.808c-.226-.01-.45.07-.637.238l-.003.003c-.543.492-.952 1.088-1.387 1.586-.21.263-.318.586-.295.91.023.41.185.804.302 1.09.53 1.313 1.276 2.55 2.202 3.665a14.044 14.044 0 004.64 3.98l.002.002c.474.247.946.543 1.484.668.6.136 1.2-.06 1.63-.504.338-.35.635-.84.95-1.226.323-.396.075-.854-.268-1.065l-2.282-1.37c-.35-.212-.752-.058-.979.196l-.553.66c-.243.282-.653.26-.653.26l-.004.002c-3.107-.832-3.97-3.97-3.97-3.97s-.024-.41.26-.656l.659-.552c.255-.227.408-.63.196-.979l-1.37-2.283c-.14-.237-.423-.385-.684-.421a1.144 1.144 0 00-.24-.024zm4.355.64c-.151.002-.283.132-.28.284a.282.282 0 00.285.28 3.594 3.594 0 012.53 1.093 3.628 3.628 0 01.976 2.153.283.283 0 00.563-.068 4.208 4.208 0 00-1.132-2.494 4.16 4.16 0 00-2.935-1.247h-.007zm.2 1.49c-.147.006-.27.131-.27.282a.283.283 0 00.283.274c.517.016 1.08.215 1.456.606.373.393.553.892.553 1.423a.283.283 0 10.565 0c0-.683-.232-1.321-.718-1.831-.487-.512-1.175-.744-1.842-.754h-.027z"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-sm font-medium" style="color: var(--forest);">Viber</p>
+                  <a href="#" class="text-sm hover:underline" style="color: var(--sage);">+36 XX XXX XXXX</a>
+                </div>
+              </div>
+
+              <!-- Instagram -->
+              <div class="flex items-start gap-4">
+                <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style="background: rgba(124,144,112,0.15);">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" style="color: var(--forest);">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-sm font-medium" style="color: var(--forest);">Instagram</p>
+                  <a href="#" class="text-sm hover:underline" style="color: var(--sage);">@fabrikaajandek</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== GYIK ========== -->
+  <section id="gyik" class="py-20 md:py-28" style="background: var(--sand);">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-5xl mb-4" style="color: var(--forest);">Gyakori kerdesek</h2>
+        <p class="text-lg" style="color: var(--sage);">Valaszok a legtobbet feltett kerdesekre.</p>
+      </div>
+
+      <div class="space-y-4">
+        <!-- FAQ 1 -->
+        <div class="faq-item rounded-2xl overflow-hidden shadow-sm" style="background: white; border: 2px solid rgba(124,144,112,0.1);">
+          <button class="faq-toggle w-full flex items-center justify-between p-5 md:p-6 text-left cursor-pointer">
+            <span class="text-base font-semibold pr-4" style="color: var(--forest);">Mennyi ido alatt keszul el egy egyedi termek?</span>
+            <svg class="faq-chevron w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="color: var(--sage);"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-answer px-5 md:px-6">
+            <p class="pb-5 text-sm leading-relaxed" style="color: #6B7B66;">Altalaban 3-7 munkanap. Surgos esetben jelezd!</p>
+          </div>
+        </div>
+
+        <!-- FAQ 2 -->
+        <div class="faq-item rounded-2xl overflow-hidden shadow-sm" style="background: white; border: 2px solid rgba(124,144,112,0.1);">
+          <button class="faq-toggle w-full flex items-center justify-between p-5 md:p-6 text-left cursor-pointer">
+            <span class="text-base font-semibold pr-4" style="color: var(--forest);">Hogyan fizethetek?</span>
+            <svg class="faq-chevron w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="color: var(--sage);"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-answer px-5 md:px-6">
+            <p class="pb-5 text-sm leading-relaxed" style="color: #6B7B66;">Szemelyes atvetel: keszbenz. Egyedi vagy postas rendeles: elore utalas.</p>
+          </div>
+        </div>
+
+        <!-- FAQ 3 -->
+        <div class="faq-item rounded-2xl overflow-hidden shadow-sm" style="background: white; border: 2px solid rgba(124,144,112,0.1);">
+          <button class="faq-toggle w-full flex items-center justify-between p-5 md:p-6 text-left cursor-pointer">
+            <span class="text-base font-semibold pr-4" style="color: var(--forest);">Postaztok?</span>
+            <svg class="faq-chevron w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="color: var(--sage);"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-answer px-5 md:px-6">
+            <p class="pb-5 text-sm leading-relaxed" style="color: #6B7B66;">Igen, Magyarorszagon belul, meret es suly alapjan kalkulalt koltsegel.</p>
+          </div>
+        </div>
+
+        <!-- FAQ 4 -->
+        <div class="faq-item rounded-2xl overflow-hidden shadow-sm" style="background: white; border: 2px solid rgba(124,144,112,0.1);">
+          <button class="faq-toggle w-full flex items-center justify-between p-5 md:p-6 text-left cursor-pointer">
+            <span class="text-base font-semibold pr-4" style="color: var(--forest);">Kulfoldre is kuldtok?</span>
+            <svg class="faq-chevron w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="color: var(--sage);"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-answer px-5 md:px-6">
+            <p class="pb-5 text-sm leading-relaxed" style="color: #6B7B66;">Jelenleg csak belfoldi postazast vallalunk.</p>
+          </div>
+        </div>
+
+        <!-- FAQ 5 -->
+        <div class="faq-item rounded-2xl overflow-hidden shadow-sm" style="background: white; border: 2px solid rgba(124,144,112,0.1);">
+          <button class="faq-toggle w-full flex items-center justify-between p-5 md:p-6 text-left cursor-pointer">
+            <span class="text-base font-semibold pr-4" style="color: var(--forest);">Sajat otletet is megvalositotok?</span>
+            <svg class="faq-chevron w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="color: var(--sage);"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-answer px-5 md:px-6">
+            <p class="pb-5 text-sm leading-relaxed" style="color: #6B7B66;">Persze! Kuldj leirast, kepet vagy vazlatot, es megvalositjuk.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="py-12 md:py-16 relative" style="background: var(--forest-dark);">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+        <!-- Logo & info -->
+        <div class="text-center md:text-left">
+          <div class="flex items-center justify-center md:justify-start gap-2 mb-3">
+            <svg viewBox="0 0 100 100" fill="currentColor" class="w-6 h-6" style="color: var(--sage);">
+              <path d="M50 5C30 20 10 45 15 75C20 95 45 95 50 95C55 95 80 95 85 75C90 45 70 20 50 5Z"/>
+            </svg>
+            <span class="text-lg font-bold text-white" style="font-family: 'DM Serif Display', serif;">Fabrika Ajandek</span>
+          </div>
+          <p class="text-sm" style="color: rgba(232,220,200,0.6);">Fabrika Ajandek &middot; Szarvas, Magyarorszag</p>
+        </div>
+
+        <!-- Social links -->
+        <div class="flex items-center gap-4">
+          <a href="mailto:info@fabrikaajandek.hu" class="w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-200 hover:opacity-80" style="background: rgba(124,144,112,0.2);" aria-label="Email">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-200 hover:opacity-80" style="background: rgba(124,144,112,0.2);" aria-label="Facebook">
+            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+            </svg>
+          </a>
+          <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-200 hover:opacity-80" style="background: rgba(124,144,112,0.2);" aria-label="Instagram">
+            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="my-8 border-t" style="border-color: rgba(124,144,112,0.2);"></div>
+
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-xs" style="color: rgba(232,220,200,0.4);">&copy; 2025 Fabrika Ajandek</p>
+        <div class="flex items-center gap-1">
+          <svg viewBox="0 0 100 100" fill="currentColor" class="w-4 h-4" style="color: rgba(124,144,112,0.3);">
+            <path d="M50 5C30 20 10 45 15 75C20 95 45 95 50 95C55 95 80 95 85 75C90 45 70 20 50 5Z"/>
+          </svg>
+          <span class="text-xs" style="color: rgba(232,220,200,0.4);">Keszult szeretettel Szarvason</span>
+          <svg viewBox="0 0 100 100" fill="currentColor" class="w-4 h-4" style="color: rgba(124,144,112,0.3);">
+            <path d="M50 5C30 20 10 45 15 75C20 95 45 95 50 95C55 95 80 95 85 75C90 45 70 20 50 5Z"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========== BACK TO TOP ========== -->
+  <button id="back-to-top" class="fixed bottom-6 right-6 w-12 h-12 rounded-full shadow-lg flex items-center justify-center opacity-0 pointer-events-none z-50 cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5" style="background: var(--forest); color: white;" aria-label="Vissza a tetejere">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 15l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+
+  <!-- ========== JAVASCRIPT ========== -->
+  <script>
+    (function() {
+      'use strict';
+
+      // === Mobile menu toggle ===
+      const menuBtn = document.getElementById('mobile-menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const bar1 = document.getElementById('bar1');
+      const bar2 = document.getElementById('bar2');
+      const bar3 = document.getElementById('bar3');
+      let menuOpen = false;
+
+      menuBtn.addEventListener('click', function() {
+        menuOpen = !menuOpen;
+        mobileMenu.classList.toggle('open', menuOpen);
+        if (menuOpen) {
+          bar1.style.transform = 'translateY(4px) rotate(45deg)';
+          bar2.style.opacity = '0';
+          bar3.style.transform = 'translateY(-4px) rotate(-45deg)';
+          bar3.style.width = '1.5rem';
+        } else {
+          bar1.style.transform = '';
+          bar2.style.opacity = '';
+          bar3.style.transform = '';
+          bar3.style.width = '';
+        }
+      });
+
+      // Close mobile menu on link click
+      document.querySelectorAll('.mobile-nav-link').forEach(function(link) {
+        link.addEventListener('click', function() {
+          menuOpen = false;
+          mobileMenu.classList.remove('open');
+          bar1.style.transform = '';
+          bar2.style.opacity = '';
+          bar3.style.transform = '';
+          bar3.style.width = '';
+        });
+      });
+
+      // === Sticky navbar background ===
+      const navbar = document.getElementById('navbar');
+      function updateNavbar() {
+        if (window.scrollY > 80) {
+          navbar.style.background = 'rgba(249, 245, 238, 0.92)';
+          navbar.style.backdropFilter = 'blur(12px)';
+          navbar.style.boxShadow = '0 2px 20px rgba(61,90,58,0.08)';
+        } else {
+          navbar.style.background = 'transparent';
+          navbar.style.backdropFilter = '';
+          navbar.style.boxShadow = '';
+        }
+      }
+      window.addEventListener('scroll', updateNavbar, { passive: true });
+      updateNavbar();
+
+      // === Back to top ===
+      const backToTop = document.getElementById('back-to-top');
+      function updateBackToTop() {
+        if (window.scrollY > 600) {
+          backToTop.style.opacity = '1';
+          backToTop.style.pointerEvents = 'auto';
+        } else {
+          backToTop.style.opacity = '0';
+          backToTop.style.pointerEvents = 'none';
+        }
+      }
+      window.addEventListener('scroll', updateBackToTop, { passive: true });
+      updateBackToTop();
+
+      backToTop.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      // === FAQ Accordion ===
+      document.querySelectorAll('.faq-toggle').forEach(function(toggle) {
+        toggle.addEventListener('click', function() {
+          var item = this.closest('.faq-item');
+          var answer = item.querySelector('.faq-answer');
+          var isOpen = item.classList.contains('active');
+
+          // Close all
+          document.querySelectorAll('.faq-item').forEach(function(faqItem) {
+            faqItem.classList.remove('active');
+            faqItem.querySelector('.faq-answer').classList.remove('open');
+          });
+
+          // Open clicked if it was closed
+          if (!isOpen) {
+            item.classList.add('active');
+            answer.classList.add('open');
+          }
+        });
+      });
+
+      // === Smooth scroll for anchor links ===
+      document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+        anchor.addEventListener('click', function(e) {
+          var href = this.getAttribute('href');
+          if (href === '#') return;
+          e.preventDefault();
+          var target = document.querySelector(href);
+          if (target) {
+            var offset = 80;
+            var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+            window.scrollTo({ top: top, behavior: 'smooth' });
+          }
+        });
+      });
+
+      // === Form focus styles ===
+      document.querySelectorAll('input, select, textarea').forEach(function(el) {
+        el.addEventListener('focus', function() {
+          this.style.borderColor = '#7C9070';
+          this.style.boxShadow = '0 0 0 3px rgba(124,144,112,0.15)';
+        });
+        el.addEventListener('blur', function() {
+          this.style.borderColor = 'rgba(124,144,112,0.3)';
+          this.style.boxShadow = '';
+        });
+      });
+
+    })();
+  </script>
+</body>
+</html>

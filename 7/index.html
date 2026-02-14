@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fabrika Ajandek – Kezmuves ajandekok Szarvasrol</title>
+  <meta name="description" content="Egyedi fából készült ajándékok Szarvasról – lézergravírozott képek, fa feliratok, kerti díszek és színes nyomatok." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Nunito+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/style.css" />
+  <style>
+    :root {
+      --bg-primary: #F8F6F1;
+      --bg-warm: #EDE8E0;
+      --teal: #2D6A6A;
+      --coral: #D4654A;
+      --sage: #8FAE8B;
+      --gold: #C9A84C;
+      --text-dark: #1C1C1C;
+      --text-gray: #6B6B6B;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Nunito Sans', sans-serif;
+      color: var(--text-dark);
+      background: var(--bg-primary);
+    }
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Sora', sans-serif;
+    }
+
+    /* Reveal animations */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    /* Elements with data-parallax: let JS control transform, only animate opacity for reveal */
+    .reveal[data-parallax] {
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.revealed[data-parallax] {
+      transform: none; /* JS will override this via inline style */
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* FAQ accordion */
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), padding 0.4s ease;
+    }
+    .faq-item.open .faq-answer {
+      max-height: 200px;
+    }
+    .faq-item.open .faq-chevron {
+      transform: rotate(180deg);
+    }
+    .faq-chevron {
+      transition: transform 0.3s ease;
+    }
+
+    /* Gallery masonry */
+    .masonry-gallery {
+      columns: 3;
+      column-gap: 1rem;
+    }
+    .masonry-gallery > div {
+      break-inside: avoid;
+      margin-bottom: 1rem;
+    }
+    @media (max-width: 1023px) {
+      .masonry-gallery { columns: 2; }
+    }
+    @media (max-width: 639px) {
+      .masonry-gallery { columns: 1; }
+    }
+
+    /* Gift ideas horizontal scroll on mobile */
+    @media (max-width: 767px) {
+      .gift-scroll {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        gap: 1rem;
+        padding-bottom: 1rem;
+      }
+      .gift-scroll > * {
+        scroll-snap-align: start;
+        flex: 0 0 80%;
+        min-width: 0;
+      }
+      .gift-scroll::-webkit-scrollbar { display: none; }
+    }
+
+    /* Mobile menu */
+    .mobile-menu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .mobile-menu.open {
+      max-height: 320px;
+    }
+
+    /* Back to top */
+    .back-to-top {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Gradient blob */
+    .gradient-blob {
+      background: radial-gradient(circle, rgba(45,106,106,0.25) 0%, rgba(212,101,74,0.2) 50%, transparent 70%);
+      filter: blur(80px);
+    }
+
+    /* Connecting gradient line for steps */
+    .connecting-line {
+      background: linear-gradient(to bottom, var(--teal), var(--coral));
+    }
+  </style>
+</head>
+<body class="antialiased overflow-x-hidden">
+
+  <!-- ==================== NAVBAR ==================== -->
+  <nav id="navbar" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-5xl">
+    <div class="backdrop-blur-xl bg-white/80 rounded-full shadow-lg shadow-black/5 px-6 py-3 flex items-center justify-between">
+      <a href="#" class="font-['Sora'] font-bold text-lg tracking-tight" style="color: var(--teal);">
+        Fabrika Ajandek
+      </a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#kategoriak" class="text-sm font-medium hover:opacity-70 transition-opacity" style="color: var(--text-dark);">Kategoriak</a>
+        <a href="#galeria" class="text-sm font-medium hover:opacity-70 transition-opacity" style="color: var(--text-dark);">Galeria</a>
+        <a href="#rendeles" class="text-sm font-medium hover:opacity-70 transition-opacity" style="color: var(--text-dark);">Rendeles</a>
+        <a href="#kapcsolat" class="text-sm font-medium hover:opacity-70 transition-opacity" style="color: var(--text-dark);">Kapcsolat</a>
+      </div>
+      <button id="hamburger" class="md:hidden flex flex-col gap-1.5 p-2" aria-label="Menu">
+        <span class="block w-5 h-0.5 rounded-full transition-all" style="background: var(--teal);"></span>
+        <span class="block w-5 h-0.5 rounded-full transition-all" style="background: var(--teal);"></span>
+        <span class="block w-3.5 h-0.5 rounded-full transition-all" style="background: var(--teal);"></span>
+      </button>
+    </div>
+    <div id="mobile-menu" class="mobile-menu md:hidden mt-2">
+      <div class="backdrop-blur-xl bg-white/90 rounded-2xl shadow-lg shadow-black/5 px-6 py-4 flex flex-col gap-4">
+        <a href="#kategoriak" class="text-sm font-medium py-1" style="color: var(--text-dark);">Kategoriak</a>
+        <a href="#galeria" class="text-sm font-medium py-1" style="color: var(--text-dark);">Galeria</a>
+        <a href="#rendeles" class="text-sm font-medium py-1" style="color: var(--text-dark);">Rendeles</a>
+        <a href="#kapcsolat" class="text-sm font-medium py-1" style="color: var(--text-dark);">Kapcsolat</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ==================== HERO ==================== -->
+  <section class="relative min-h-screen flex items-center pt-24 pb-16" style="background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-warm) 100%);">
+    <!-- Parallax gradient blob -->
+    <div data-parallax="-0.5" class="gradient-blob absolute -top-32 -right-32 w-[600px] h-[600px] rounded-full pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-6 w-full">
+      <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-8">
+        <!-- Left text (55%) -->
+        <div class="w-full lg:w-[55%] relative z-10">
+          <div class="reveal">
+            <span class="inline-block text-xs font-semibold uppercase tracking-widest px-4 py-1.5 rounded-full mb-6" style="color: var(--teal); background: rgba(45,106,106,0.1);">
+              Kezmuves ajandekok Szarvasrol
+            </span>
+          </div>
+          <h1 class="reveal reveal-delay-1">
+            <span class="block font-['Sora'] font-extrabold text-5xl md:text-6xl lg:text-7xl leading-tight" style="color: var(--text-dark);">Alkoss velunk</span>
+            <span class="block font-['Sora'] font-extrabold text-5xl md:text-6xl lg:text-7xl leading-tight" style="color: var(--coral);">maradando emlekeket</span>
+          </h1>
+          <p class="reveal reveal-delay-2 mt-6 text-lg md:text-xl leading-relaxed max-w-xl" style="color: var(--text-gray);">
+            Egyedi fabol keszult ajandekok &ndash; lezergravirozott kepek, fa feliratok, kerti diszek es szines nyomatok.
+          </p>
+          <div class="reveal reveal-delay-3 flex flex-wrap gap-4 mt-8">
+            <a href="#kapcsolat" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-white font-semibold text-sm shadow-lg shadow-[#D4654A]/25 hover:shadow-xl hover:shadow-[#D4654A]/30 hover:-translate-y-0.5 transition-all" style="background: var(--coral);">
+              Egyedi rendeles
+            </a>
+            <a href="#kategoriak" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-full font-semibold text-sm border-2 hover:-translate-y-0.5 transition-all" style="color: var(--teal); border-color: var(--teal);">
+              Fedezd fel &darr;
+            </a>
+          </div>
+        </div>
+
+        <!-- Right images (45%) -->
+        <div class="w-full lg:w-[45%] relative" data-parallax="0.4">
+          <div class="relative">
+            <img src="/references/02-laser-engraved-wall-plaque.jpg" alt="Lezergravirozott fa kep" loading="lazy" class="w-full max-w-md rounded-3xl shadow-2xl shadow-black/10 relative z-10" />
+            <img src="/references/08-blue-painted-wall-planters.jpg" alt="Kerti viragdiszek" loading="lazy" class="absolute -bottom-8 -left-8 w-48 md:w-56 rounded-2xl shadow-xl shadow-black/10 z-20 border-4 border-white" />
+            <!-- Decorative small circle -->
+            <div class="absolute -top-4 -right-4 w-16 h-16 rounded-full opacity-30 z-0" style="background: var(--coral);"></div>
+            <div class="absolute bottom-12 -right-6 w-8 h-8 rounded-full opacity-20 z-0" style="background: var(--teal);"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== KATEGORIAK ==================== -->
+  <section id="kategoriak" class="py-24 md:py-32 relative" style="background: var(--bg-primary);">
+    <!-- Decorative parallax dots — visible and moving -->
+    <div data-parallax="0.5" data-parallax-x class="absolute top-20 left-[10%] w-5 h-5 rounded-full" style="background: var(--coral); opacity: 0.5;"></div>
+    <div data-parallax="0.4" data-parallax-x class="absolute top-40 right-[15%] w-4 h-4 rounded-full" style="background: var(--teal); opacity: 0.45;"></div>
+    <div data-parallax="0.35" class="absolute bottom-32 left-[20%] w-3.5 h-3.5 rounded-full" style="background: var(--sage); opacity: 0.5;"></div>
+    <div data-parallax="0.5" data-parallax-x class="absolute bottom-48 right-[8%] w-6 h-6 rounded-full" style="background: var(--gold); opacity: 0.4;"></div>
+    <div data-parallax="0.3" class="absolute top-60 left-[5%] w-20 h-0.5" style="background: linear-gradient(to right, var(--teal), transparent); opacity: 0.5;"></div>
+
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="reveal font-['Sora'] font-bold text-4xl md:text-5xl mb-16" style="color: var(--text-dark);">
+        Kategoriak
+      </h2>
+
+      <!-- Creative grid: 2 large top, 3 smaller bottom -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+        <!-- Card 1 - large -->
+        <div class="reveal group relative rounded-2xl overflow-hidden aspect-[4/3] cursor-pointer">
+          <img src="/references/01-laser-engraved-magnet.jpg" alt="Lezergravirozott kepek" loading="lazy" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 p-6 md:p-8">
+            <h3 class="font-['Sora'] font-bold text-xl md:text-2xl text-white mb-1">Lezergravirozott kepek</h3>
+            <p class="text-white/80 text-sm">Egyedi portrek es mintak, faba gravirozva.</p>
+          </div>
+        </div>
+        <!-- Card 2 - large -->
+        <div class="reveal reveal-delay-1 group relative rounded-2xl overflow-hidden aspect-[4/3] cursor-pointer">
+          <img src="/references/03-handmade-wood-sign-shop-1.jpg" alt="Fa tablak es feliratok" loading="lazy" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 p-6 md:p-8">
+            <h3 class="font-['Sora'] font-bold text-xl md:text-2xl text-white mb-1">Fa tablak / feliratok</h3>
+            <p class="text-white/80 text-sm">Szemelyre szabott fa feliratok minden alkalomra.</p>
+          </div>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+        <!-- Card 3 -->
+        <div class="reveal group relative rounded-2xl overflow-hidden aspect-square cursor-pointer">
+          <img src="/references/05-fridge-magnets.jpg" alt="Kis ajandekok" loading="lazy" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 p-5">
+            <h3 class="font-['Sora'] font-bold text-lg text-white mb-1">Kis ajandekargyak</h3>
+            <p class="text-white/80 text-xs">Magnesek, kulcstartok es kedves aprosagok.</p>
+          </div>
+        </div>
+        <!-- Card 4 -->
+        <div class="reveal reveal-delay-1 group relative rounded-2xl overflow-hidden aspect-square cursor-pointer">
+          <img src="/references/07-terrariums-florist.jpg" alt="Kerti diszek" loading="lazy" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 p-5">
+            <h3 class="font-['Sora'] font-bold text-lg text-white mb-1">Kerti diszek</h3>
+            <p class="text-white/80 text-xs">Viragtartok es dekoraciok a kertbe.</p>
+          </div>
+        </div>
+        <!-- Card 5 -->
+        <div class="reveal reveal-delay-2 group relative rounded-2xl overflow-hidden aspect-square cursor-pointer">
+          <img src="/references/09-california-travel-poster.jpg" alt="Szines nyomatok" loading="lazy" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 p-5">
+            <h3 class="font-['Sora'] font-bold text-lg text-white mb-1">Szines nyomatok</h3>
+            <p class="text-white/80 text-xs">Vidam grafikak nyomtatva es keretezve.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== GALERIA ==================== -->
+  <section id="galeria" class="py-24 md:py-32" style="background: linear-gradient(180deg, var(--bg-warm) 0%, var(--bg-primary) 100%);">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="reveal font-['Sora'] font-bold text-4xl md:text-5xl mb-16" style="color: var(--text-dark);">
+        Galeria
+      </h2>
+      <div class="masonry-gallery">
+        <div class="reveal">
+          <img src="/references/01-laser-engraved-magnet.jpg" alt="Galeria kep 1" loading="lazy" class="w-full rounded-2xl hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer" />
+        </div>
+        <div class="reveal reveal-delay-1">
+          <img src="/references/02-laser-engraved-wall-plaque.jpg" alt="Galeria kep 2" loading="lazy" class="w-full rounded-2xl hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer" />
+        </div>
+        <div class="reveal reveal-delay-2">
+          <img src="/references/03-handmade-wood-sign-shop-1.jpg" alt="Galeria kep 3" loading="lazy" class="w-full rounded-2xl hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer" />
+        </div>
+        <div class="reveal">
+          <img src="/references/04-waterfront-rules-wood-sign.jpg" alt="Galeria kep 4" loading="lazy" class="w-full rounded-2xl hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer" />
+        </div>
+        <div class="reveal reveal-delay-1">
+          <img src="/references/05-fridge-magnets.jpg" alt="Galeria kep 5" loading="lazy" class="w-full rounded-2xl hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer" />
+        </div>
+        <div class="reveal reveal-delay-2">
+          <img src="/references/06-picnic-basket-gifts.jpg" alt="Galeria kep 6" loading="lazy" class="w-full rounded-2xl hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer" />
+        </div>
+        <div class="reveal">
+          <img src="/references/07-terrariums-florist.jpg" alt="Galeria kep 7" loading="lazy" class="w-full rounded-2xl hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer" />
+        </div>
+        <div class="reveal reveal-delay-1">
+          <img src="/references/08-blue-painted-wall-planters.jpg" alt="Galeria kep 8" loading="lazy" class="w-full rounded-2xl hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer" />
+        </div>
+        <div class="reveal reveal-delay-2">
+          <img src="/references/09-california-travel-poster.jpg" alt="Galeria kep 9" loading="lazy" class="w-full rounded-2xl hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer" />
+        </div>
+        <div class="reveal">
+          <img src="/references/10-jane-avril-poster.jpg" alt="Galeria kep 10" loading="lazy" class="w-full rounded-2xl hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== HOGYAN MUKODIK ==================== -->
+  <section id="rendeles" class="py-24 md:py-32 relative" style="background: var(--bg-primary);">
+    <div class="max-w-5xl mx-auto px-6">
+      <h2 class="reveal font-['Sora'] font-bold text-4xl md:text-5xl mb-20 text-center" style="color: var(--text-dark);">
+        Hogyan mukodik?
+      </h2>
+
+      <div class="relative">
+        <!-- Connecting gradient line -->
+        <div data-parallax="-0.2" class="hidden md:block absolute left-12 top-8 bottom-8 w-0.5 connecting-line rounded-full opacity-30"></div>
+
+        <!-- Step 1 -->
+        <div data-parallax="0.25" class="reveal relative md:ml-0 mb-8">
+          <div class="flex flex-col md:flex-row items-start gap-6 p-8 md:p-10 rounded-2xl shadow-sm border border-black/5" style="background: white;">
+            <div class="flex items-center gap-5 shrink-0">
+              <span class="flex items-center justify-center w-12 h-12 rounded-full text-white font-['Sora'] font-bold text-sm" style="background: var(--coral);">01</span>
+              <div class="w-12 h-12 flex items-center justify-center rounded-xl" style="background: rgba(45,106,106,0.08);">
+                <svg class="w-6 h-6" style="color: var(--teal);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                </svg>
+              </div>
+            </div>
+            <div>
+              <h3 class="font-['Sora'] font-bold text-xl mb-2" style="color: var(--text-dark);">Ird meg, mit szeretnel</h3>
+              <p style="color: var(--text-gray);">Valassz termaket vagy meselj az egyedi otletedrol.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div data-parallax="0.4" class="reveal reveal-delay-1 relative md:ml-12 mb-8">
+          <div class="flex flex-col md:flex-row items-start gap-6 p-8 md:p-10 rounded-2xl shadow-sm border border-black/5" style="background: white;">
+            <div class="flex items-center gap-5 shrink-0">
+              <span class="flex items-center justify-center w-12 h-12 rounded-full text-white font-['Sora'] font-bold text-sm" style="background: var(--coral);">02</span>
+              <div class="w-12 h-12 flex items-center justify-center rounded-xl" style="background: rgba(45,106,106,0.08);">
+                <svg class="w-6 h-6" style="color: var(--teal);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" />
+                </svg>
+              </div>
+            </div>
+            <div>
+              <h3 class="font-['Sora'] font-bold text-xl mb-2" style="color: var(--text-dark);">Egyeztetunk</h3>
+              <p style="color: var(--text-gray);">Megbeszeljuk a reszleteket, az arat es a szallitast.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div data-parallax="0.55" class="reveal reveal-delay-2 relative md:ml-24">
+          <div class="flex flex-col md:flex-row items-start gap-6 p-8 md:p-10 rounded-2xl shadow-sm border border-black/5" style="background: white;">
+            <div class="flex items-center gap-5 shrink-0">
+              <span class="flex items-center justify-center w-12 h-12 rounded-full text-white font-['Sora'] font-bold text-sm" style="background: var(--coral);">03</span>
+              <div class="w-12 h-12 flex items-center justify-center rounded-xl" style="background: rgba(45,106,106,0.08);">
+                <svg class="w-6 h-6" style="color: var(--teal);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 11.25v8.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 109.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1114.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+                </svg>
+              </div>
+            </div>
+            <div>
+              <h3 class="font-['Sora'] font-bold text-xl mb-2" style="color: var(--text-dark);">Megkapod</h3>
+              <p style="color: var(--text-gray);">Szemelyesen Szarvason vagy postan &ndash; fizetes keszpenzzel vagy utalaslsal.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== AJANDEKOTLETEK ==================== -->
+  <section class="py-24 md:py-32" style="background: var(--bg-warm);">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="reveal font-['Sora'] font-bold text-4xl md:text-5xl mb-16" style="color: var(--text-dark);">
+        Ajandekotletek
+      </h2>
+      <div class="gift-scroll md:grid md:grid-cols-3 lg:grid-cols-5 gap-5">
+        <!-- Szuletesnap -->
+        <div class="reveal rounded-2xl p-7 flex flex-col justify-end min-h-[220px]" style="background: linear-gradient(135deg, var(--teal), #3A8585);">
+          <h3 class="font-['Sora'] font-bold text-xl text-white mb-2">Szuletesnap</h3>
+          <p class="text-white/80 text-sm">Gravirozott keret vagy tabla nevvel.</p>
+        </div>
+        <!-- Eskuvo -->
+        <div class="reveal reveal-delay-1 rounded-2xl p-7 flex flex-col justify-end min-h-[220px]" style="background: linear-gradient(135deg, var(--coral), #E0856F);">
+          <h3 class="font-['Sora'] font-bold text-xl text-white mb-2">Eskuvo</h3>
+          <p class="text-white/80 text-sm">Egyedi eskuvoi emlektabla.</p>
+        </div>
+        <!-- Nevnap -->
+        <div class="reveal reveal-delay-2 rounded-2xl p-7 flex flex-col justify-end min-h-[220px]" style="background: linear-gradient(135deg, var(--sage), #A3C49F);">
+          <h3 class="font-['Sora'] font-bold text-xl text-white mb-2">Nevnap</h3>
+          <p class="text-white/80 text-sm">Kis meglepetes: magnes vagy kulcstarto.</p>
+        </div>
+        <!-- Karacsony -->
+        <div class="reveal reveal-delay-3 rounded-2xl p-7 flex flex-col justify-end min-h-[220px]" style="background: linear-gradient(135deg, var(--gold), #D4B96A);">
+          <h3 class="font-['Sora'] font-bold text-xl text-white mb-2">Karacsony</h3>
+          <p class="text-white/80 text-sm">Fabol keszult unnepi ajandekkok.</p>
+        </div>
+        <!-- Csak ugy -->
+        <div class="reveal reveal-delay-4 rounded-2xl p-7 flex flex-col justify-end min-h-[220px]" style="background: linear-gradient(135deg, var(--teal), var(--coral));">
+          <h3 class="font-['Sora'] font-bold text-xl text-white mb-2">Csak ugy</h3>
+          <p class="text-white/80 text-sm">A varatlan orom a legjobb.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PIACI MEGJELENES ==================== -->
+  <section class="py-24 md:py-32" style="background: var(--bg-primary);">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="reveal rounded-3xl p-12 md:p-16 text-center" style="background: linear-gradient(135deg, var(--teal), #3A8585);">
+        <h2 class="font-['Sora'] font-bold text-3xl md:text-4xl text-white mb-4">Talalkozz velunk!</h2>
+        <p class="text-white/85 text-lg md:text-xl mb-3">Piacok, vasarok, rendezvenyek &ndash; Szarvas es kornyeke.</p>
+        <p class="text-white/70 text-base">Szemelyes atvetel egyeztetes alapjan.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== KAPCSOLAT ==================== -->
+  <section id="kapcsolat" class="py-24 md:py-32" style="background: linear-gradient(180deg, var(--bg-warm) 0%, var(--bg-primary) 100%);">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="reveal font-['Sora'] font-bold text-4xl md:text-5xl mb-16" style="color: var(--text-dark);">
+        Kapcsolat
+      </h2>
+      <div class="flex flex-col lg:flex-row gap-12">
+        <!-- Form -->
+        <div class="reveal w-full lg:w-[55%]">
+          <form class="space-y-5" onsubmit="return false;">
+            <div>
+              <label for="nev" class="block text-sm font-medium mb-1.5" style="color: var(--text-dark);">Nev</label>
+              <input id="nev" type="text" required placeholder="Teljes neved" class="w-full px-5 py-3.5 rounded-xl border border-black/10 bg-white text-sm focus:outline-none focus:ring-2 transition-shadow" style="--tw-ring-color: var(--coral);" />
+            </div>
+            <div>
+              <label for="email" class="block text-sm font-medium mb-1.5" style="color: var(--text-dark);">E-mail</label>
+              <input id="email" type="email" required placeholder="pelda@email.hu" class="w-full px-5 py-3.5 rounded-xl border border-black/10 bg-white text-sm focus:outline-none focus:ring-2 transition-shadow" style="--tw-ring-color: var(--coral);" />
+            </div>
+            <div>
+              <label for="telefon" class="block text-sm font-medium mb-1.5" style="color: var(--text-dark);">Telefon <span class="font-normal" style="color: var(--text-gray);">(opcionalis)</span></label>
+              <input id="telefon" type="tel" placeholder="+36 XX XXX XXXX" class="w-full px-5 py-3.5 rounded-xl border border-black/10 bg-white text-sm focus:outline-none focus:ring-2 transition-shadow" style="--tw-ring-color: var(--coral);" />
+            </div>
+            <div>
+              <label for="kategoria" class="block text-sm font-medium mb-1.5" style="color: var(--text-dark);">Kategoria</label>
+              <select id="kategoria" class="w-full px-5 py-3.5 rounded-xl border border-black/10 bg-white text-sm focus:outline-none focus:ring-2 transition-shadow" style="--tw-ring-color: var(--coral);">
+                <option value="">Valassz kategoriat...</option>
+                <option>Lezergravirozott kepek</option>
+                <option>Fa tablak / feliratok</option>
+                <option>Kis ajandekargyak</option>
+                <option>Kerti diszek</option>
+                <option>Szines nyomatok</option>
+                <option>Egyedi otlet</option>
+              </select>
+            </div>
+            <div>
+              <label for="uzenet" class="block text-sm font-medium mb-1.5" style="color: var(--text-dark);">Uzenet</label>
+              <textarea id="uzenet" rows="4" required placeholder="Meseld el, mire gondolsz..." class="w-full px-5 py-3.5 rounded-xl border border-black/10 bg-white text-sm focus:outline-none focus:ring-2 transition-shadow resize-none" style="--tw-ring-color: var(--coral);"></textarea>
+            </div>
+            <button type="submit" class="w-full py-4 rounded-full text-white font-semibold text-sm shadow-lg shadow-[#D4654A]/25 hover:shadow-xl hover:shadow-[#D4654A]/30 hover:-translate-y-0.5 transition-all" style="background: var(--coral);">
+              Kuldes
+            </button>
+          </form>
+        </div>
+
+        <!-- Contact cards -->
+        <div class="reveal reveal-delay-1 w-full lg:w-[45%] flex flex-col gap-4">
+          <div class="flex items-center gap-4 p-5 rounded-xl bg-white border border-black/5 shadow-sm">
+            <div class="w-11 h-11 flex items-center justify-center rounded-lg shrink-0" style="background: rgba(45,106,106,0.08);">
+              <svg class="w-5 h-5" style="color: var(--teal);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+              </svg>
+            </div>
+            <div>
+              <p class="text-xs font-medium uppercase tracking-wide" style="color: var(--text-gray);">E-mail</p>
+              <p class="text-sm font-semibold" style="color: var(--text-dark);">info@fabrikaajandek.hu</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-4 p-5 rounded-xl bg-white border border-black/5 shadow-sm">
+            <div class="w-11 h-11 flex items-center justify-center rounded-lg shrink-0" style="background: rgba(45,106,106,0.08);">
+              <svg class="w-5 h-5" style="color: var(--teal);" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-xs font-medium uppercase tracking-wide" style="color: var(--text-gray);">Facebook</p>
+              <p class="text-sm font-semibold" style="color: var(--text-dark);">Fabrika Ajandek</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-4 p-5 rounded-xl bg-white border border-black/5 shadow-sm">
+            <div class="w-11 h-11 flex items-center justify-center rounded-lg shrink-0" style="background: rgba(45,106,106,0.08);">
+              <svg class="w-5 h-5" style="color: var(--teal);" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2.546 20.2A1.5 1.5 0 003.8 21.454l3.032-.892A9.96 9.96 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm-3.97 6.47l.727-.04c.26-.014.52.085.692.28.47.53.88 1.11 1.21 1.73.17.32.1.71-.17.95l-.58.52a.36.36 0 00-.1.39c.55 1.32 1.62 2.39 2.94 2.94.14.06.31.02.39-.1l.52-.58c.24-.27.63-.34.95-.17.62.33 1.2.74 1.73 1.21.195.172.294.432.28.692l-.04.727c-.03.47-.35.88-.8 1.01a7.97 7.97 0 01-6.45-1.4 7.97 7.97 0 01-2.7-5.59c-.01-.46.32-.87.78-1.01a5.1 5.1 0 01.6-.12z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-xs font-medium uppercase tracking-wide" style="color: var(--text-gray);">Viber</p>
+              <p class="text-sm font-semibold" style="color: var(--text-dark);">+36 XX XXX XXXX</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-4 p-5 rounded-xl bg-white border border-black/5 shadow-sm">
+            <div class="w-11 h-11 flex items-center justify-center rounded-lg shrink-0" style="background: rgba(45,106,106,0.08);">
+              <svg class="w-5 h-5" style="color: var(--teal);" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-xs font-medium uppercase tracking-wide" style="color: var(--text-gray);">Instagram</p>
+              <p class="text-sm font-semibold" style="color: var(--text-dark);">@fabrikaajandek</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== GYIK ==================== -->
+  <section class="py-24 md:py-32" style="background: var(--bg-primary);">
+    <div class="max-w-3xl mx-auto px-6">
+      <h2 class="reveal font-['Sora'] font-bold text-4xl md:text-5xl mb-16 text-center" style="color: var(--text-dark);">
+        Kerdesek es valaszok
+      </h2>
+      <div class="reveal space-y-3">
+        <!-- FAQ 1 -->
+        <div class="faq-item rounded-xl border border-black/5 bg-white overflow-hidden">
+          <button class="faq-toggle w-full flex items-center justify-between px-6 py-5 text-left">
+            <span class="font-['Sora'] font-semibold text-sm md:text-base" style="color: var(--text-dark);">Mennyi ido az elkeszites?</span>
+            <svg class="faq-chevron w-5 h-5 shrink-0 ml-4" style="color: var(--coral);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div class="faq-answer px-6">
+            <p class="pb-5 text-sm" style="color: var(--text-gray);">3-7 munkanap, osszetettsegtel fuggoen.</p>
+          </div>
+        </div>
+        <!-- FAQ 2 -->
+        <div class="faq-item rounded-xl border border-black/5 bg-white overflow-hidden">
+          <button class="faq-toggle w-full flex items-center justify-between px-6 py-5 text-left">
+            <span class="font-['Sora'] font-semibold text-sm md:text-base" style="color: var(--text-dark);">Hogyan fizethetek?</span>
+            <svg class="faq-chevron w-5 h-5 shrink-0 ml-4" style="color: var(--coral);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div class="faq-answer px-6">
+            <p class="pb-5 text-sm" style="color: var(--text-gray);">Szemelyesen: keszpenz. Egyedi/postanal: elore utalas.</p>
+          </div>
+        </div>
+        <!-- FAQ 3 -->
+        <div class="faq-item rounded-xl border border-black/5 bg-white overflow-hidden">
+          <button class="faq-toggle w-full flex items-center justify-between px-6 py-5 text-left">
+            <span class="font-['Sora'] font-semibold text-sm md:text-base" style="color: var(--text-dark);">Van postazas?</span>
+            <svg class="faq-chevron w-5 h-5 shrink-0 ml-4" style="color: var(--coral);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div class="faq-answer px-6">
+            <p class="pb-5 text-sm" style="color: var(--text-gray);">Igen, Magyarorszagon belul.</p>
+          </div>
+        </div>
+        <!-- FAQ 4 -->
+        <div class="faq-item rounded-xl border border-black/5 bg-white overflow-hidden">
+          <button class="faq-toggle w-full flex items-center justify-between px-6 py-5 text-left">
+            <span class="font-['Sora'] font-semibold text-sm md:text-base" style="color: var(--text-dark);">Kulfoldre is?</span>
+            <svg class="faq-chevron w-5 h-5 shrink-0 ml-4" style="color: var(--coral);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div class="faq-answer px-6">
+            <p class="pb-5 text-sm" style="color: var(--text-gray);">Jelenleg csak belfoldre.</p>
+          </div>
+        </div>
+        <!-- FAQ 5 -->
+        <div class="faq-item rounded-xl border border-black/5 bg-white overflow-hidden">
+          <button class="faq-toggle w-full flex items-center justify-between px-6 py-5 text-left">
+            <span class="font-['Sora'] font-semibold text-sm md:text-base" style="color: var(--text-dark);">Sajat otlet?</span>
+            <svg class="faq-chevron w-5 h-5 shrink-0 ml-4" style="color: var(--coral);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div class="faq-answer px-6">
+            <p class="pb-5 text-sm" style="color: var(--text-gray);">Igen! Kuldj leirast, kepet vagy vazlatot.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="py-16" style="background: var(--bg-warm);">
+    <div class="max-w-7xl mx-auto px-6 text-center">
+      <p class="font-['Sora'] font-bold text-xl mb-2" style="color: var(--teal);">Fabrika Ajandek</p>
+      <p class="text-sm mb-6" style="color: var(--text-gray);">Szarvas, Magyarorszag</p>
+      <div class="flex items-center justify-center gap-5 mb-8">
+        <!-- Facebook -->
+        <a href="#" class="w-10 h-10 flex items-center justify-center rounded-full transition-colors hover:opacity-70" style="background: rgba(45,106,106,0.08); color: var(--teal);" aria-label="Facebook">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        </a>
+        <!-- Instagram -->
+        <a href="#" class="w-10 h-10 flex items-center justify-center rounded-full transition-colors hover:opacity-70" style="background: rgba(45,106,106,0.08); color: var(--teal);" aria-label="Instagram">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        </a>
+        <!-- Viber -->
+        <a href="#" class="w-10 h-10 flex items-center justify-center rounded-full transition-colors hover:opacity-70" style="background: rgba(45,106,106,0.08); color: var(--teal);" aria-label="Viber">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2.546 20.2A1.5 1.5 0 003.8 21.454l3.032-.892A9.96 9.96 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+        </a>
+      </div>
+      <p class="text-xs" style="color: var(--text-gray);">&copy; 2025 Fabrika Ajandek</p>
+    </div>
+  </footer>
+
+  <!-- ==================== BACK TO TOP ==================== -->
+  <button id="back-to-top" class="back-to-top fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full text-white shadow-lg shadow-[#D4654A]/25 flex items-center justify-center hover:-translate-y-0.5 transition-all" style="background: var(--coral);" aria-label="Vissza a tetejere">
+    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+    </svg>
+  </button>
+
+  <!-- ==================== SCRIPTS ==================== -->
+  <script>
+  (function() {
+    'use strict';
+
+    // ========== PARALLAX ENGINE ==========
+    var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var isMobile = window.innerWidth < 768;
+
+    if (!prefersReducedMotion && !isMobile) {
+      var parallaxElements = document.querySelectorAll('[data-parallax]');
+      var ticking = false;
+
+      function updateParallax() {
+        var scrollY = window.scrollY;
+        var viewportHeight = window.innerHeight;
+
+        parallaxElements.forEach(function(el) {
+          var speed = parseFloat(el.getAttribute('data-parallax')) || 0.1;
+          var direction = el.hasAttribute('data-parallax-x') ? 'x' : 'y';
+
+          // Skip elements that have reveal class but are not yet revealed
+          if (el.classList.contains('reveal') && !el.classList.contains('revealed')) return;
+
+          // Use the parent section for stable position reference
+          var section = el.closest('section') || el.parentElement;
+          var rect = section.getBoundingClientRect();
+
+          // How far through the viewport is this section center?
+          var sectionCenter = rect.top + rect.height / 2;
+          var viewportCenter = viewportHeight / 2;
+          var offset = (viewportCenter - sectionCenter) / viewportHeight;
+
+          var translate = offset * 100 * speed;
+
+          if (direction === 'x') {
+            el.style.transform = 'translateX(' + translate.toFixed(2) + 'px)';
+          } else {
+            el.style.transform = 'translateY(' + translate.toFixed(2) + 'px)';
+          }
+        });
+
+        ticking = false;
+      }
+
+      function onScroll() {
+        if (!ticking) {
+          requestAnimationFrame(updateParallax);
+          ticking = true;
+        }
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      updateParallax();
+
+      var resizeTimer;
+      window.addEventListener('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+          isMobile = window.innerWidth < 768;
+          if (isMobile) {
+            parallaxElements.forEach(function(el) { el.style.transform = ''; });
+          }
+        }, 200);
+      });
+    }
+
+    // ========== REVEAL (IntersectionObserver) ==========
+    var revealEls = document.querySelectorAll('.reveal');
+    if ('IntersectionObserver' in window && !prefersReducedMotion) {
+      var revealObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+      revealEls.forEach(function(el) { revealObserver.observe(el); });
+    } else {
+      revealEls.forEach(function(el) { el.classList.add('revealed'); });
+    }
+
+    // ========== FAQ ACCORDION ==========
+    var faqToggles = document.querySelectorAll('.faq-toggle');
+    faqToggles.forEach(function(toggle) {
+      toggle.addEventListener('click', function() {
+        var item = this.closest('.faq-item');
+        var wasOpen = item.classList.contains('open');
+
+        // Close all
+        document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
+          openItem.classList.remove('open');
+        });
+
+        // Toggle current
+        if (!wasOpen) {
+          item.classList.add('open');
+        }
+      });
+    });
+
+    // ========== MOBILE MENU ==========
+    var hamburger = document.getElementById('hamburger');
+    var mobileMenu = document.getElementById('mobile-menu');
+    if (hamburger && mobileMenu) {
+      hamburger.addEventListener('click', function() {
+        mobileMenu.classList.toggle('open');
+      });
+      // Close on link click
+      mobileMenu.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          mobileMenu.classList.remove('open');
+        });
+      });
+    }
+
+    // ========== SMOOTH SCROLL ==========
+    document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+      anchor.addEventListener('click', function(e) {
+        var target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          var offset = 80;
+          var top = target.getBoundingClientRect().top + window.scrollY - offset;
+          window.scrollTo({ top: top, behavior: 'smooth' });
+        }
+      });
+    });
+
+    // ========== BACK TO TOP ==========
+    var backToTop = document.getElementById('back-to-top');
+    if (backToTop) {
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 600) {
+          backToTop.classList.add('visible');
+        } else {
+          backToTop.classList.remove('visible');
+        }
+      }, { passive: true });
+
+      backToTop.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+
+  })();
+  </script>
+</body>
+</html>

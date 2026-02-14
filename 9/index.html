@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fabrika Ajándék — Kézműves fa ajándékok Szarvasról</title>
+  <meta name="description" content="Kézműves fa ajándékok Szarvasról. Lézergravírozás, fa feliratok, kerti díszek, nyomatok. Egyedi, kézzel készült ajándékok minden alkalomra." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/style.css" />
+  <style>
+    :root {
+      --forest: #1E3A2F;
+      --walnut: #6B4226;
+      --sage: #8FA98C;
+      --amber: #D4A039;
+      --cream: #F9F5EE;
+      --off-white: #FFFDF8;
+      --pale-sage: #EFF5ED;
+      --text-medium: #5C6B5C;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      color: var(--forest);
+      background-color: var(--off-white);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Lora', serif;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: rgba(249, 245, 238, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(143, 169, 140, 0.2);
+      transition: box-shadow 0.3s ease;
+    }
+    .navbar.scrolled {
+      box-shadow: 0 2px 20px rgba(30, 58, 47, 0.08);
+    }
+    .nav-link {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 500;
+      color: var(--forest);
+      transition: color 0.2s ease;
+      position: relative;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--sage);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-link:hover { color: var(--sage); }
+
+    /* Mobile menu */
+    .mobile-menu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, opacity 0.3s ease;
+      opacity: 0;
+    }
+    .mobile-menu.open {
+      max-height: 320px;
+      opacity: 1;
+    }
+
+    /* Parallax window containers */
+    .parallax-window {
+      position: relative;
+      overflow: hidden;
+    }
+    .parallax-window img[data-parallax-window] {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      object-fit: cover;
+      will-change: transform;
+      pointer-events: none;
+    }
+
+    /* Parallax band */
+    .parallax-band {
+      position: relative;
+      overflow: hidden;
+    }
+    .parallax-band img[data-parallax-window] {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      object-fit: cover;
+      will-change: transform;
+      pointer-events: none;
+    }
+
+    /* Hero window frame */
+    .hero-window-frame {
+      border: 8px solid var(--walnut);
+      box-shadow:
+        inset 0 0 30px rgba(107, 66, 38, 0.15),
+        0 10px 40px rgba(30, 58, 47, 0.15),
+        0 2px 8px rgba(107, 66, 38, 0.2);
+    }
+
+    /* Category row */
+    .category-row {
+      display: flex;
+      gap: 2.5rem;
+      align-items: center;
+    }
+    .category-row.reverse { flex-direction: row-reverse; }
+    .category-image { flex: 1; min-width: 0; }
+    .category-text { flex: 1; min-width: 0; }
+
+    @media (max-width: 768px) {
+      .category-row,
+      .category-row.reverse {
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+    }
+
+    /* Gallery grid */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+    @media (max-width: 1024px) {
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .gallery-grid { grid-template-columns: 1fr; }
+    }
+    .gallery-item {
+      overflow: hidden;
+      border-radius: 0.75rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .gallery-item:hover {
+      transform: scale(1.03);
+      box-shadow: 0 12px 32px rgba(30, 58, 47, 0.15);
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Steps */
+    .step-connector {
+      position: absolute;
+      top: 24px;
+      left: calc(50% + 24px);
+      width: calc(100% - 48px);
+      height: 2px;
+      background: linear-gradient(90deg, var(--sage), var(--sage));
+      opacity: 0.4;
+    }
+    @media (max-width: 768px) {
+      .step-connector { display: none; }
+    }
+
+    /* Occasion cards */
+    .occasion-card {
+      background: var(--off-white);
+      border: 1px solid rgba(143, 169, 140, 0.25);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .occasion-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(30, 58, 47, 0.1);
+    }
+
+    /* FAQ accordion */
+    .faq-item {
+      border-bottom: 1px solid rgba(143, 169, 140, 0.2);
+    }
+    .faq-question {
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 0;
+      font-family: 'Lora', serif;
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: var(--forest);
+      background: none;
+      border: none;
+      width: 100%;
+      text-align: left;
+    }
+    .faq-question:hover { color: var(--sage); }
+    .faq-chevron {
+      transition: transform 0.3s ease;
+      flex-shrink: 0;
+      margin-left: 1rem;
+    }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.35s ease;
+    }
+    .faq-item.open .faq-answer {
+      max-height: 200px;
+    }
+
+    /* Form */
+    .form-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1.5px solid rgba(143, 169, 140, 0.35);
+      border-radius: 0.5rem;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem;
+      color: var(--forest);
+      background: white;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      outline: none;
+    }
+    .form-input:focus {
+      border-color: var(--sage);
+      box-shadow: 0 0 0 3px rgba(143, 169, 140, 0.15);
+    }
+    .form-input::placeholder { color: #a0afa0; }
+
+    /* Buttons */
+    .btn-sage {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--sage);
+      color: white;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      padding: 0.85rem 2rem;
+      border-radius: 0.625rem;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    }
+    .btn-sage:hover {
+      background: #7a9a77;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(143, 169, 140, 0.35);
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: transparent;
+      color: var(--forest);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 500;
+      padding: 0.85rem 2rem;
+      border-radius: 0.625rem;
+      border: 2px solid var(--sage);
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .btn-outline:hover {
+      background: var(--sage);
+      color: white;
+    }
+
+    /* Back to top */
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 48px;
+      height: 48px;
+      background: var(--sage);
+      color: white;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(30, 58, 47, 0.2);
+      cursor: pointer;
+      border: none;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.3s ease, transform 0.3s ease, background 0.2s ease;
+      pointer-events: none;
+      z-index: 40;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: all;
+    }
+    .back-to-top:hover { background: #7a9a77; }
+
+    /* Contact card */
+    .contact-card {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.25rem;
+      background: white;
+      border-radius: 0.75rem;
+      border: 1px solid rgba(143, 169, 140, 0.2);
+      transition: box-shadow 0.2s ease;
+    }
+    .contact-card:hover {
+      box-shadow: 0 4px 16px rgba(30, 58, 47, 0.08);
+    }
+
+    /* Section spacing */
+    .section-padding {
+      padding: 5rem 1.5rem;
+    }
+    @media (min-width: 768px) {
+      .section-padding { padding: 6rem 2rem; }
+    }
+    @media (min-width: 1024px) {
+      .section-padding { padding: 7rem 2rem; }
+    }
+
+    /* Smooth scroll */
+    html { scroll-behavior: smooth; }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .gallery-item { transition: none; }
+      .occasion-card { transition: none; }
+      .parallax-window img[data-parallax-window],
+      .parallax-band img[data-parallax-window] {
+        will-change: auto;
+        transform: none !important;
+        top: 0 !important;
+        height: 100% !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============ NAVBAR ============ -->
+  <nav class="navbar fixed top-0 left-0 right-0 z-50" id="navbar">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo -->
+        <a href="#" class="flex items-center gap-2" style="text-decoration: none;">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+            <rect x="2" y="4" width="24" height="20" rx="3" stroke="#6B4226" stroke-width="2" fill="none"/>
+            <line x1="14" y1="4" x2="14" y2="24" stroke="#6B4226" stroke-width="1.5"/>
+            <line x1="2" y1="14" x2="26" y2="14" stroke="#6B4226" stroke-width="1.5"/>
+            <circle cx="14" cy="14" r="3" fill="#8FA98C"/>
+          </svg>
+          <span style="font-family: 'Lora', serif; font-weight: 700; font-size: 1.15rem; color: var(--forest);">Fabrika</span>
+        </a>
+
+        <!-- Desktop nav -->
+        <div class="hidden md:flex items-center gap-8">
+          <a href="#termekek" class="nav-link text-sm">Termékeink</a>
+          <a href="#galeria" class="nav-link text-sm">Galéria</a>
+          <a href="#rendeles" class="nav-link text-sm">Rendelés</a>
+          <a href="#kapcsolat" class="nav-link text-sm">Kapcsolat</a>
+        </div>
+
+        <!-- Mobile hamburger -->
+        <button class="md:hidden flex flex-col gap-1.5 p-2" id="hamburger" aria-label="Menü megnyitása" style="background:none;border:none;cursor:pointer;">
+          <span class="block w-6 h-0.5 rounded-full transition-all duration-300" style="background:var(--forest);" id="ham1"></span>
+          <span class="block w-6 h-0.5 rounded-full transition-all duration-300" style="background:var(--forest);" id="ham2"></span>
+          <span class="block w-5 h-0.5 rounded-full transition-all duration-300" style="background:var(--forest);" id="ham3"></span>
+        </button>
+      </div>
+
+      <!-- Mobile menu -->
+      <div class="mobile-menu md:hidden" id="mobileMenu">
+        <div class="py-4 flex flex-col gap-3 border-t" style="border-color: rgba(143,169,140,0.2);">
+          <a href="#termekek" class="nav-link text-sm py-2">Termékeink</a>
+          <a href="#galeria" class="nav-link text-sm py-2">Galéria</a>
+          <a href="#rendeles" class="nav-link text-sm py-2">Rendelés</a>
+          <a href="#kapcsolat" class="nav-link text-sm py-2">Kapcsolat</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <section class="section-padding pt-28 pb-16 md:pt-36 md:pb-20" style="background: linear-gradient(180deg, var(--cream) 0%, var(--off-white) 100%);">
+    <div class="max-w-4xl mx-auto text-center">
+      <!-- Small caps label -->
+      <p class="text-xs tracking-[0.3em] uppercase mb-4" style="color: var(--sage); font-weight: 600; font-family: 'Outfit', sans-serif;">
+        Fabrika Ajándék
+      </p>
+
+      <!-- Main heading -->
+      <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-5" style="font-family: 'Lora', serif; color: var(--forest); line-height: 1.15;">
+        Nézz be a műhelyünkbe
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="text-base sm:text-lg md:text-xl mb-10 max-w-2xl mx-auto" style="color: var(--text-medium); line-height: 1.65;">
+        Kézműves fa ajándékok Szarvasról — lézergravírozás, fa feliratok, kerti díszek, nyomatok
+      </p>
+
+      <!-- Hero parallax window -->
+      <div class="parallax-window hero-window-frame rounded-3xl mx-auto mb-10"
+           style="height: 340px; max-width: 800px;"
+           id="heroWindow">
+        <img src="/references/02-laser-engraved-wall-plaque.jpg"
+             data-parallax-window="0.4"
+             class="absolute inset-0 w-full object-cover"
+             style="height: 150%; top: -25%;"
+             alt="Lézergravírozott fa tábla a Fabrika Ajándék műhelyéből"
+             width="800" height="600" />
+      </div>
+
+      <!-- CTAs -->
+      <div class="flex flex-wrap items-center justify-center gap-4">
+        <a href="#kapcsolat" class="btn-sage">
+          Egyedi rendelés
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M6.5 3.5L11 8l-4.5 4.5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#termekek" class="btn-outline">
+          Termékek &#8595;
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TERMÉKKATEGÓRIÁK ============ -->
+  <section class="section-padding" id="termekek" style="background: var(--off-white);">
+    <div class="max-w-6xl mx-auto">
+      <!-- Section title -->
+      <div class="text-center mb-14">
+        <p class="text-xs tracking-[0.3em] uppercase mb-3" style="color: var(--sage); font-weight: 600;">Termékeink</p>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold" style="font-family: 'Lora', serif; color: var(--forest);">
+          Amit készítünk
+        </h2>
+      </div>
+
+      <!-- Category 1: Lézergravírozott képek — image LEFT -->
+      <div class="category-row mb-16 md:mb-20">
+        <div class="category-image">
+          <div class="parallax-window rounded-2xl" style="height: 280px;">
+            <img src="/references/01-laser-engraved-magnet.jpg"
+                 data-parallax-window="0.3"
+                 class="absolute inset-0 w-full object-cover"
+                 style="height: 150%; top: -25%;"
+                 alt="Lézergravírozott fa kép"
+                 width="600" height="400" />
+          </div>
+        </div>
+        <div class="category-text">
+          <p class="text-xs tracking-[0.2em] uppercase mb-2" style="color: var(--amber); font-weight: 600;">01</p>
+          <h3 class="text-xl sm:text-2xl font-bold mb-3" style="font-family: 'Lora', serif; color: var(--forest);">
+            Lézergravírozott képek
+          </h3>
+          <p class="text-base leading-relaxed" style="color: var(--text-medium);">
+            Egyedi portrék és képek, lézertechnológiával fába vésve. Maradandó emlékek, amelyek generációkon átívelnek.
+          </p>
+        </div>
+      </div>
+
+      <!-- Category 2: Fa táblák — image RIGHT -->
+      <div class="category-row reverse mb-16 md:mb-20">
+        <div class="category-image">
+          <div class="parallax-window rounded-2xl" style="height: 280px;">
+            <img src="/references/03-handmade-wood-sign-shop-1.jpg"
+                 data-parallax-window="0.3"
+                 class="absolute inset-0 w-full object-cover"
+                 style="height: 150%; top: -25%;"
+                 alt="Kézműves fa tábla műhely"
+                 width="600" height="400" />
+          </div>
+        </div>
+        <div class="category-text">
+          <p class="text-xs tracking-[0.2em] uppercase mb-2" style="color: var(--amber); font-weight: 600;">02</p>
+          <h3 class="text-xl sm:text-2xl font-bold mb-3" style="font-family: 'Lora', serif; color: var(--forest);">
+            Fa táblák / feliratok
+          </h3>
+          <p class="text-base leading-relaxed" style="color: var(--text-medium);">
+            Személyre szabott feliratok otthonra, esküvőre vagy ajándékba. Egyedi szöveg, betűtípus és méret.
+          </p>
+        </div>
+      </div>
+
+      <!-- Category 3: Kis ajándéktárgyak — image LEFT -->
+      <div class="category-row mb-16 md:mb-20">
+        <div class="category-image">
+          <div class="parallax-window rounded-2xl" style="height: 280px;">
+            <img src="/references/05-fridge-magnets.jpg"
+                 data-parallax-window="0.3"
+                 class="absolute inset-0 w-full object-cover"
+                 style="height: 150%; top: -25%;"
+                 alt="Hűtőmágnesek és kis ajándékok"
+                 width="600" height="400" />
+          </div>
+        </div>
+        <div class="category-text">
+          <p class="text-xs tracking-[0.2em] uppercase mb-2" style="color: var(--amber); font-weight: 600;">03</p>
+          <h3 class="text-xl sm:text-2xl font-bold mb-3" style="font-family: 'Lora', serif; color: var(--forest);">
+            Kis ajándéktárgyak
+          </h3>
+          <p class="text-base leading-relaxed" style="color: var(--text-medium);">
+            Hűtőmágnesek, kulcstartók és apró meglepetések minden alkalomra.
+          </p>
+        </div>
+      </div>
+
+      <!-- Category 4: Kerti díszek — image RIGHT -->
+      <div class="category-row reverse mb-16 md:mb-20">
+        <div class="category-image">
+          <div class="parallax-window rounded-2xl" style="height: 280px;">
+            <img src="/references/07-terrariums-florist.jpg"
+                 data-parallax-window="0.3"
+                 class="absolute inset-0 w-full object-cover"
+                 style="height: 150%; top: -25%;"
+                 alt="Kerti díszek és virágtartók"
+                 width="600" height="400" />
+          </div>
+        </div>
+        <div class="category-text">
+          <p class="text-xs tracking-[0.2em] uppercase mb-2" style="color: var(--amber); font-weight: 600;">04</p>
+          <h3 class="text-xl sm:text-2xl font-bold mb-3" style="font-family: 'Lora', serif; color: var(--forest);">
+            Kerti díszek / virágtartók
+          </h3>
+          <p class="text-base leading-relaxed" style="color: var(--text-medium);">
+            Kézzel készített virágtartók és dekorációk a kertedbe és teraszodra.
+          </p>
+        </div>
+      </div>
+
+      <!-- Category 5: Színes nyomatok — image LEFT -->
+      <div class="category-row">
+        <div class="category-image">
+          <div class="parallax-window rounded-2xl" style="height: 280px;">
+            <img src="/references/09-california-travel-poster.jpg"
+                 data-parallax-window="0.3"
+                 class="absolute inset-0 w-full object-cover"
+                 style="height: 150%; top: -25%;"
+                 alt="Színes nyomatok és poszterek"
+                 width="600" height="400" />
+          </div>
+        </div>
+        <div class="category-text">
+          <p class="text-xs tracking-[0.2em] uppercase mb-2" style="color: var(--amber); font-weight: 600;">05</p>
+          <h3 class="text-xl sm:text-2xl font-bold mb-3" style="font-family: 'Lora', serif; color: var(--forest);">
+            Színes nyomatok
+          </h3>
+          <p class="text-base leading-relaxed" style="color: var(--text-medium);">
+            Vidám grafikák és egyedi illusztrációk, prémium nyomtatásban és keretezve.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PARALLAX BAND 1 ============ -->
+  <div class="parallax-band" style="height: 250px;">
+    <img src="/references/08-blue-painted-wall-planters.jpg"
+         data-parallax-window="0.4"
+         class="absolute inset-0 w-full object-cover"
+         style="height: 200%; top: -50%;"
+         alt="Kézzel festett kerti díszek"
+         width="1200" height="800" />
+    <div class="absolute inset-0" style="background: rgba(30, 58, 47, 0.55);"></div>
+    <div class="absolute inset-0 flex items-center justify-center px-6">
+      <p class="text-xl sm:text-2xl md:text-3xl text-center font-medium" style="font-family: 'Lora', serif; color: white; max-width: 600px; line-height: 1.4;">
+        Minden darab kézzel készül, egyedi gondossággal
+      </p>
+    </div>
+  </div>
+
+  <!-- ============ GALÉRIA ============ -->
+  <section class="section-padding" id="galeria" style="background: var(--cream);">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-12">
+        <p class="text-xs tracking-[0.3em] uppercase mb-3" style="color: var(--sage); font-weight: 600;">Válogatás</p>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold" style="font-family: 'Lora', serif; color: var(--forest);">
+          Galéria
+        </h2>
+      </div>
+
+      <div class="gallery-grid">
+        <div class="gallery-item">
+          <img src="/references/01-laser-engraved-magnet.jpg" alt="Lézergravírozott mágnes" loading="lazy" width="400" height="300" />
+        </div>
+        <div class="gallery-item">
+          <img src="/references/02-laser-engraved-wall-plaque.jpg" alt="Lézergravírozott fali dísz" loading="lazy" width="400" height="300" />
+        </div>
+        <div class="gallery-item">
+          <img src="/references/03-handmade-wood-sign-shop-1.jpg" alt="Kézműves fa tábla műhely" loading="lazy" width="400" height="300" />
+        </div>
+        <div class="gallery-item">
+          <img src="/references/04-waterfront-rules-wood-sign.jpg" alt="Fa szabálytábla" loading="lazy" width="400" height="300" />
+        </div>
+        <div class="gallery-item">
+          <img src="/references/05-fridge-magnets.jpg" alt="Hűtőmágnesek" loading="lazy" width="400" height="300" />
+        </div>
+        <div class="gallery-item">
+          <img src="/references/06-picnic-basket-gifts.jpg" alt="Ajándékkosár" loading="lazy" width="400" height="300" />
+        </div>
+        <div class="gallery-item">
+          <img src="/references/07-terrariums-florist.jpg" alt="Terrárium és virágtartók" loading="lazy" width="400" height="300" />
+        </div>
+        <div class="gallery-item">
+          <img src="/references/08-blue-painted-wall-planters.jpg" alt="Festett fali virágtartók" loading="lazy" width="400" height="300" />
+        </div>
+        <div class="gallery-item">
+          <img src="/references/09-california-travel-poster.jpg" alt="Utazási poszter" loading="lazy" width="400" height="300" />
+        </div>
+        <div class="gallery-item">
+          <img src="/references/10-jane-avril-poster.jpg" alt="Jane Avril poszter" loading="lazy" width="400" height="300" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOGYAN RENDELHETSZ ============ -->
+  <section class="section-padding" id="rendeles" style="background: var(--off-white);">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-14">
+        <p class="text-xs tracking-[0.3em] uppercase mb-3" style="color: var(--sage); font-weight: 600;">Rendelés</p>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold" style="font-family: 'Lora', serif; color: var(--forest);">
+          Három egyszerű lépés
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6 relative">
+        <!-- Step 1 -->
+        <div class="text-center relative">
+          <div class="w-12 h-12 rounded-full mx-auto mb-4 flex items-center justify-center text-white font-bold text-lg" style="background: var(--forest);">1</div>
+          <div class="step-connector" aria-hidden="true"></div>
+          <h3 class="text-lg font-bold mb-2" style="font-family: 'Lora', serif; color: var(--forest);">Írd meg az ötleted</h3>
+          <p class="text-sm leading-relaxed" style="color: var(--text-medium);">
+            Válassz terméket vagy mesélj az egyedi elképzelésedről az űrlapon.
+          </p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="text-center relative">
+          <div class="w-12 h-12 rounded-full mx-auto mb-4 flex items-center justify-center text-white font-bold text-lg" style="background: var(--forest);">2</div>
+          <div class="step-connector" aria-hidden="true"></div>
+          <h3 class="text-lg font-bold mb-2" style="font-family: 'Lora', serif; color: var(--forest);">Egyeztetünk</h3>
+          <p class="text-sm leading-relaxed" style="color: var(--text-medium);">
+            Megbeszéljük a részleteket, az árat és a szállítás módját.
+          </p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="text-center">
+          <div class="w-12 h-12 rounded-full mx-auto mb-4 flex items-center justify-center text-white font-bold text-lg" style="background: var(--forest);">3</div>
+          <h3 class="text-lg font-bold mb-2" style="font-family: 'Lora', serif; color: var(--forest);">Megkapod</h3>
+          <p class="text-sm leading-relaxed" style="color: var(--text-medium);">
+            Személyes átvétel készpénzzel, postánál előre utalás.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PARALLAX BAND 2 ============ -->
+  <div class="parallax-band" style="height: 200px;">
+    <img src="/references/04-waterfront-rules-wood-sign.jpg"
+         data-parallax-window="0.35"
+         class="absolute inset-0 w-full object-cover"
+         style="height: 200%; top: -50%;"
+         alt="Fa szabálytábla a víz partján"
+         width="1200" height="800" />
+    <div class="absolute inset-0" style="background: rgba(30, 58, 47, 0.45);"></div>
+    <div class="absolute inset-0 flex items-center justify-center px-6">
+      <p class="text-xl sm:text-2xl md:text-3xl text-center font-medium" style="font-family: 'Lora', serif; color: white;">
+        Szarvasról, szeretettel
+      </p>
+    </div>
+  </div>
+
+  <!-- ============ AJÁNDÉKÖTLETEK ============ -->
+  <section class="section-padding" style="background: var(--off-white);">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-12">
+        <p class="text-xs tracking-[0.3em] uppercase mb-3" style="color: var(--sage); font-weight: 600;">Alkalmak</p>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold" style="font-family: 'Lora', serif; color: var(--forest);">
+          Mikor adj Fabrikát?
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- Születésnap -->
+        <div class="occasion-card">
+          <div class="text-2xl mb-3" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="6" y="16" width="20" height="12" rx="2" stroke="#D4A039" stroke-width="2"/><rect x="10" y="12" width="12" height="4" rx="1" stroke="#D4A039" stroke-width="1.5"/><line x1="16" y1="8" x2="16" y2="12" stroke="#D4A039" stroke-width="1.5"/><circle cx="16" cy="7" r="2" fill="#D4A039"/></svg>
+          </div>
+          <h3 class="text-lg font-bold mb-2" style="font-family: 'Lora', serif; color: var(--forest);">Születésnap</h3>
+          <p class="text-sm" style="color: var(--text-medium);">Gravírozott keret vagy fa tábla névvel.</p>
+        </div>
+
+        <!-- Esküvő -->
+        <div class="occasion-card">
+          <div class="text-2xl mb-3" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 6C12 6 8 10 8 16c0 4 3 8 8 10 5-2 8-6 8-10 0-6-4-10-8-10z" stroke="#D4A039" stroke-width="2" fill="none"/><path d="M12 14l3 3 5-5" stroke="#D4A039" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3 class="text-lg font-bold mb-2" style="font-family: 'Lora', serif; color: var(--forest);">Esküvő</h3>
+          <p class="text-sm" style="color: var(--text-medium);">Személyes esküvői emléktábla.</p>
+        </div>
+
+        <!-- Névnap -->
+        <div class="occasion-card">
+          <div class="text-2xl mb-3" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M6 26l4-8 4 4 4-6 4 3 4-7" stroke="#D4A039" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="22" cy="12" r="3" stroke="#D4A039" stroke-width="1.5" fill="none"/></svg>
+          </div>
+          <h3 class="text-lg font-bold mb-2" style="font-family: 'Lora', serif; color: var(--forest);">Névnap</h3>
+          <p class="text-sm" style="color: var(--text-medium);">Apró meglepetés: mágnes vagy kulcstartó.</p>
+        </div>
+
+        <!-- Karácsony -->
+        <div class="occasion-card">
+          <div class="text-2xl mb-3" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 4L10 14h4l-4 8h4l-5 10h14l-5-10h4l-4-8h4L16 4z" stroke="#D4A039" stroke-width="2" fill="none" stroke-linejoin="round"/></svg>
+          </div>
+          <h3 class="text-lg font-bold mb-2" style="font-family: 'Lora', serif; color: var(--forest);">Karácsony</h3>
+          <p class="text-sm" style="color: var(--text-medium);">Fából készült ünnepi ajándékok.</p>
+        </div>
+
+        <!-- Csak úgy -->
+        <div class="occasion-card">
+          <div class="text-2xl mb-3" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 28C9 24 5 19 5 14a6 6 0 0111-3.5A6 6 0 0127 14c0 5-4 10-11 14z" stroke="#D4A039" stroke-width="2" fill="none"/></svg>
+          </div>
+          <h3 class="text-lg font-bold mb-2" style="font-family: 'Lora', serif; color: var(--forest);">Csak úgy</h3>
+          <p class="text-sm" style="color: var(--text-medium);">A váratlan öröm a legjobb.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PIACI MEGJELENÉS ============ -->
+  <section class="section-padding" style="background: var(--pale-sage);">
+    <div class="max-w-3xl mx-auto text-center">
+      <p class="text-xs tracking-[0.3em] uppercase mb-3" style="color: var(--forest); font-weight: 600;">Személyesen</p>
+      <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-6" style="font-family: 'Lora', serif; color: var(--forest);">
+        Találkozz velünk!
+      </h2>
+      <p class="text-base sm:text-lg mb-4 leading-relaxed" style="color: var(--text-medium);">
+        Szarvasi és környékbeli piacok, vásárok, rendezvények.
+      </p>
+      <p class="text-base sm:text-lg leading-relaxed" style="color: var(--text-medium);">
+        Személyes átvétel egyeztetés alapján.
+      </p>
+      <div class="mt-8">
+        <a href="#kapcsolat" class="btn-sage">
+          Vedd fel velünk a kapcsolatot
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M6.5 3.5L11 8l-4.5 4.5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ KAPCSOLAT / ŰRLAP ============ -->
+  <section class="section-padding" id="kapcsolat" style="background: var(--off-white);">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-12">
+        <p class="text-xs tracking-[0.3em] uppercase mb-3" style="color: var(--sage); font-weight: 600;">Kapcsolat</p>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold" style="font-family: 'Lora', serif; color: var(--forest);">
+          Írj nekünk!
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <!-- Form -->
+        <form onsubmit="return false;" class="space-y-5">
+          <div>
+            <label class="block text-sm font-medium mb-1.5" style="color: var(--forest);">Név *</label>
+            <input type="text" class="form-input" placeholder="Teljes neved" required />
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1.5" style="color: var(--forest);">E-mail *</label>
+            <input type="email" class="form-input" placeholder="pelda@email.hu" required />
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1.5" style="color: var(--forest);">Telefon <span class="text-xs" style="color:var(--text-medium);">(opcionális)</span></label>
+            <input type="tel" class="form-input" placeholder="+36 XX XXX XXXX" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1.5" style="color: var(--forest);">Kategória</label>
+            <select class="form-input" style="cursor:pointer;">
+              <option value="">Válassz kategóriát...</option>
+              <option value="gravirozas">Lézergravírozott kép</option>
+              <option value="tabla">Fa tábla / felirat</option>
+              <option value="ajandektargy">Kis ajándéktárgy</option>
+              <option value="kerti">Kerti dísz / virágtartó</option>
+              <option value="nyomat">Színes nyomat</option>
+              <option value="egyeb">Egyéb</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1.5" style="color: var(--forest);">Üzenet *</label>
+            <textarea class="form-input" rows="5" placeholder="Írd le az elképzelésedet..." required></textarea>
+          </div>
+          <button type="submit" class="btn-sage w-full sm:w-auto justify-center">
+            Üzenet küldése
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M10 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </form>
+
+        <!-- Contact cards -->
+        <div class="space-y-4 lg:pt-2">
+          <div class="contact-card">
+            <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style="background: var(--pale-sage);">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="4" width="16" height="12" rx="2" stroke="#1E3A2F" stroke-width="1.5"/><path d="M2 6l8 5 8-5" stroke="#1E3A2F" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div>
+              <p class="text-xs uppercase tracking-wider mb-0.5" style="color: var(--text-medium);">E-mail</p>
+              <a href="mailto:info@fabrikaajandek.hu" class="text-sm font-medium" style="color: var(--forest);">info@fabrikaajandek.hu</a>
+            </div>
+          </div>
+
+          <div class="contact-card">
+            <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style="background: var(--pale-sage);">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#1E3A2F" stroke-width="1.5"/><path d="M7 10c0-1.5 1.3-3 3-3s3 1.5 3 3-1.3 3-3 3" stroke="#1E3A2F" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div>
+              <p class="text-xs uppercase tracking-wider mb-0.5" style="color: var(--text-medium);">Facebook</p>
+              <a href="#" class="text-sm font-medium" style="color: var(--forest);">Fabrika Ajándék</a>
+            </div>
+          </div>
+
+          <div class="contact-card">
+            <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style="background: var(--pale-sage);">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 3l3 7 4-3 4 6 3-10" stroke="#1E3A2F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="14" r="3" stroke="#1E3A2F" stroke-width="1.5"/></svg>
+            </div>
+            <div>
+              <p class="text-xs uppercase tracking-wider mb-0.5" style="color: var(--text-medium);">Viber</p>
+              <a href="tel:+36XXXXXXXX" class="text-sm font-medium" style="color: var(--forest);">+36 XX XXX XXXX</a>
+            </div>
+          </div>
+
+          <div class="contact-card">
+            <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style="background: var(--pale-sage);">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="14" height="14" rx="4" stroke="#1E3A2F" stroke-width="1.5"/><circle cx="10" cy="10" r="4" stroke="#1E3A2F" stroke-width="1.5"/><circle cx="15" cy="5" r="1" fill="#1E3A2F"/></svg>
+            </div>
+            <div>
+              <p class="text-xs uppercase tracking-wider mb-0.5" style="color: var(--text-medium);">Instagram</p>
+              <a href="#" class="text-sm font-medium" style="color: var(--forest);">@fabrikaajandek</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ GYIK ============ -->
+  <section class="section-padding" style="background: var(--cream);">
+    <div class="max-w-3xl mx-auto">
+      <div class="text-center mb-12">
+        <p class="text-xs tracking-[0.3em] uppercase mb-3" style="color: var(--sage); font-weight: 600;">GYIK</p>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold" style="font-family: 'Lora', serif; color: var(--forest);">
+          Gyakori kérdések
+        </h2>
+      </div>
+
+      <div id="faqContainer">
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>Mennyi idő az elkészítés?</span>
+            <svg class="faq-chevron" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p class="pb-5 text-sm leading-relaxed" style="color: var(--text-medium);">
+              Általában 3-7 munkanap, a termék típusától és a testreszabás mértékétől függően.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>Hogyan fizethetek?</span>
+            <svg class="faq-chevron" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p class="pb-5 text-sm leading-relaxed" style="color: var(--text-medium);">
+              Személyesen: készpénz. Egyedi rendelés vagy postai küldés esetén: előre utalás.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>Van postázás?</span>
+            <svg class="faq-chevron" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p class="pb-5 text-sm leading-relaxed" style="color: var(--text-medium);">
+              Igen, Magyarországon belül postázunk.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>Külföldre is szállítotok?</span>
+            <svg class="faq-chevron" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p class="pb-5 text-sm leading-relaxed" style="color: var(--text-medium);">
+              Jelenleg csak belföldre szállítunk.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>Saját ötletet is megvalósítotok?</span>
+            <svg class="faq-chevron" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p class="pb-5 text-sm leading-relaxed" style="color: var(--text-medium);">
+              Persze! Küldj leírást, képet vagy vázlatot, és megbeszéljük a megvalósítást.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="py-12 px-4" style="background: var(--forest);">
+    <div class="max-w-6xl mx-auto text-center">
+      <!-- Logo -->
+      <div class="flex items-center justify-center gap-2 mb-6">
+        <svg width="24" height="24" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <rect x="2" y="4" width="24" height="20" rx="3" stroke="#8FA98C" stroke-width="2" fill="none"/>
+          <line x1="14" y1="4" x2="14" y2="24" stroke="#8FA98C" stroke-width="1.5"/>
+          <line x1="2" y1="14" x2="26" y2="14" stroke="#8FA98C" stroke-width="1.5"/>
+          <circle cx="14" cy="14" r="3" fill="#D4A039"/>
+        </svg>
+        <span style="font-family: 'Lora', serif; font-weight: 700; font-size: 1.1rem; color: #ffffffdd;">Fabrika Ajándék</span>
+      </div>
+
+      <p class="text-sm mb-6" style="color: rgba(255,255,255,0.5);">
+        Szarvas, Magyarország
+      </p>
+
+      <!-- Social links -->
+      <div class="flex items-center justify-center gap-5 mb-8">
+        <a href="#" class="w-9 h-9 rounded-full flex items-center justify-center transition-colors" style="background: rgba(255,255,255,0.08);" aria-label="Facebook">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="rgba(255,255,255,0.6)"><path d="M9 2.5h1.5V0H9c-1.7 0-3 1.3-3 3v1.5H4.5V7H6v9h3V7h2l.5-2.5H9V3c0-.3.2-.5.5-.5z"/></svg>
+        </a>
+        <a href="#" class="w-9 h-9 rounded-full flex items-center justify-center transition-colors" style="background: rgba(255,255,255,0.08);" aria-label="Instagram">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="14" height="14" rx="4" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/><circle cx="8" cy="8" r="3.5" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/><circle cx="12.5" cy="3.5" r="1" fill="rgba(255,255,255,0.6)"/></svg>
+        </a>
+        <a href="#" class="w-9 h-9 rounded-full flex items-center justify-center transition-colors" style="background: rgba(255,255,255,0.08);" aria-label="Viber">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="rgba(255,255,255,0.6)"><path d="M8 1C4.1 1 1 3.8 1 7.3c0 1.8.8 3.4 2.2 4.5V15l2.8-1.5c.6.2 1.3.3 2 .3 3.9 0 7-2.8 7-6.3S11.9 1 8 1zm.5 9c-1.5 0-2.8-.5-3.5-1.3.5.1 1 .2 1.5.2 2.2 0 4-1.3 4-2.9 0-.5-.2-1-.5-1.3.8.6 1.3 1.5 1.3 2.5C11.3 8.7 10.1 10 8.5 10z"/></svg>
+        </a>
+      </div>
+
+      <div class="text-xs" style="color: rgba(255,255,255,0.35);">
+        &copy; 2025 Fabrika Ajándék. Minden jog fenntartva.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to top button -->
+  <button class="back-to-top" id="backToTop" aria-label="Vissza a tetejére">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+      <path d="M10 16V4M5 9l5-5 5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <!-- ============ ALL JAVASCRIPT ============ -->
+  <script>
+  (function() {
+    'use strict';
+
+    // ---- Parallax Window Engine ----
+    var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!prefersReducedMotion) {
+      var parallaxElements = document.querySelectorAll('[data-parallax-window]');
+      var ticking = false;
+
+      function updateParallax() {
+        var viewportHeight = window.innerHeight;
+
+        for (var i = 0; i < parallaxElements.length; i++) {
+          var el = parallaxElements[i];
+          var container = el.parentElement;
+          var rect = container.getBoundingClientRect();
+          var speed = parseFloat(el.getAttribute('data-parallax-window')) || 0.3;
+
+          // Reduce speed on mobile
+          if (window.innerWidth < 768) {
+            speed *= 0.6;
+          }
+
+          // Progress: 0 when container enters bottom, 1 when exits top
+          var progress = (viewportHeight - rect.top) / (viewportHeight + rect.height);
+          progress = Math.max(0, Math.min(1, progress));
+
+          // Calculate shift based on overflow
+          var containerHeight = rect.height;
+          var bgHeight = el.offsetHeight || el.naturalHeight || containerHeight * 1.5;
+          var bgExtraHeight = bgHeight - containerHeight;
+
+          if (bgExtraHeight > 0) {
+            var translateY = -(progress * bgExtraHeight * speed);
+            el.style.transform = 'translateY(' + translateY.toFixed(2) + 'px)';
+          }
+        }
+
+        ticking = false;
+      }
+
+      function onScroll() {
+        if (!ticking) {
+          requestAnimationFrame(updateParallax);
+          ticking = true;
+        }
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', updateParallax, { passive: true });
+
+      // Initial call after images load
+      window.addEventListener('load', updateParallax);
+      updateParallax();
+    }
+
+    // ---- Navbar scroll shadow ----
+    var navbar = document.getElementById('navbar');
+    function updateNavbar() {
+      if (window.scrollY > 20) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    }
+    window.addEventListener('scroll', updateNavbar, { passive: true });
+    updateNavbar();
+
+    // ---- Mobile menu ----
+    var hamburger = document.getElementById('hamburger');
+    var mobileMenu = document.getElementById('mobileMenu');
+    var ham1 = document.getElementById('ham1');
+    var ham2 = document.getElementById('ham2');
+    var ham3 = document.getElementById('ham3');
+    var menuOpen = false;
+
+    hamburger.addEventListener('click', function() {
+      menuOpen = !menuOpen;
+      mobileMenu.classList.toggle('open', menuOpen);
+      hamburger.setAttribute('aria-label', menuOpen ? 'Menü bezárása' : 'Menü megnyitása');
+
+      if (menuOpen) {
+        ham1.style.transform = 'rotate(45deg) translate(4px, 4px)';
+        ham2.style.opacity = '0';
+        ham3.style.transform = 'rotate(-45deg) translate(3px, -3px)';
+        ham3.style.width = '1.5rem';
+      } else {
+        ham1.style.transform = '';
+        ham2.style.opacity = '';
+        ham3.style.transform = '';
+        ham3.style.width = '';
+      }
+    });
+
+    // Close mobile menu on nav link click
+    var mobileLinks = mobileMenu.querySelectorAll('a');
+    for (var i = 0; i < mobileLinks.length; i++) {
+      mobileLinks[i].addEventListener('click', function() {
+        menuOpen = false;
+        mobileMenu.classList.remove('open');
+        ham1.style.transform = '';
+        ham2.style.opacity = '';
+        ham3.style.transform = '';
+        ham3.style.width = '';
+      });
+    }
+
+    // ---- FAQ Accordion ----
+    var faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(function(item) {
+      var btn = item.querySelector('.faq-question');
+      btn.addEventListener('click', function() {
+        var isOpen = item.classList.contains('open');
+
+        // Close all
+        faqItems.forEach(function(other) {
+          other.classList.remove('open');
+          other.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+        });
+
+        // Open clicked if was closed
+        if (!isOpen) {
+          item.classList.add('open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    // ---- Back to top ----
+    var backToTop = document.getElementById('backToTop');
+    function updateBackToTop() {
+      if (window.scrollY > 600) {
+        backToTop.classList.add('visible');
+      } else {
+        backToTop.classList.remove('visible');
+      }
+    }
+    window.addEventListener('scroll', updateBackToTop, { passive: true });
+    updateBackToTop();
+
+    backToTop.addEventListener('click', function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // ---- Smooth scroll for anchor links ----
+    var anchorLinks = document.querySelectorAll('a[href^="#"]');
+    anchorLinks.forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        var href = this.getAttribute('href');
+        if (href === '#') return;
+        var target = document.querySelector(href);
+        if (target) {
+          e.preventDefault();
+          var navHeight = navbar.offsetHeight;
+          var top = target.getBoundingClientRect().top + window.scrollY - navHeight - 16;
+          window.scrollTo({ top: top, behavior: 'smooth' });
+        }
+      });
+    });
+
+  })();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="hu" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fabrika Ajandek - Kezmuves ajandektargyak Szarvasrol</title>
+  <meta name="description" content="Egyedi, fazbol keszult ajandektargyak Szarvasrol. Lezergravirozott kepek, fa tablak, kerti diszek es szines nyomatok." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/style.css" />
+  <style>
+    /* Custom properties for the warm rustic palette */
+    :root {
+      --brown-dark: #5C4A1E;
+      --brown: #8B6914;
+      --gold: #D4A843;
+      --cream-dark: #F5E6C8;
+      --cream: #FFF8EE;
+      --burnt-orange: #C4762B;
+      --charcoal: #2D2A24;
+      --charcoal-light: #4A453A;
+    }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      color: var(--charcoal);
+      background-color: var(--cream);
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Playfair Display', serif;
+    }
+
+    /* Wood grain hero background */
+    .hero-bg {
+      background:
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 40px,
+          rgba(139, 105, 20, 0.03) 40px,
+          rgba(139, 105, 20, 0.03) 42px
+        ),
+        repeating-linear-gradient(
+          87deg,
+          transparent,
+          transparent 60px,
+          rgba(92, 74, 30, 0.02) 60px,
+          rgba(92, 74, 30, 0.02) 61px
+        ),
+        repeating-linear-gradient(
+          92deg,
+          transparent,
+          transparent 80px,
+          rgba(212, 168, 67, 0.04) 80px,
+          rgba(212, 168, 67, 0.04) 82px
+        ),
+        linear-gradient(
+          170deg,
+          #5C3A0A 0%,
+          #7A5518 25%,
+          #8B6914 45%,
+          #6B4F10 65%,
+          #4A3508 100%
+        );
+    }
+
+    /* Parchment texture for sections */
+    .parchment-bg {
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(212, 168, 67, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(196, 118, 43, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 80%, rgba(139, 105, 20, 0.05) 0%, transparent 50%),
+        linear-gradient(180deg, var(--cream) 0%, #FDF3E0 50%, var(--cream) 100%);
+    }
+
+    /* Warm section background */
+    .warm-section {
+      background:
+        radial-gradient(ellipse at 30% 40%, rgba(212, 168, 67, 0.12) 0%, transparent 60%),
+        radial-gradient(ellipse at 70% 70%, rgba(196, 118, 43, 0.08) 0%, transparent 50%),
+        linear-gradient(180deg, #F5E6C8 0%, #FAEFD8 50%, #F5E6C8 100%);
+    }
+
+    /* FAQ accordion */
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.35s ease;
+    }
+    .faq-answer.open {
+      max-height: 300px;
+    }
+    .faq-chevron {
+      transition: transform 0.3s ease;
+    }
+    .faq-chevron.rotated {
+      transform: rotate(180deg);
+    }
+
+    /* Mobile nav */
+    .mobile-menu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+    .mobile-menu.open {
+      max-height: 400px;
+    }
+
+    /* Gallery hover */
+    .gallery-item {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .gallery-item:hover {
+      transform: scale(1.03);
+      box-shadow: 0 12px 32px rgba(92, 74, 30, 0.25);
+    }
+
+    /* Back to top button */
+    .back-to-top {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Step connector line */
+    .step-connector {
+      position: absolute;
+      top: 2rem;
+      left: calc(50% + 2.5rem);
+      width: calc(100% - 5rem);
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--burnt-orange));
+    }
+
+    /* Navbar scroll effect */
+    .nav-scrolled {
+      background-color: rgba(45, 42, 36, 0.97) !important;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body class="antialiased">
+
+  <!-- ============================================ -->
+  <!-- NAVIGATION -->
+  <!-- ============================================ -->
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" style="background-color: rgba(45, 42, 36, 0.85); backdrop-filter: blur(8px);">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo -->
+        <a href="#hero" class="flex items-center gap-2">
+          <span class="text-2xl" style="font-family: 'Playfair Display', serif; color: #D4A843; font-weight: 700;">Fabrika</span>
+          <span class="text-sm font-light tracking-wider uppercase" style="color: #F5E6C8;">Ajandek</span>
+        </a>
+        <!-- Desktop nav -->
+        <div class="hidden md:flex items-center gap-8">
+          <a href="#termekeink" class="text-sm font-medium tracking-wide hover:opacity-100 transition-opacity" style="color: #F5E6C8; opacity: 0.85;">Termékeink</a>
+          <a href="#galeria" class="text-sm font-medium tracking-wide hover:opacity-100 transition-opacity" style="color: #F5E6C8; opacity: 0.85;">Galéria</a>
+          <a href="#rendeles" class="text-sm font-medium tracking-wide hover:opacity-100 transition-opacity" style="color: #F5E6C8; opacity: 0.85;">Rendelés</a>
+          <a href="#ajandekotletek" class="text-sm font-medium tracking-wide hover:opacity-100 transition-opacity" style="color: #F5E6C8; opacity: 0.85;">Ajándékötletek</a>
+          <a href="#kapcsolat" class="inline-block px-5 py-2 rounded-full text-sm font-bold transition-all duration-200 hover:brightness-110" style="background: linear-gradient(135deg, #D4A843, #C4762B); color: #2D2A24;">Kapcsolat</a>
+        </div>
+        <!-- Hamburger -->
+        <button id="hamburger" class="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5" aria-label="Menu">
+          <span class="block w-6 h-0.5 rounded transition-all duration-300" style="background-color: #D4A843;" id="bar1"></span>
+          <span class="block w-6 h-0.5 rounded transition-all duration-300" style="background-color: #D4A843;" id="bar2"></span>
+          <span class="block w-6 h-0.5 rounded transition-all duration-300" style="background-color: #D4A843;" id="bar3"></span>
+        </button>
+      </div>
+      <!-- Mobile menu -->
+      <div id="mobileMenu" class="mobile-menu md:hidden">
+        <div class="flex flex-col gap-3 py-4 border-t" style="border-color: rgba(212, 168, 67, 0.2);">
+          <a href="#termekeink" class="mobile-nav-link text-sm font-medium py-2 px-2 rounded hover:bg-white/5 transition-colors" style="color: #F5E6C8;">Termékeink</a>
+          <a href="#galeria" class="mobile-nav-link text-sm font-medium py-2 px-2 rounded hover:bg-white/5 transition-colors" style="color: #F5E6C8;">Galéria</a>
+          <a href="#rendeles" class="mobile-nav-link text-sm font-medium py-2 px-2 rounded hover:bg-white/5 transition-colors" style="color: #F5E6C8;">Rendelés</a>
+          <a href="#ajandekotletek" class="mobile-nav-link text-sm font-medium py-2 px-2 rounded hover:bg-white/5 transition-colors" style="color: #F5E6C8;">Ajándékötletek</a>
+          <a href="#kapcsolat" class="mobile-nav-link text-sm font-medium py-2 px-2 rounded hover:bg-white/5 transition-colors" style="color: #D4A843;">Kapcsolat</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============================================ -->
+  <!-- HERO -->
+  <!-- ============================================ -->
+  <section id="hero" class="hero-bg relative min-h-screen flex items-center justify-center overflow-hidden">
+    <!-- Overlay for readability -->
+    <div class="absolute inset-0 bg-black/20"></div>
+    <!-- Decorative floating elements -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+      <div class="absolute top-[15%] left-[10%] w-32 h-32 rounded-full opacity-10" style="background: radial-gradient(circle, #D4A843, transparent);"></div>
+      <div class="absolute bottom-[20%] right-[8%] w-48 h-48 rounded-full opacity-8" style="background: radial-gradient(circle, #C4762B, transparent); opacity: 0.08;"></div>
+      <div class="absolute top-[60%] left-[70%] w-24 h-24 rounded-full opacity-10" style="background: radial-gradient(circle, #F5E6C8, transparent);"></div>
+    </div>
+    <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center py-20">
+      <!-- Small label -->
+      <div class="inline-block mb-6 px-4 py-1.5 rounded-full text-xs font-bold tracking-[0.2em] uppercase" style="background: rgba(212, 168, 67, 0.2); color: #F5E6C8; border: 1px solid rgba(212, 168, 67, 0.3);">
+        Kézműves manufaktúra &middot; Szarvas
+      </div>
+      <!-- Heading -->
+      <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6" style="color: #FFF8EE; font-family: 'Playfair Display', serif; text-shadow: 0 2px 24px rgba(0,0,0,0.3);">
+        Kézműves ajándékok<br />
+        <span style="color: #D4A843;">szívvel és lélekkel</span>
+      </h1>
+      <!-- Subtitle -->
+      <p class="text-lg sm:text-xl md:text-2xl mb-10 max-w-2xl mx-auto leading-relaxed" style="color: #F5E6C8; opacity: 0.9;">
+        Egyedi, fából készült ajándéktárgyak Szarvasról &ndash; lézergravírozott képek, fa táblák, kerti díszek és színes nyomatok
+      </p>
+      <!-- CTAs -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="#kapcsolat" class="inline-block px-8 py-4 rounded-full text-lg font-bold tracking-wide transition-all duration-200 hover:scale-105 hover:shadow-lg" style="background: linear-gradient(135deg, #D4A843, #C4762B); color: #2D2A24; box-shadow: 0 4px 20px rgba(196, 118, 43, 0.4);">
+          Küldd el az elképzelésed
+        </a>
+        <a href="#termekeink" class="inline-flex items-center gap-2 text-base font-medium transition-opacity hover:opacity-100" style="color: #F5E6C8; opacity: 0.8;">
+          Fedezd fel a termékeinket
+          <svg class="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
+        </a>
+      </div>
+    </div>
+    <!-- Wavy bottom divider -->
+    <div class="absolute bottom-0 left-0 right-0">
+      <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" class="w-full h-[60px] sm:h-[80px] md:h-[120px]">
+        <path d="M0,60 C240,120 480,0 720,60 C960,120 1200,0 1440,60 L1440,120 L0,120 Z" fill="#FFF8EE"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- TERMEKEINK (Products) -->
+  <!-- ============================================ -->
+  <section id="termekeink" class="parchment-bg py-20 sm:py-28">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <!-- Section header -->
+      <div class="text-center mb-16">
+        <span class="inline-block text-xs font-bold tracking-[0.2em] uppercase mb-3" style="color: #C4762B;">Amit készítünk</span>
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4" style="color: #2D2A24; font-family: 'Playfair Display', serif;">Termékeink</h2>
+        <div class="w-20 h-1 mx-auto rounded-full" style="background: linear-gradient(90deg, #D4A843, #C4762B);"></div>
+      </div>
+      <!-- Product grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Card 1 -->
+        <div class="rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300" style="background: #FFF8EE; border: 1px solid rgba(212, 168, 67, 0.2);">
+          <div class="aspect-[4/3] overflow-hidden">
+            <img src="/references/01-laser-engraved-magnet.jpg" alt="Lézergravírozott képek" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-2" style="font-family: 'Playfair Display', serif; color: #2D2A24;">Lézergravírozott képek</h3>
+            <p class="text-sm leading-relaxed" style="color: #4A453A;">Egyedi képek és portrék fába gravírozva, maradandó emlékként.</p>
+          </div>
+        </div>
+        <!-- Card 2 -->
+        <div class="rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300" style="background: #FFF8EE; border: 1px solid rgba(212, 168, 67, 0.2);">
+          <div class="aspect-[4/3] overflow-hidden">
+            <img src="/references/03-handmade-wood-sign-shop-1.jpg" alt="Fa táblák és feliratok" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-2" style="font-family: 'Playfair Display', serif; color: #2D2A24;">Fa táblák / feliratok</h3>
+            <p class="text-sm leading-relaxed" style="color: #4A453A;">Személyre szabott feliratok otthonra, esküvőre vagy ajándékba.</p>
+          </div>
+        </div>
+        <!-- Card 3 -->
+        <div class="rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300" style="background: #FFF8EE; border: 1px solid rgba(212, 168, 67, 0.2);">
+          <div class="aspect-[4/3] overflow-hidden">
+            <img src="/references/05-fridge-magnets.jpg" alt="Kis ajándéktárgyak" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-2" style="font-family: 'Playfair Display', serif; color: #2D2A24;">Kis ajándéktárgyak</h3>
+            <p class="text-sm leading-relaxed" style="color: #4A453A;">Hűtőmágnesek, kulcstartók és apró meglepetések minden alkalomra.</p>
+          </div>
+        </div>
+        <!-- Card 4 -->
+        <div class="rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 sm:col-span-1 lg:col-span-1" style="background: #FFF8EE; border: 1px solid rgba(212, 168, 67, 0.2);">
+          <div class="aspect-[4/3] overflow-hidden">
+            <img src="/references/07-terrariums-florist.jpg" alt="Kerti díszek és virágtartók" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-2" style="font-family: 'Playfair Display', serif; color: #2D2A24;">Kerti díszek / virágtartók</h3>
+            <p class="text-sm leading-relaxed" style="color: #4A453A;">Kézzel készített virágtartók és dekorációk a kertedbe.</p>
+          </div>
+        </div>
+        <!-- Card 5 -->
+        <div class="rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300" style="background: #FFF8EE; border: 1px solid rgba(212, 168, 67, 0.2);">
+          <div class="aspect-[4/3] overflow-hidden">
+            <img src="/references/09-california-travel-poster.jpg" alt="Színes nyomatok" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-2" style="font-family: 'Playfair Display', serif; color: #2D2A24;">Színes nyomatok</h3>
+            <p class="text-sm leading-relaxed" style="color: #4A453A;">Vidám, egyedi grafikák és illusztrációk nyomtatva.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Wavy divider -->
+  <div class="relative" style="background: #FFF8EE;">
+    <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" class="w-full h-[40px] sm:h-[60px] md:h-[80px]">
+      <path d="M0,40 C360,80 720,0 1080,40 C1260,60 1380,20 1440,40 L1440,80 L0,80 Z" fill="#F5E6C8"/>
+    </svg>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- GALERIA (Gallery) -->
+  <!-- ============================================ -->
+  <section id="galeria" class="py-20 sm:py-28" style="background-color: #F5E6C8;">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <!-- Section header -->
+      <div class="text-center mb-16">
+        <span class="inline-block text-xs font-bold tracking-[0.2em] uppercase mb-3" style="color: #C4762B;">Alkotásaink</span>
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4" style="color: #2D2A24; font-family: 'Playfair Display', serif;">Galéria</h2>
+        <div class="w-20 h-1 mx-auto rounded-full" style="background: linear-gradient(90deg, #D4A843, #C4762B);"></div>
+      </div>
+      <!-- Masonry grid -->
+      <div class="columns-2 md:columns-3 gap-4 space-y-4">
+        <div class="gallery-item break-inside-avoid rounded-xl overflow-hidden shadow-md cursor-pointer" style="border: 2px solid rgba(212, 168, 67, 0.15);">
+          <img src="/references/01-laser-engraved-magnet.jpg" alt="Lézergravírozott mágnes" loading="lazy" class="w-full h-auto block" />
+        </div>
+        <div class="gallery-item break-inside-avoid rounded-xl overflow-hidden shadow-md cursor-pointer" style="border: 2px solid rgba(212, 168, 67, 0.15);">
+          <img src="/references/02-laser-engraved-wall-plaque.jpg" alt="Lézergravírozott fali dísz" loading="lazy" class="w-full h-auto block" />
+        </div>
+        <div class="gallery-item break-inside-avoid rounded-xl overflow-hidden shadow-md cursor-pointer" style="border: 2px solid rgba(212, 168, 67, 0.15);">
+          <img src="/references/03-handmade-wood-sign-shop-1.jpg" alt="Kézműves fa tábla bolt" loading="lazy" class="w-full h-auto block" />
+        </div>
+        <div class="gallery-item break-inside-avoid rounded-xl overflow-hidden shadow-md cursor-pointer" style="border: 2px solid rgba(212, 168, 67, 0.15);">
+          <img src="/references/04-waterfront-rules-wood-sign.jpg" alt="Fa tábla felirattal" loading="lazy" class="w-full h-auto block" />
+        </div>
+        <div class="gallery-item break-inside-avoid rounded-xl overflow-hidden shadow-md cursor-pointer" style="border: 2px solid rgba(212, 168, 67, 0.15);">
+          <img src="/references/05-fridge-magnets.jpg" alt="Hűtőmágnesek" loading="lazy" class="w-full h-auto block" />
+        </div>
+        <div class="gallery-item break-inside-avoid rounded-xl overflow-hidden shadow-md cursor-pointer" style="border: 2px solid rgba(212, 168, 67, 0.15);">
+          <img src="/references/06-picnic-basket-gifts.jpg" alt="Ajándékcsomagok" loading="lazy" class="w-full h-auto block" />
+        </div>
+        <div class="gallery-item break-inside-avoid rounded-xl overflow-hidden shadow-md cursor-pointer" style="border: 2px solid rgba(212, 168, 67, 0.15);">
+          <img src="/references/07-terrariums-florist.jpg" alt="Virágtartók" loading="lazy" class="w-full h-auto block" />
+        </div>
+        <div class="gallery-item break-inside-avoid rounded-xl overflow-hidden shadow-md cursor-pointer" style="border: 2px solid rgba(212, 168, 67, 0.15);">
+          <img src="/references/08-blue-painted-wall-planters.jpg" alt="Fali virágtartók" loading="lazy" class="w-full h-auto block" />
+        </div>
+        <div class="gallery-item break-inside-avoid rounded-xl overflow-hidden shadow-md cursor-pointer" style="border: 2px solid rgba(212, 168, 67, 0.15);">
+          <img src="/references/09-california-travel-poster.jpg" alt="Utazási poszter" loading="lazy" class="w-full h-auto block" />
+        </div>
+        <div class="gallery-item break-inside-avoid rounded-xl overflow-hidden shadow-md cursor-pointer" style="border: 2px solid rgba(212, 168, 67, 0.15);">
+          <img src="/references/10-jane-avril-poster.jpg" alt="Művészeti nyomat" loading="lazy" class="w-full h-auto block" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Wavy divider -->
+  <div style="background-color: #F5E6C8;">
+    <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" class="w-full h-[40px] sm:h-[60px] md:h-[80px]">
+      <path d="M0,0 L0,40 C320,80 640,0 960,40 C1120,60 1300,20 1440,40 L1440,0 Z" fill="#F5E6C8"/>
+      <path d="M0,40 C320,80 640,0 960,40 C1120,60 1300,20 1440,40 L1440,80 L0,80 Z" fill="#FFF8EE"/>
+    </svg>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- HOGYAN RENDELHETSZ (How to Order) -->
+  <!-- ============================================ -->
+  <section id="rendeles" class="parchment-bg py-20 sm:py-28">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+      <!-- Section header -->
+      <div class="text-center mb-16">
+        <span class="inline-block text-xs font-bold tracking-[0.2em] uppercase mb-3" style="color: #C4762B;">Egyszerű folyamat</span>
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4" style="color: #2D2A24; font-family: 'Playfair Display', serif;">Hogyan rendelhetsz?</h2>
+        <div class="w-20 h-1 mx-auto rounded-full" style="background: linear-gradient(90deg, #D4A843, #C4762B);"></div>
+      </div>
+      <!-- Steps -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-4 relative">
+        <!-- Connector line (desktop) -->
+        <div class="hidden md:block absolute top-[2.5rem] left-[16.67%] right-[16.67%] h-[3px] rounded-full" style="background: linear-gradient(90deg, #D4A843, #C4762B, #D4A843);"></div>
+
+        <!-- Step 1 -->
+        <div class="relative text-center px-4">
+          <div class="relative z-10 w-20 h-20 mx-auto rounded-full flex items-center justify-center text-2xl font-bold mb-6 shadow-lg" style="background: linear-gradient(135deg, #D4A843, #C4762B); color: #2D2A24; font-family: 'Playfair Display', serif;">
+            1
+          </div>
+          <h3 class="text-xl font-bold mb-3" style="font-family: 'Playfair Display', serif; color: #2D2A24;">Küldj üzenetet</h3>
+          <p class="text-sm leading-relaxed" style="color: #4A453A;">Válassz egy meglévő terméket, vagy írd le az egyedi elképzelésed az űrlapunkon keresztül.</p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="relative text-center px-4">
+          <div class="relative z-10 w-20 h-20 mx-auto rounded-full flex items-center justify-center text-2xl font-bold mb-6 shadow-lg" style="background: linear-gradient(135deg, #D4A843, #C4762B); color: #2D2A24; font-family: 'Playfair Display', serif;">
+            2
+          </div>
+          <h3 class="text-xl font-bold mb-3" style="font-family: 'Playfair Display', serif; color: #2D2A24;">Egyeztetünk</h3>
+          <p class="text-sm leading-relaxed" style="color: #4A453A;">Megbeszéljük a részleteket, a végleges árat, valamint az átvétel vagy postázás módját.</p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="relative text-center px-4">
+          <div class="relative z-10 w-20 h-20 mx-auto rounded-full flex items-center justify-center text-2xl font-bold mb-6 shadow-lg" style="background: linear-gradient(135deg, #D4A843, #C4762B); color: #2D2A24; font-family: 'Playfair Display', serif;">
+            3
+          </div>
+          <h3 class="text-xl font-bold mb-3" style="font-family: 'Playfair Display', serif; color: #2D2A24;">Fizetés és átvétel</h3>
+          <p class="text-sm leading-relaxed" style="color: #4A453A;">Személyes átvételnél készpénzzel fizethetsz. Egyedi terméknél és postázásnál előre utalás szükséges.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Wavy divider -->
+  <div style="background-color: #FFF8EE;">
+    <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" class="w-full h-[40px] sm:h-[60px] md:h-[80px]">
+      <path d="M0,40 C180,0 360,80 540,40 C720,0 900,80 1080,40 C1260,0 1380,60 1440,40 L1440,80 L0,80 Z" fill="#F5E6C8"/>
+    </svg>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- AJANDEKOTLETEK (Gift Ideas) -->
+  <!-- ============================================ -->
+  <section id="ajandekotletek" class="warm-section py-20 sm:py-28">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+      <!-- Section header -->
+      <div class="text-center mb-16">
+        <span class="inline-block text-xs font-bold tracking-[0.2em] uppercase mb-3" style="color: #C4762B;">Inspiráció</span>
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4" style="color: #2D2A24; font-family: 'Playfair Display', serif;">Ajándékötletek minden alkalomra</h2>
+        <div class="w-20 h-1 mx-auto rounded-full" style="background: linear-gradient(90deg, #D4A843, #C4762B);"></div>
+      </div>
+      <!-- Occasion cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Születésnap -->
+        <div class="rounded-2xl p-6 transition-shadow duration-300 hover:shadow-lg" style="background: #FFF8EE; border: 1px solid rgba(212, 168, 67, 0.25);">
+          <div class="text-3xl mb-3">&#127874;</div>
+          <h3 class="text-lg font-bold mb-2" style="font-family: 'Playfair Display', serif; color: #2D2A24;">Születésnap</h3>
+          <p class="text-sm leading-relaxed" style="color: #4A453A;">Gravírozott képkeret vagy egyedi fa tábla a nevével és dátumával.</p>
+        </div>
+        <!-- Esküvő -->
+        <div class="rounded-2xl p-6 transition-shadow duration-300 hover:shadow-lg" style="background: #FFF8EE; border: 1px solid rgba(212, 168, 67, 0.25);">
+          <div class="text-3xl mb-3">&#128141;</div>
+          <h3 class="text-lg font-bold mb-2" style="font-family: 'Playfair Display', serif; color: #2D2A24;">Esküvő</h3>
+          <p class="text-sm leading-relaxed" style="color: #4A453A;">Személyre szabott esküvői tábla vagy emlék a nagy napról.</p>
+        </div>
+        <!-- Névnap -->
+        <div class="rounded-2xl p-6 transition-shadow duration-300 hover:shadow-lg" style="background: #FFF8EE; border: 1px solid rgba(212, 168, 67, 0.25);">
+          <div class="text-3xl mb-3">&#127775;</div>
+          <h3 class="text-lg font-bold mb-2" style="font-family: 'Playfair Display', serif; color: #2D2A24;">Névnap</h3>
+          <p class="text-sm leading-relaxed" style="color: #4A453A;">Apró meglepetés: hűtőmágnes vagy kulcstartó névvel.</p>
+        </div>
+        <!-- Karácsony -->
+        <div class="rounded-2xl p-6 transition-shadow duration-300 hover:shadow-lg" style="background: #FFF8EE; border: 1px solid rgba(212, 168, 67, 0.25);">
+          <div class="text-3xl mb-3">&#127876;</div>
+          <h3 class="text-lg font-bold mb-2" style="font-family: 'Playfair Display', serif; color: #2D2A24;">Karácsony</h3>
+          <p class="text-sm leading-relaxed" style="color: #4A453A;">Karácsonyi díszek és egyedi ajándékok az ünnepekre.</p>
+        </div>
+        <!-- Csak úgy -->
+        <div class="rounded-2xl p-6 transition-shadow duration-300 hover:shadow-lg sm:col-span-2 lg:col-span-1" style="background: #FFF8EE; border: 1px solid rgba(212, 168, 67, 0.25);">
+          <div class="text-3xl mb-3">&#128155;</div>
+          <h3 class="text-lg font-bold mb-2" style="font-family: 'Playfair Display', serif; color: #2D2A24;">&bdquo;Csak úgy&rdquo;</h3>
+          <p class="text-sm leading-relaxed" style="color: #4A453A;">Mert néha a legjobb ajándék az, amire nem számít senki.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Wavy divider -->
+  <div style="background-color: #F5E6C8;">
+    <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" class="w-full h-[40px] sm:h-[60px] md:h-[80px]">
+      <path d="M0,40 C240,0 480,80 720,40 C960,0 1200,80 1440,40 L1440,80 L0,80 Z" fill="#FFF8EE"/>
+    </svg>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- PIACI MEGJELENES (Market Stands) -->
+  <!-- ============================================ -->
+  <section id="piac" class="parchment-bg py-20 sm:py-28">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+      <!-- Decorative icon -->
+      <div class="text-5xl mb-6">&#127979;</div>
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-6" style="color: #2D2A24; font-family: 'Playfair Display', serif;">Találkozz velünk személyesen!</h2>
+      <div class="w-20 h-1 mx-auto rounded-full mb-8" style="background: linear-gradient(90deg, #D4A843, #C4762B);"></div>
+      <p class="text-lg sm:text-xl leading-relaxed mb-6 max-w-2xl mx-auto" style="color: #4A453A;">
+        Rendszeresen megtalálsz minket a szarvasi és környékbeli piacokon, vásárokon és rendezvényeken. Keresd a <strong style="color: #8B6914;">Fabrika Ajándék</strong> standot!
+      </p>
+      <p class="text-base italic" style="color: #8B6914;">
+        Személyes átvétel egyeztetéssel Szarvason is lehetséges.
+      </p>
+    </div>
+  </section>
+
+  <!-- Wavy divider -->
+  <div style="background-color: #FFF8EE;">
+    <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" class="w-full h-[40px] sm:h-[60px] md:h-[80px]">
+      <path d="M0,40 C360,80 720,0 1080,40 C1260,60 1380,20 1440,40 L1440,80 L0,80 Z" fill="#F5E6C8"/>
+    </svg>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- KAPCSOLAT (Contact) -->
+  <!-- ============================================ -->
+  <section id="kapcsolat" class="warm-section py-20 sm:py-28">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+      <!-- Section header -->
+      <div class="text-center mb-16">
+        <span class="inline-block text-xs font-bold tracking-[0.2em] uppercase mb-3" style="color: #C4762B;">Vedd fel velünk a kapcsolatot</span>
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4" style="color: #2D2A24; font-family: 'Playfair Display', serif;">Írj nekünk!</h2>
+        <div class="w-20 h-1 mx-auto rounded-full mb-6" style="background: linear-gradient(90deg, #D4A843, #C4762B);"></div>
+        <p class="text-base max-w-xl mx-auto" style="color: #4A453A;">Kérdésed van, vagy szeretnél egyedi terméket rendelni? Töltsd ki az űrlapot, és hamarosan válaszolunk!</p>
+      </div>
+      <!-- Form + sidebar -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Form -->
+        <div class="lg:col-span-2 rounded-2xl p-6 sm:p-8 shadow-lg" style="background: #FFF8EE; border: 1px solid rgba(212, 168, 67, 0.2);">
+          <form action="#" method="POST" class="space-y-5">
+            <div>
+              <label for="nev" class="block text-sm font-bold mb-1.5" style="color: #2D2A24;">Név <span style="color: #C4762B;">*</span></label>
+              <input type="text" id="nev" name="nev" required placeholder="Teljes neved" class="w-full px-4 py-3 rounded-lg text-sm outline-none transition-colors focus:ring-2" style="background: #FAEFD8; border: 1px solid rgba(212, 168, 67, 0.3); color: #2D2A24; --tw-ring-color: #D4A843;" />
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div>
+                <label for="email" class="block text-sm font-bold mb-1.5" style="color: #2D2A24;">E-mail <span style="color: #C4762B;">*</span></label>
+                <input type="email" id="email" name="email" required placeholder="pelda@email.hu" class="w-full px-4 py-3 rounded-lg text-sm outline-none transition-colors focus:ring-2" style="background: #FAEFD8; border: 1px solid rgba(212, 168, 67, 0.3); color: #2D2A24; --tw-ring-color: #D4A843;" />
+              </div>
+              <div>
+                <label for="telefon" class="block text-sm font-bold mb-1.5" style="color: #2D2A24;">Telefon <span class="text-xs font-normal" style="color: #8B6914;">(opcionális)</span></label>
+                <input type="tel" id="telefon" name="telefon" placeholder="+36 XX XXX XXXX" class="w-full px-4 py-3 rounded-lg text-sm outline-none transition-colors focus:ring-2" style="background: #FAEFD8; border: 1px solid rgba(212, 168, 67, 0.3); color: #2D2A24; --tw-ring-color: #D4A843;" />
+              </div>
+            </div>
+            <div>
+              <label for="kategoria" class="block text-sm font-bold mb-1.5" style="color: #2D2A24;">Kategória</label>
+              <select id="kategoria" name="kategoria" class="w-full px-4 py-3 rounded-lg text-sm outline-none transition-colors focus:ring-2" style="background: #FAEFD8; border: 1px solid rgba(212, 168, 67, 0.3); color: #2D2A24; --tw-ring-color: #D4A843;">
+                <option value="">Válassz kategóriát...</option>
+                <option value="gravirozott">Lézergravírozott képek</option>
+                <option value="tablak">Fa táblák / feliratok</option>
+                <option value="ajandektargyak">Kis ajándéktárgyak</option>
+                <option value="kerti">Kerti díszek / virágtartók</option>
+                <option value="nyomatok">Színes nyomatok</option>
+                <option value="egyeb">Egyéb</option>
+              </select>
+            </div>
+            <div>
+              <label for="uzenet" class="block text-sm font-bold mb-1.5" style="color: #2D2A24;">Üzenet <span style="color: #C4762B;">*</span></label>
+              <textarea id="uzenet" name="uzenet" required rows="5" placeholder="Írd le az elképzelésed, vagy kérdezz bátran..." class="w-full px-4 py-3 rounded-lg text-sm outline-none transition-colors resize-y focus:ring-2" style="background: #FAEFD8; border: 1px solid rgba(212, 168, 67, 0.3); color: #2D2A24; --tw-ring-color: #D4A843;"></textarea>
+            </div>
+            <button type="submit" class="w-full sm:w-auto px-8 py-3.5 rounded-full text-base font-bold tracking-wide transition-all duration-200 hover:scale-105 hover:shadow-lg cursor-pointer" style="background: linear-gradient(135deg, #D4A843, #C4762B); color: #2D2A24; box-shadow: 0 4px 16px rgba(196, 118, 43, 0.3);">
+              Üzenet küldése
+            </button>
+          </form>
+        </div>
+        <!-- Contact sidebar -->
+        <div class="rounded-2xl p-6 sm:p-8 shadow-lg flex flex-col gap-6" style="background: linear-gradient(160deg, #5C3A0A, #7A5518); border: 1px solid rgba(212, 168, 67, 0.2);">
+          <h3 class="text-xl font-bold" style="font-family: 'Playfair Display', serif; color: #F5E6C8;">Elérhetőségeink</h3>
+          <!-- Email -->
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style="background: rgba(212, 168, 67, 0.2);">
+              <svg class="w-5 h-5" style="color: #D4A843;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+            </div>
+            <div>
+              <div class="text-xs font-bold uppercase tracking-wider mb-1" style="color: #D4A843;">E-mail</div>
+              <a href="mailto:info@fabrikaajandek.hu" class="text-sm hover:underline" style="color: #F5E6C8;">info@fabrikaajandek.hu</a>
+            </div>
+          </div>
+          <!-- Facebook -->
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style="background: rgba(212, 168, 67, 0.2);">
+              <svg class="w-5 h-5" style="color: #D4A843;" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </div>
+            <div>
+              <div class="text-xs font-bold uppercase tracking-wider mb-1" style="color: #D4A843;">Facebook</div>
+              <a href="#" class="text-sm hover:underline" style="color: #F5E6C8;">Fabrika Ajándék</a>
+            </div>
+          </div>
+          <!-- Viber -->
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style="background: rgba(212, 168, 67, 0.2);">
+              <svg class="w-5 h-5" style="color: #D4A843;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+            </div>
+            <div>
+              <div class="text-xs font-bold uppercase tracking-wider mb-1" style="color: #D4A843;">Viber</div>
+              <span class="text-sm" style="color: #F5E6C8;">+36 XX XXX XXXX</span>
+            </div>
+          </div>
+          <!-- Instagram -->
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style="background: rgba(212, 168, 67, 0.2);">
+              <svg class="w-5 h-5" style="color: #D4A843;" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            </div>
+            <div>
+              <div class="text-xs font-bold uppercase tracking-wider mb-1" style="color: #D4A843;">Instagram</div>
+              <a href="#" class="text-sm hover:underline" style="color: #F5E6C8;">@fabrikaajandek</a>
+            </div>
+          </div>
+          <!-- Location -->
+          <div class="mt-auto pt-4" style="border-top: 1px solid rgba(212, 168, 67, 0.2);">
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4" style="color: #D4A843;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+              <span class="text-sm" style="color: #F5E6C8;">Szarvas, Magyarország</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Wavy divider -->
+  <div style="background-color: #F5E6C8;">
+    <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" class="w-full h-[40px] sm:h-[60px] md:h-[80px]">
+      <path d="M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80 Z" fill="#FFF8EE"/>
+    </svg>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- GYIK (FAQ) -->
+  <!-- ============================================ -->
+  <section id="gyik" class="parchment-bg py-20 sm:py-28">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6">
+      <!-- Section header -->
+      <div class="text-center mb-16">
+        <span class="inline-block text-xs font-bold tracking-[0.2em] uppercase mb-3" style="color: #C4762B;">Kérdésed van?</span>
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4" style="color: #2D2A24; font-family: 'Playfair Display', serif;">Gyakran Ismételt Kérdések</h2>
+        <div class="w-20 h-1 mx-auto rounded-full" style="background: linear-gradient(90deg, #D4A843, #C4762B);"></div>
+      </div>
+      <!-- Accordion -->
+      <div class="space-y-4" id="faqAccordion">
+        <!-- Q1 -->
+        <div class="rounded-xl overflow-hidden shadow-sm" style="background: #FFF8EE; border: 1px solid rgba(212, 168, 67, 0.2);">
+          <button class="faq-toggle w-full flex items-center justify-between px-6 py-5 text-left cursor-pointer" aria-expanded="false">
+            <span class="text-base font-bold pr-4" style="font-family: 'Playfair Display', serif; color: #2D2A24;">Mennyi idő alatt készül el egy egyedi termék?</span>
+            <svg class="faq-chevron w-5 h-5 shrink-0" style="color: #C4762B;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+          </button>
+          <div class="faq-answer px-6">
+            <p class="pb-5 text-sm leading-relaxed" style="color: #4A453A;">Az elkészítési idő a termék bonyolultságától függ, általában 3-7 munkanap. Sürgős esetben kérjük, jelezd az űrlapon!</p>
+          </div>
+        </div>
+        <!-- Q2 -->
+        <div class="rounded-xl overflow-hidden shadow-sm" style="background: #FFF8EE; border: 1px solid rgba(212, 168, 67, 0.2);">
+          <button class="faq-toggle w-full flex items-center justify-between px-6 py-5 text-left cursor-pointer" aria-expanded="false">
+            <span class="text-base font-bold pr-4" style="font-family: 'Playfair Display', serif; color: #2D2A24;">Hogyan fizethetek?</span>
+            <svg class="faq-chevron w-5 h-5 shrink-0" style="color: #C4762B;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+          </button>
+          <div class="faq-answer px-6">
+            <p class="pb-5 text-sm leading-relaxed" style="color: #4A453A;">Személyes átvételkor készpénzzel. Egyedi terméknél és postázásnál előre utalással a gyártás megkezdése előtt.</p>
+          </div>
+        </div>
+        <!-- Q3 -->
+        <div class="rounded-xl overflow-hidden shadow-sm" style="background: #FFF8EE; border: 1px solid rgba(212, 168, 67, 0.2);">
+          <button class="faq-toggle w-full flex items-center justify-between px-6 py-5 text-left cursor-pointer" aria-expanded="false">
+            <span class="text-base font-bold pr-4" style="font-family: 'Playfair Display', serif; color: #2D2A24;">Van lehetőség postázásra?</span>
+            <svg class="faq-chevron w-5 h-5 shrink-0" style="color: #C4762B;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+          </button>
+          <div class="faq-answer px-6">
+            <p class="pb-5 text-sm leading-relaxed" style="color: #4A453A;">Igen, Magyarországon belül postázunk. A szállítási költséget a termék mérete és súlya alapján kalkuláljuk.</p>
+          </div>
+        </div>
+        <!-- Q4 -->
+        <div class="rounded-xl overflow-hidden shadow-sm" style="background: #FFF8EE; border: 1px solid rgba(212, 168, 67, 0.2);">
+          <button class="faq-toggle w-full flex items-center justify-between px-6 py-5 text-left cursor-pointer" aria-expanded="false">
+            <span class="text-base font-bold pr-4" style="font-family: 'Playfair Display', serif; color: #2D2A24;">Külföldre is küldtök?</span>
+            <svg class="faq-chevron w-5 h-5 shrink-0" style="color: #C4762B;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+          </button>
+          <div class="faq-answer px-6">
+            <p class="pb-5 text-sm leading-relaxed" style="color: #4A453A;">Jelenleg csak Magyarországon belül vállalunk postázást.</p>
+          </div>
+        </div>
+        <!-- Q5 -->
+        <div class="rounded-xl overflow-hidden shadow-sm" style="background: #FFF8EE; border: 1px solid rgba(212, 168, 67, 0.2);">
+          <button class="faq-toggle w-full flex items-center justify-between px-6 py-5 text-left cursor-pointer" aria-expanded="false">
+            <span class="text-base font-bold pr-4" style="font-family: 'Playfair Display', serif; color: #2D2A24;">Lehet saját ötletet is küldeni?</span>
+            <svg class="faq-chevron w-5 h-5 shrink-0" style="color: #C4762B;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+          </button>
+          <div class="faq-answer px-6">
+            <p class="pb-5 text-sm leading-relaxed" style="color: #4A453A;">Természetesen! Szívesen megvalósítjuk az egyedi elképzeléseidet. Küldj leírást, képet vagy vázlatot az űrlapon!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- FOOTER -->
+  <!-- ============================================ -->
+  <footer class="py-12" style="background: linear-gradient(180deg, #2D2A24, #1A1815);">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+        <!-- Brand -->
+        <div class="text-center md:text-left">
+          <div class="mb-2">
+            <span class="text-2xl font-bold" style="font-family: 'Playfair Display', serif; color: #D4A843;">Fabrika Ajándék</span>
+          </div>
+          <p class="text-sm" style="color: #A09882;">Szarvas, Magyarország</p>
+        </div>
+        <!-- Social links -->
+        <div class="flex items-center gap-5">
+          <a href="#" aria-label="Facebook" class="w-10 h-10 rounded-full flex items-center justify-center transition-colors hover:opacity-80" style="background: rgba(212, 168, 67, 0.15);">
+            <svg class="w-5 h-5" style="color: #D4A843;" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <a href="#" aria-label="Instagram" class="w-10 h-10 rounded-full flex items-center justify-center transition-colors hover:opacity-80" style="background: rgba(212, 168, 67, 0.15);">
+            <svg class="w-5 h-5" style="color: #D4A843;" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          </a>
+          <a href="mailto:info@fabrikaajandek.hu" aria-label="E-mail" class="w-10 h-10 rounded-full flex items-center justify-center transition-colors hover:opacity-80" style="background: rgba(212, 168, 67, 0.15);">
+            <svg class="w-5 h-5" style="color: #D4A843;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+          </a>
+        </div>
+      </div>
+      <!-- Divider -->
+      <div class="my-8 h-px" style="background: rgba(212, 168, 67, 0.15);"></div>
+      <!-- Copyright -->
+      <p class="text-center text-xs" style="color: #6B6558;">&copy; 2025 Fabrika Ajándék &ndash; Minden jog fenntartva.</p>
+    </div>
+  </footer>
+
+  <!-- ============================================ -->
+  <!-- BACK TO TOP BUTTON -->
+  <!-- ============================================ -->
+  <button id="backToTop" class="back-to-top fixed bottom-6 right-6 w-12 h-12 rounded-full flex items-center justify-center shadow-lg z-40 transition-all duration-200 hover:scale-110 cursor-pointer" style="background: linear-gradient(135deg, #D4A843, #C4762B); color: #2D2A24;" aria-label="Vissza a tetejére">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" /></svg>
+  </button>
+
+  <!-- ============================================ -->
+  <!-- JAVASCRIPT -->
+  <!-- ============================================ -->
+  <script>
+    (function() {
+      'use strict';
+
+      // --- Mobile menu toggle ---
+      var hamburger = document.getElementById('hamburger');
+      var mobileMenu = document.getElementById('mobileMenu');
+      var bar1 = document.getElementById('bar1');
+      var bar2 = document.getElementById('bar2');
+      var bar3 = document.getElementById('bar3');
+      var menuOpen = false;
+
+      hamburger.addEventListener('click', function() {
+        menuOpen = !menuOpen;
+        mobileMenu.classList.toggle('open', menuOpen);
+        if (menuOpen) {
+          bar1.style.transform = 'rotate(45deg) translate(4px, 4px)';
+          bar2.style.opacity = '0';
+          bar3.style.transform = 'rotate(-45deg) translate(4px, -4px)';
+        } else {
+          bar1.style.transform = '';
+          bar2.style.opacity = '';
+          bar3.style.transform = '';
+        }
+      });
+
+      // Close mobile menu on link click
+      var mobileLinks = document.querySelectorAll('.mobile-nav-link');
+      mobileLinks.forEach(function(link) {
+        link.addEventListener('click', function() {
+          menuOpen = false;
+          mobileMenu.classList.remove('open');
+          bar1.style.transform = '';
+          bar2.style.opacity = '';
+          bar3.style.transform = '';
+        });
+      });
+
+      // --- Navbar scroll effect ---
+      var navbar = document.getElementById('navbar');
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 80) {
+          navbar.classList.add('nav-scrolled');
+        } else {
+          navbar.classList.remove('nav-scrolled');
+        }
+      });
+
+      // --- Back to top button ---
+      var backToTop = document.getElementById('backToTop');
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 600) {
+          backToTop.classList.add('visible');
+        } else {
+          backToTop.classList.remove('visible');
+        }
+      });
+      backToTop.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      // --- FAQ Accordion ---
+      var faqToggles = document.querySelectorAll('.faq-toggle');
+      faqToggles.forEach(function(toggle) {
+        toggle.addEventListener('click', function() {
+          var answer = this.nextElementSibling;
+          var chevron = this.querySelector('.faq-chevron');
+          var isOpen = answer.classList.contains('open');
+
+          // Close all
+          document.querySelectorAll('.faq-answer').forEach(function(a) { a.classList.remove('open'); });
+          document.querySelectorAll('.faq-chevron').forEach(function(c) { c.classList.remove('rotated'); });
+          document.querySelectorAll('.faq-toggle').forEach(function(t) { t.setAttribute('aria-expanded', 'false'); });
+
+          // Open clicked if was closed
+          if (!isOpen) {
+            answer.classList.add('open');
+            chevron.classList.add('rotated');
+            this.setAttribute('aria-expanded', 'true');
+          }
+        });
+      });
+
+      // --- Smooth scroll for anchor links ---
+      document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+        anchor.addEventListener('click', function(e) {
+          var targetId = this.getAttribute('href');
+          if (targetId === '#') return;
+          var target = document.querySelector(targetId);
+          if (target) {
+            e.preventDefault();
+            var navHeight = navbar.offsetHeight;
+            var targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navHeight;
+            window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+          }
+        });
+      });
+
+    })();
+  </script>
+
+</body>
+</html>

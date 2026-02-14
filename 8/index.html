@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fabrika Ajándék — Kézműves ajándékok Szarvasról</title>
+  <meta name="description" content="Egyedi, fából készült ajándéktárgyak Szarvasról. Lézergravírozás, fa táblák, kerti díszek, színes nyomatok." />
+  <link rel="stylesheet" href="/src/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@300..700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --color-charcoal: #2C2824;
+      --color-brown: #5C4033;
+      --color-terracotta: #C67A4B;
+      --color-gold: #D4A84C;
+      --color-warm-white: #FBF8F4;
+      --color-linen: #F3EDE3;
+      --color-cream: #FAF6EF;
+      --color-text: #2C2824;
+      --color-text-muted: #7A7067;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .sticky-img-transition { transition: none !important; }
+      .category-item { opacity: 1 !important; transform: none !important; }
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--color-text);
+      background: var(--color-warm-white);
+      margin: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Fraunces', serif;
+    }
+
+    /* Grain texture overlay */
+    .grain::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.03;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+
+    /* Masonry gallery */
+    .masonry-gallery {
+      columns: 1;
+      column-gap: 1rem;
+    }
+    @media (min-width: 640px) {
+      .masonry-gallery { columns: 2; }
+    }
+    @media (min-width: 1024px) {
+      .masonry-gallery { columns: 3; }
+    }
+    .masonry-gallery > figure {
+      break-inside: avoid;
+      margin-bottom: 1rem;
+    }
+
+    /* FAQ accordion */
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.35s ease;
+    }
+    .faq-answer.open {
+      max-height: 300px;
+    }
+    .faq-chevron {
+      transition: transform 0.3s ease;
+    }
+    .faq-chevron.open {
+      transform: rotate(180deg);
+    }
+
+    /* Mobile menu */
+    .mobile-menu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+    .mobile-menu.open {
+      max-height: 400px;
+    }
+
+    /* Back to top */
+    .back-to-top {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Category item mobile images */
+    .category-mobile-img {
+      display: block;
+    }
+    @media (min-width: 1024px) {
+      .category-mobile-img {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== NAVBAR ========== -->
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-shadow duration-300" style="background: var(--color-warm-white);">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 flex items-center justify-between h-16 lg:h-18">
+      <!-- Brand -->
+      <a href="#" class="flex items-center gap-2 no-underline" style="color: var(--color-charcoal);">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="6" width="24" height="16" rx="2" stroke="#C67A4B" stroke-width="2" fill="none"/>
+          <path d="M8 6V4a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" stroke="#C67A4B" stroke-width="2" fill="none"/>
+          <circle cx="14" cy="14" r="3" fill="#D4A84C"/>
+        </svg>
+        <span class="text-lg font-semibold tracking-tight" style="font-family: 'Fraunces', serif;">Fabrika Ajándék</span>
+      </a>
+      <!-- Desktop Nav -->
+      <div class="hidden lg:flex items-center gap-8">
+        <a href="#termekek" class="text-sm font-medium no-underline hover:opacity-70 transition-opacity" style="color: var(--color-text-muted);">Termékeink</a>
+        <a href="#galeria" class="text-sm font-medium no-underline hover:opacity-70 transition-opacity" style="color: var(--color-text-muted);">Galéria</a>
+        <a href="#rendeles" class="text-sm font-medium no-underline hover:opacity-70 transition-opacity" style="color: var(--color-text-muted);">Rendelés</a>
+        <a href="#kapcsolat" class="text-sm font-medium no-underline hover:opacity-70 transition-opacity" style="color: var(--color-text-muted);">Kapcsolat</a>
+      </div>
+      <!-- Hamburger -->
+      <button id="menu-toggle" class="lg:hidden p-2 -mr-2" aria-label="Menü megnyitása" style="color: var(--color-charcoal);">
+        <svg id="menu-icon-open" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        <svg id="menu-icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="hidden"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+      </button>
+    </div>
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="mobile-menu lg:hidden" style="background: var(--color-warm-white);">
+      <div class="px-5 pb-6 pt-2 flex flex-col gap-4">
+        <a href="#termekek" class="text-base font-medium no-underline py-2 border-b" style="color: var(--color-text); border-color: var(--color-linen);">Termékeink</a>
+        <a href="#galeria" class="text-base font-medium no-underline py-2 border-b" style="color: var(--color-text); border-color: var(--color-linen);">Galéria</a>
+        <a href="#rendeles" class="text-base font-medium no-underline py-2 border-b" style="color: var(--color-text); border-color: var(--color-linen);">Rendelés</a>
+        <a href="#kapcsolat" class="text-base font-medium no-underline py-2" style="color: var(--color-text);">Kapcsolat</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ========== 1. HERO ========== -->
+    <section class="relative grain min-h-screen flex items-center justify-center" style="background: var(--color-warm-white);">
+      <div class="relative z-10 text-center px-5 max-w-3xl mx-auto py-32">
+        <p class="text-xs sm:text-sm font-medium tracking-[0.25em] uppercase mb-6" style="color: var(--color-terracotta);">
+          Kézműves ajándékok &middot; Szarvas
+        </p>
+        <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-light leading-[0.95] mb-8" style="font-family: 'Fraunces', serif; color: var(--color-charcoal);">
+          Fabrika<br/>Ajándék
+        </h1>
+        <p class="text-base sm:text-lg leading-relaxed max-w-xl mx-auto mb-10" style="color: var(--color-text-muted);">
+          Egyedi, fából készült ajándéktárgyak &mdash; lézergravírozás, fa&nbsp;táblák, kerti díszek, színes nyomatok
+        </p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a href="#termekek" class="inline-flex items-center justify-center px-8 py-3.5 rounded-full text-sm font-semibold text-white no-underline transition-all duration-200 hover:brightness-110 hover:shadow-lg" style="background: var(--color-terracotta);">
+            Fedezd fel a termékeinket
+          </a>
+          <a href="#kapcsolat" class="inline-flex items-center gap-1 text-sm font-medium no-underline transition-opacity hover:opacity-70" style="color: var(--color-brown);">
+            Egyedi rendelés
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </a>
+        </div>
+      </div>
+      <!-- Decorative line -->
+      <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-px h-20" style="background: linear-gradient(to bottom, transparent, var(--color-terracotta));"></div>
+    </section>
+
+    <!-- ========== 2. TERMÉKKATEGÓRIÁK — STICKY IMAGE SECTION ========== -->
+    <section id="termekek" class="relative py-24 lg:py-32" style="background: var(--color-cream);">
+      <div class="max-w-7xl mx-auto px-5 sm:px-8">
+        <!-- Section header -->
+        <div class="text-center mb-16 lg:mb-24">
+          <p class="text-xs font-medium tracking-[0.25em] uppercase mb-4" style="color: var(--color-terracotta);">Kínálatunk</p>
+          <h2 class="text-4xl sm:text-5xl lg:text-6xl font-light" style="font-family: 'Fraunces', serif; color: var(--color-charcoal);">Termékeink</h2>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-10 lg:gap-16">
+          <!-- Sticky image column (desktop only) -->
+          <div class="hidden lg:block lg:w-1/2">
+            <div class="lg:sticky lg:top-24">
+              <div class="relative overflow-hidden rounded-2xl aspect-[4/3] shadow-xl">
+                <img id="sticky-cat-img" src="/references/01-laser-engraved-magnet.jpg"
+                     alt="Termékkategória"
+                     class="w-full h-full object-cover sticky-img-transition"
+                     style="transition: opacity 0.5s ease;"
+                     loading="lazy" />
+              </div>
+              <p id="sticky-cat-label" class="mt-4 text-sm font-medium text-center transition-opacity duration-300" style="color: var(--color-text-muted);">Lézergravírozott képek</p>
+            </div>
+          </div>
+
+          <!-- Scrolling text column -->
+          <div class="lg:w-1/2 space-y-20 lg:space-y-48">
+
+            <!-- Category 1 -->
+            <div class="category-item" data-image="/references/01-laser-engraved-magnet.jpg" data-label="Lézergravírozott képek">
+              <div class="category-mobile-img mb-6">
+                <div class="overflow-hidden rounded-xl aspect-[4/3]">
+                  <img src="/references/01-laser-engraved-magnet.jpg" alt="Lézergravírozott képek" class="w-full h-full object-cover" loading="lazy" />
+                </div>
+              </div>
+              <span class="text-xs font-medium tracking-[0.2em] uppercase block mb-3" style="color: var(--color-terracotta);">01</span>
+              <h3 class="text-2xl sm:text-3xl font-medium mb-4" style="font-family: 'Fraunces', serif; color: var(--color-charcoal);">Lézergravírozott képek</h3>
+              <p class="text-base leading-relaxed mb-6" style="color: var(--color-text-muted);">
+                Egyedi portrék és képek, lézertechnológiával fába gravírozva. Maradandó emlékek születésnapra, évfordulóra vagy csak úgy.
+              </p>
+              <a href="#kapcsolat" class="inline-flex items-center gap-1 text-sm font-medium no-underline transition-opacity hover:opacity-70" style="color: var(--color-terracotta);">
+                Érdeklődöm
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+              </a>
+            </div>
+
+            <!-- Category 2 -->
+            <div class="category-item" data-image="/references/03-handmade-wood-sign-shop-1.jpg" data-label="Fa táblák / feliratok">
+              <div class="category-mobile-img mb-6">
+                <div class="overflow-hidden rounded-xl aspect-[4/3]">
+                  <img src="/references/03-handmade-wood-sign-shop-1.jpg" alt="Fa táblák / feliratok" class="w-full h-full object-cover" loading="lazy" />
+                </div>
+              </div>
+              <span class="text-xs font-medium tracking-[0.2em] uppercase block mb-3" style="color: var(--color-terracotta);">02</span>
+              <h3 class="text-2xl sm:text-3xl font-medium mb-4" style="font-family: 'Fraunces', serif; color: var(--color-charcoal);">Fa táblák / feliratok</h3>
+              <p class="text-base leading-relaxed mb-6" style="color: var(--color-text-muted);">
+                Személyre szabott fa feliratok otthonra, esküvőre, boltba vagy ajándékba. Egyedi szöveg, betűtípus és méret.
+              </p>
+              <a href="#kapcsolat" class="inline-flex items-center gap-1 text-sm font-medium no-underline transition-opacity hover:opacity-70" style="color: var(--color-terracotta);">
+                Érdeklődöm
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+              </a>
+            </div>
+
+            <!-- Category 3 -->
+            <div class="category-item" data-image="/references/05-fridge-magnets.jpg" data-label="Kis ajándéktárgyak">
+              <div class="category-mobile-img mb-6">
+                <div class="overflow-hidden rounded-xl aspect-[4/3]">
+                  <img src="/references/05-fridge-magnets.jpg" alt="Kis ajándéktárgyak" class="w-full h-full object-cover" loading="lazy" />
+                </div>
+              </div>
+              <span class="text-xs font-medium tracking-[0.2em] uppercase block mb-3" style="color: var(--color-terracotta);">03</span>
+              <h3 class="text-2xl sm:text-3xl font-medium mb-4" style="font-family: 'Fraunces', serif; color: var(--color-charcoal);">Kis ajándéktárgyak</h3>
+              <p class="text-base leading-relaxed mb-6" style="color: var(--color-text-muted);">
+                Hűtőmágnesek, kulcstartók és apró meglepetések. Tökéletes névnapra, karácsonyi ajándéknak vagy kedves gesztusnak.
+              </p>
+              <a href="#kapcsolat" class="inline-flex items-center gap-1 text-sm font-medium no-underline transition-opacity hover:opacity-70" style="color: var(--color-terracotta);">
+                Érdeklődöm
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+              </a>
+            </div>
+
+            <!-- Category 4 -->
+            <div class="category-item" data-image="/references/07-terrariums-florist.jpg" data-label="Kerti díszek / virágtartók">
+              <div class="category-mobile-img mb-6">
+                <div class="overflow-hidden rounded-xl aspect-[4/3]">
+                  <img src="/references/07-terrariums-florist.jpg" alt="Kerti díszek / virágtartók" class="w-full h-full object-cover" loading="lazy" />
+                </div>
+              </div>
+              <span class="text-xs font-medium tracking-[0.2em] uppercase block mb-3" style="color: var(--color-terracotta);">04</span>
+              <h3 class="text-2xl sm:text-3xl font-medium mb-4" style="font-family: 'Fraunces', serif; color: var(--color-charcoal);">Kerti díszek / virágtartók</h3>
+              <p class="text-base leading-relaxed mb-6" style="color: var(--color-text-muted);">
+                Kézzel készített virágtartók és dekorációk a kertbe. Természetközeli, meleg hangulatú darabok.
+              </p>
+              <a href="#kapcsolat" class="inline-flex items-center gap-1 text-sm font-medium no-underline transition-opacity hover:opacity-70" style="color: var(--color-terracotta);">
+                Érdeklődöm
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+              </a>
+            </div>
+
+            <!-- Category 5 -->
+            <div class="category-item" data-image="/references/09-california-travel-poster.jpg" data-label="Színes nyomatok">
+              <div class="category-mobile-img mb-6">
+                <div class="overflow-hidden rounded-xl aspect-[4/3]">
+                  <img src="/references/09-california-travel-poster.jpg" alt="Színes nyomatok" class="w-full h-full object-cover" loading="lazy" />
+                </div>
+              </div>
+              <span class="text-xs font-medium tracking-[0.2em] uppercase block mb-3" style="color: var(--color-terracotta);">05</span>
+              <h3 class="text-2xl sm:text-3xl font-medium mb-4" style="font-family: 'Fraunces', serif; color: var(--color-charcoal);">Színes nyomatok</h3>
+              <p class="text-base leading-relaxed mb-6" style="color: var(--color-text-muted);">
+                Vidám grafikák és egyedi illusztrációk, prémium nyomtatásban. Falra, polcra, ajándékba.
+              </p>
+              <a href="#kapcsolat" class="inline-flex items-center gap-1 text-sm font-medium no-underline transition-opacity hover:opacity-70" style="color: var(--color-terracotta);">
+                Érdeklődöm
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 3. GALÉRIA ========== -->
+    <section id="galeria" class="relative grain py-24 lg:py-32" style="background: var(--color-warm-white);">
+      <div class="relative z-10 max-w-7xl mx-auto px-5 sm:px-8">
+        <!-- Section header -->
+        <div class="text-center mb-16">
+          <p class="text-xs font-medium tracking-[0.25em] uppercase mb-4" style="color: var(--color-terracotta);">Galéria</p>
+          <h2 class="text-4xl sm:text-5xl lg:text-6xl font-light" style="font-family: 'Fraunces', serif; color: var(--color-charcoal);">Munkáink</h2>
+        </div>
+
+        <div class="masonry-gallery">
+          <figure class="group relative overflow-hidden rounded-xl cursor-pointer">
+            <img src="/references/01-laser-engraved-magnet.jpg" alt="Lézergravírozott mágnes" class="w-full object-cover rounded-xl transition-all duration-300 group-hover:scale-[1.03] group-hover:shadow-xl" loading="lazy" />
+          </figure>
+          <figure class="group relative overflow-hidden rounded-xl cursor-pointer">
+            <img src="/references/02-laser-engraved-wall-plaque.jpg" alt="Lézergravírozott fali dísz" class="w-full object-cover rounded-xl transition-all duration-300 group-hover:scale-[1.03] group-hover:shadow-xl" loading="lazy" />
+          </figure>
+          <figure class="group relative overflow-hidden rounded-xl cursor-pointer">
+            <img src="/references/03-handmade-wood-sign-shop-1.jpg" alt="Kézműves fa tábla" class="w-full object-cover rounded-xl transition-all duration-300 group-hover:scale-[1.03] group-hover:shadow-xl" loading="lazy" />
+          </figure>
+          <figure class="group relative overflow-hidden rounded-xl cursor-pointer">
+            <img src="/references/04-waterfront-rules-wood-sign.jpg" alt="Fa felirat" class="w-full object-cover rounded-xl transition-all duration-300 group-hover:scale-[1.03] group-hover:shadow-xl" loading="lazy" />
+          </figure>
+          <figure class="group relative overflow-hidden rounded-xl cursor-pointer">
+            <img src="/references/05-fridge-magnets.jpg" alt="Hűtőmágnesek" class="w-full object-cover rounded-xl transition-all duration-300 group-hover:scale-[1.03] group-hover:shadow-xl" loading="lazy" />
+          </figure>
+          <figure class="group relative overflow-hidden rounded-xl cursor-pointer">
+            <img src="/references/06-picnic-basket-gifts.jpg" alt="Ajándékkosár" class="w-full object-cover rounded-xl transition-all duration-300 group-hover:scale-[1.03] group-hover:shadow-xl" loading="lazy" />
+          </figure>
+          <figure class="group relative overflow-hidden rounded-xl cursor-pointer">
+            <img src="/references/07-terrariums-florist.jpg" alt="Terrárium és virágok" class="w-full object-cover rounded-xl transition-all duration-300 group-hover:scale-[1.03] group-hover:shadow-xl" loading="lazy" />
+          </figure>
+          <figure class="group relative overflow-hidden rounded-xl cursor-pointer">
+            <img src="/references/08-blue-painted-wall-planters.jpg" alt="Fali virágtartók" class="w-full object-cover rounded-xl transition-all duration-300 group-hover:scale-[1.03] group-hover:shadow-xl" loading="lazy" />
+          </figure>
+          <figure class="group relative overflow-hidden rounded-xl cursor-pointer">
+            <img src="/references/09-california-travel-poster.jpg" alt="Színes nyomat" class="w-full object-cover rounded-xl transition-all duration-300 group-hover:scale-[1.03] group-hover:shadow-xl" loading="lazy" />
+          </figure>
+          <figure class="group relative overflow-hidden rounded-xl cursor-pointer">
+            <img src="/references/10-jane-avril-poster.jpg" alt="Művészi nyomat" class="w-full object-cover rounded-xl transition-all duration-300 group-hover:scale-[1.03] group-hover:shadow-xl" loading="lazy" />
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 4. HOGYAN RENDELHETSZ? — STICKY STACKING CARDS ========== -->
+    <section id="rendeles" class="py-24 lg:py-32" style="background: var(--color-cream);">
+      <div class="max-w-3xl mx-auto px-5 sm:px-8">
+        <!-- Section header -->
+        <div class="text-center mb-16 lg:mb-20">
+          <p class="text-xs font-medium tracking-[0.25em] uppercase mb-4" style="color: var(--color-terracotta);">Rendelés</p>
+          <h2 class="text-4xl sm:text-5xl lg:text-6xl font-light" style="font-family: 'Fraunces', serif; color: var(--color-charcoal);">Hogyan rendelhetsz?</h2>
+        </div>
+
+        <div class="relative">
+          <!-- Step 1 -->
+          <div class="sticky top-[100px] z-10 mb-16">
+            <div class="rounded-2xl p-8 sm:p-10 shadow-lg border" style="background: var(--color-warm-white); border-color: #E8E0D4;">
+              <div class="flex items-start gap-6">
+                <div class="shrink-0 w-14 h-14 rounded-full flex items-center justify-center" style="background: var(--color-linen);">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C67A4B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                </div>
+                <div>
+                  <span class="text-xs font-bold tracking-[0.2em] uppercase block mb-2" style="color: var(--color-gold);">01</span>
+                  <h3 class="text-xl sm:text-2xl font-medium mb-3" style="font-family: 'Fraunces', serif; color: var(--color-charcoal);">Mesélj az ötletedről</h3>
+                  <p class="text-base leading-relaxed" style="color: var(--color-text-muted);">
+                    Válaszd ki a kívánt terméket a kínálatunkból, vagy írd le az egyedi elképzelésed az űrlapon. Csatolhatsz képet, vázlatot is.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="sticky top-[120px] z-20 mb-16">
+            <div class="rounded-2xl p-8 sm:p-10 shadow-lg border" style="background: var(--color-linen); border-color: #DDD5C8;">
+              <div class="flex items-start gap-6">
+                <div class="shrink-0 w-14 h-14 rounded-full flex items-center justify-center" style="background: #E8E0D4;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C67A4B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                </div>
+                <div>
+                  <span class="text-xs font-bold tracking-[0.2em] uppercase block mb-2" style="color: var(--color-gold);">02</span>
+                  <h3 class="text-xl sm:text-2xl font-medium mb-3" style="font-family: 'Fraunces', serif; color: var(--color-charcoal);">Egyeztetünk veled</h3>
+                  <p class="text-base leading-relaxed" style="color: var(--color-text-muted);">
+                    Megbeszéljük a részleteket: méretet, anyagot, szöveget, árat. Tisztázzuk az átvétel vagy postázás módját.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="sticky top-[140px] z-30 mb-16">
+            <div class="rounded-2xl p-8 sm:p-10 shadow-lg border" style="background: #EDE5D8; border-color: #D5CCB8;">
+              <div class="flex items-start gap-6">
+                <div class="shrink-0 w-14 h-14 rounded-full flex items-center justify-center" style="background: #DDD5C8;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C67A4B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                </div>
+                <div>
+                  <span class="text-xs font-bold tracking-[0.2em] uppercase block mb-2" style="color: var(--color-gold);">03</span>
+                  <h3 class="text-xl sm:text-2xl font-medium mb-3" style="font-family: 'Fraunces', serif; color: var(--color-charcoal);">Elkészül és tiéd</h3>
+                  <p class="text-base leading-relaxed" style="color: var(--color-text-muted);">
+                    Személyes átvétel Szarvason: készpénzzel fizethetsz. Egyedi terméknél és postázásnál előre utalás szükséges.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 5. AJÁNDÉKÖTLETEK ========== -->
+    <section class="py-24 lg:py-32" style="background: var(--color-warm-white);">
+      <div class="max-w-7xl mx-auto px-5 sm:px-8">
+        <!-- Section header -->
+        <div class="text-center mb-16">
+          <p class="text-xs font-medium tracking-[0.25em] uppercase mb-4" style="color: var(--color-terracotta);">Inspiráció</p>
+          <h2 class="text-4xl sm:text-5xl lg:text-6xl font-light" style="font-family: 'Fraunces', serif; color: var(--color-charcoal);">Ajándékötletek minden alkalomra</h2>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Születésnap -->
+          <div class="rounded-2xl p-8 border transition-shadow duration-300 hover:shadow-lg" style="background: var(--color-cream); border-color: #E8E0D4;">
+            <div class="w-12 h-12 rounded-full flex items-center justify-center mb-5" style="background: var(--color-linen);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C67A4B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <h3 class="text-xl font-medium mb-3" style="font-family: 'Fraunces', serif; color: var(--color-charcoal);">Születésnap</h3>
+            <p class="text-sm leading-relaxed" style="color: var(--color-text-muted);">Gravírozott képkeret vagy egyedi fa tábla névvel és dátummal.</p>
+          </div>
+
+          <!-- Esküvő -->
+          <div class="rounded-2xl p-8 border transition-shadow duration-300 hover:shadow-lg" style="background: var(--color-cream); border-color: #E8E0D4;">
+            <div class="w-12 h-12 rounded-full flex items-center justify-center mb-5" style="background: var(--color-linen);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C67A4B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+            </div>
+            <h3 class="text-xl font-medium mb-3" style="font-family: 'Fraunces', serif; color: var(--color-charcoal);">Esküvő</h3>
+            <p class="text-sm leading-relaxed" style="color: var(--color-text-muted);">Személyre szabott esküvői emléktábla az ifjú párnak.</p>
+          </div>
+
+          <!-- Névnap -->
+          <div class="rounded-2xl p-8 border transition-shadow duration-300 hover:shadow-lg" style="background: var(--color-cream); border-color: #E8E0D4;">
+            <div class="w-12 h-12 rounded-full flex items-center justify-center mb-5" style="background: var(--color-linen);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C67A4B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+            </div>
+            <h3 class="text-xl font-medium mb-3" style="font-family: 'Fraunces', serif; color: var(--color-charcoal);">Névnap</h3>
+            <p class="text-sm leading-relaxed" style="color: var(--color-text-muted);">Kedves apróság: hűtőmágnes vagy kulcstartó névvel.</p>
+          </div>
+
+          <!-- Karácsony -->
+          <div class="rounded-2xl p-8 border transition-shadow duration-300 hover:shadow-lg" style="background: var(--color-cream); border-color: #E8E0D4;">
+            <div class="w-12 h-12 rounded-full flex items-center justify-center mb-5" style="background: var(--color-linen);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C67A4B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10H3M16 6l-4-4-4 4M12 2v8M8 14l-2 8h12l-2-8"/><path d="M12 10v12"/></svg>
+            </div>
+            <h3 class="text-xl font-medium mb-3" style="font-family: 'Fraunces', serif; color: var(--color-charcoal);">Karácsony</h3>
+            <p class="text-sm leading-relaxed" style="color: var(--color-text-muted);">Fa díszek és egyedi ajándékok az ünnepekre.</p>
+          </div>
+
+          <!-- Csak úgy -->
+          <div class="rounded-2xl p-8 border transition-shadow duration-300 hover:shadow-lg" style="background: var(--color-cream); border-color: #E8E0D4;">
+            <div class="w-12 h-12 rounded-full flex items-center justify-center mb-5" style="background: var(--color-linen);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C67A4B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            </div>
+            <h3 class="text-xl font-medium mb-3" style="font-family: 'Fraunces', serif; color: var(--color-charcoal);">Csak úgy</h3>
+            <p class="text-sm leading-relaxed" style="color: var(--color-text-muted);">A legjobb meglepetés az, amire nem számít senki.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 6. PIACI MEGJELENÉS ========== -->
+    <section class="py-24 lg:py-32 relative grain" style="background: var(--color-charcoal);">
+      <div class="relative z-10 max-w-4xl mx-auto px-5 sm:px-8 text-center">
+        <p class="text-xs font-medium tracking-[0.25em] uppercase mb-4" style="color: var(--color-gold);">Események</p>
+        <h2 class="text-4xl sm:text-5xl lg:text-6xl font-light mb-8" style="font-family: 'Fraunces', serif; color: var(--color-warm-white);">Találkozz velünk!</h2>
+        <p class="text-lg leading-relaxed mb-4" style="color: #B8AFA4;">
+          Szarvasi és környékbeli piacok, vásárok, rendezvények.
+        </p>
+        <p class="text-lg leading-relaxed mb-10" style="color: #B8AFA4;">
+          Személyes átvétel egyeztetéssel Szarvason is lehetséges.
+        </p>
+        <a href="#kapcsolat" class="inline-flex items-center justify-center px-8 py-3.5 rounded-full text-sm font-semibold no-underline transition-all duration-200 hover:brightness-110" style="background: var(--color-terracotta); color: white;">
+          Lépj velünk kapcsolatba
+        </a>
+      </div>
+    </section>
+
+    <!-- ========== 7. KAPCSOLAT / ŰRLAP ========== -->
+    <section id="kapcsolat" class="py-24 lg:py-32" style="background: var(--color-cream);">
+      <div class="max-w-7xl mx-auto px-5 sm:px-8">
+        <!-- Section header -->
+        <div class="text-center mb-16">
+          <p class="text-xs font-medium tracking-[0.25em] uppercase mb-4" style="color: var(--color-terracotta);">Kapcsolat</p>
+          <h2 class="text-4xl sm:text-5xl lg:text-6xl font-light mb-4" style="font-family: 'Fraunces', serif; color: var(--color-charcoal);">Írj nekünk!</h2>
+          <p class="text-base max-w-lg mx-auto" style="color: var(--color-text-muted);">Kérdésed van vagy egyedi terméket szeretnél? Töltsd ki az űrlapot!</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16">
+          <!-- Form -->
+          <div class="lg:col-span-3">
+            <form class="space-y-6" onsubmit="return false;">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label for="name" class="block text-sm font-medium mb-2" style="color: var(--color-charcoal);">Név <span style="color: var(--color-terracotta);">*</span></label>
+                  <input type="text" id="name" name="name" required
+                         class="w-full rounded-xl px-4 py-3 text-sm border outline-none transition-all duration-200 focus:ring-2"
+                         style="background: var(--color-warm-white); border-color: #E8E0D4; color: var(--color-text); --tw-ring-color: var(--color-terracotta);"
+                         placeholder="Teljes neved" />
+                </div>
+                <div>
+                  <label for="email" class="block text-sm font-medium mb-2" style="color: var(--color-charcoal);">E-mail <span style="color: var(--color-terracotta);">*</span></label>
+                  <input type="email" id="email" name="email" required
+                         class="w-full rounded-xl px-4 py-3 text-sm border outline-none transition-all duration-200 focus:ring-2"
+                         style="background: var(--color-warm-white); border-color: #E8E0D4; color: var(--color-text); --tw-ring-color: var(--color-terracotta);"
+                         placeholder="pelda@email.hu" />
+                </div>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label for="phone" class="block text-sm font-medium mb-2" style="color: var(--color-charcoal);">Telefon <span class="text-xs" style="color: var(--color-text-muted);">(opcionális)</span></label>
+                  <input type="tel" id="phone" name="phone"
+                         class="w-full rounded-xl px-4 py-3 text-sm border outline-none transition-all duration-200 focus:ring-2"
+                         style="background: var(--color-warm-white); border-color: #E8E0D4; color: var(--color-text); --tw-ring-color: var(--color-terracotta);"
+                         placeholder="+36 XX XXX XXXX" />
+                </div>
+                <div>
+                  <label for="category" class="block text-sm font-medium mb-2" style="color: var(--color-charcoal);">Kategória</label>
+                  <select id="category" name="category"
+                          class="w-full rounded-xl px-4 py-3 text-sm border outline-none transition-all duration-200 focus:ring-2"
+                          style="background: var(--color-warm-white); border-color: #E8E0D4; color: var(--color-text); --tw-ring-color: var(--color-terracotta);">
+                    <option value="">Válassz kategóriát...</option>
+                    <option value="lezergravir">Lézergravírozott képek</option>
+                    <option value="fatablak">Fa táblák / feliratok</option>
+                    <option value="kisajandek">Kis ajándéktárgyak</option>
+                    <option value="kertidisz">Kerti díszek / virágtartók</option>
+                    <option value="nyomatok">Színes nyomatok</option>
+                    <option value="egyedi">Egyedi elképzelés</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label for="message" class="block text-sm font-medium mb-2" style="color: var(--color-charcoal);">Üzenet <span style="color: var(--color-terracotta);">*</span></label>
+                <textarea id="message" name="message" rows="5" required
+                          class="w-full rounded-xl px-4 py-3 text-sm border outline-none transition-all duration-200 focus:ring-2 resize-y"
+                          style="background: var(--color-warm-white); border-color: #E8E0D4; color: var(--color-text); --tw-ring-color: var(--color-terracotta);"
+                          placeholder="Írd le, milyen terméket szeretnél..."></textarea>
+              </div>
+              <button type="submit"
+                      class="inline-flex items-center justify-center px-8 py-3.5 rounded-full text-sm font-semibold text-white no-underline transition-all duration-200 hover:brightness-110 hover:shadow-lg cursor-pointer border-none"
+                      style="background: var(--color-terracotta);">
+                Üzenet küldése
+              </button>
+            </form>
+          </div>
+
+          <!-- Contact sidebar -->
+          <div class="lg:col-span-2">
+            <div class="rounded-2xl p-8 border" style="background: var(--color-warm-white); border-color: #E8E0D4;">
+              <h3 class="text-xl font-medium mb-6" style="font-family: 'Fraunces', serif; color: var(--color-charcoal);">Elérhetőségek</h3>
+              <div class="space-y-5">
+                <div class="flex items-start gap-4">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C67A4B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 mt-0.5"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                  <div>
+                    <p class="text-sm font-medium" style="color: var(--color-charcoal);">E-mail</p>
+                    <a href="mailto:info@fabrikaajandek.hu" class="text-sm no-underline hover:underline" style="color: var(--color-terracotta);">info@fabrikaajandek.hu</a>
+                  </div>
+                </div>
+                <div class="flex items-start gap-4">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C67A4B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 mt-0.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  <div>
+                    <p class="text-sm font-medium" style="color: var(--color-charcoal);">Viber</p>
+                    <a href="tel:+36XXXXXXXX" class="text-sm no-underline hover:underline" style="color: var(--color-terracotta);">+36 XX XXX XXXX</a>
+                  </div>
+                </div>
+                <div class="flex items-start gap-4">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C67A4B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 mt-0.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                  <div>
+                    <p class="text-sm font-medium" style="color: var(--color-charcoal);">Facebook</p>
+                    <a href="#" class="text-sm no-underline hover:underline" style="color: var(--color-terracotta);">Fabrika Ajándék</a>
+                  </div>
+                </div>
+                <div class="flex items-start gap-4">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C67A4B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 mt-0.5"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                  <div>
+                    <p class="text-sm font-medium" style="color: var(--color-charcoal);">Instagram</p>
+                    <a href="#" class="text-sm no-underline hover:underline" style="color: var(--color-terracotta);">@fabrikaajandek</a>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-8 pt-6 border-t" style="border-color: #E8E0D4;">
+                <div class="flex items-start gap-4">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C67A4B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 mt-0.5"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <div>
+                    <p class="text-sm font-medium" style="color: var(--color-charcoal);">Szarvas, Magyarország</p>
+                    <p class="text-sm" style="color: var(--color-text-muted);">Személyes átvétel egyeztetés után</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 8. GYIK ========== -->
+    <section class="py-24 lg:py-32" style="background: var(--color-warm-white);">
+      <div class="max-w-3xl mx-auto px-5 sm:px-8">
+        <!-- Section header -->
+        <div class="text-center mb-16">
+          <p class="text-xs font-medium tracking-[0.25em] uppercase mb-4" style="color: var(--color-terracotta);">GYIK</p>
+          <h2 class="text-4xl sm:text-5xl lg:text-6xl font-light" style="font-family: 'Fraunces', serif; color: var(--color-charcoal);">Gyakori kérdések</h2>
+        </div>
+
+        <div class="space-y-4" id="faq-container">
+          <!-- FAQ 1 -->
+          <div class="faq-item rounded-2xl border overflow-hidden" style="border-color: #E8E0D4;">
+            <button class="faq-toggle w-full flex items-center justify-between p-6 text-left cursor-pointer border-none" style="background: var(--color-cream);">
+              <span class="text-base font-medium pr-4" style="color: var(--color-charcoal);">Mennyi idő alatt készül el egy egyedi termék?</span>
+              <svg class="faq-chevron shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7A7067" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer" style="background: var(--color-cream);">
+              <p class="px-6 pb-6 text-sm leading-relaxed" style="color: var(--color-text-muted);">Általában 3-7 munkanap. Sürgős esetben jelezd az űrlapon!</p>
+            </div>
+          </div>
+
+          <!-- FAQ 2 -->
+          <div class="faq-item rounded-2xl border overflow-hidden" style="border-color: #E8E0D4;">
+            <button class="faq-toggle w-full flex items-center justify-between p-6 text-left cursor-pointer border-none" style="background: var(--color-cream);">
+              <span class="text-base font-medium pr-4" style="color: var(--color-charcoal);">Hogyan fizethetek?</span>
+              <svg class="faq-chevron shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7A7067" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer" style="background: var(--color-cream);">
+              <p class="px-6 pb-6 text-sm leading-relaxed" style="color: var(--color-text-muted);">Személyes átvétel: készpénz. Egyedi termék vagy postázás: előre utalás.</p>
+            </div>
+          </div>
+
+          <!-- FAQ 3 -->
+          <div class="faq-item rounded-2xl border overflow-hidden" style="border-color: #E8E0D4;">
+            <button class="faq-toggle w-full flex items-center justify-between p-6 text-left cursor-pointer border-none" style="background: var(--color-cream);">
+              <span class="text-base font-medium pr-4" style="color: var(--color-charcoal);">Van postázás?</span>
+              <svg class="faq-chevron shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7A7067" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer" style="background: var(--color-cream);">
+              <p class="px-6 pb-6 text-sm leading-relaxed" style="color: var(--color-text-muted);">Igen, Magyarországon belül. A költség méret és súly alapján alakul.</p>
+            </div>
+          </div>
+
+          <!-- FAQ 4 -->
+          <div class="faq-item rounded-2xl border overflow-hidden" style="border-color: #E8E0D4;">
+            <button class="faq-toggle w-full flex items-center justify-between p-6 text-left cursor-pointer border-none" style="background: var(--color-cream);">
+              <span class="text-base font-medium pr-4" style="color: var(--color-charcoal);">Külföldre is küldtök?</span>
+              <svg class="faq-chevron shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7A7067" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer" style="background: var(--color-cream);">
+              <p class="px-6 pb-6 text-sm leading-relaxed" style="color: var(--color-text-muted);">Jelenleg csak Magyarországon belül.</p>
+            </div>
+          </div>
+
+          <!-- FAQ 5 -->
+          <div class="faq-item rounded-2xl border overflow-hidden" style="border-color: #E8E0D4;">
+            <button class="faq-toggle w-full flex items-center justify-between p-6 text-left cursor-pointer border-none" style="background: var(--color-cream);">
+              <span class="text-base font-medium pr-4" style="color: var(--color-charcoal);">Saját ötletet is megvalósítotok?</span>
+              <svg class="faq-chevron shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7A7067" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer" style="background: var(--color-cream);">
+              <p class="px-6 pb-6 text-sm leading-relaxed" style="color: var(--color-text-muted);">Persze! Küldj leírást, képet vagy vázlatot.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========== 9. FOOTER ========== -->
+  <footer class="py-12" style="background: var(--color-charcoal);">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div class="text-center sm:text-left">
+          <p class="text-sm font-medium" style="font-family: 'Fraunces', serif; color: var(--color-warm-white);">Fabrika Ajándék</p>
+          <p class="text-xs mt-1" style="color: #8A8078;">Szarvas, Magyarország</p>
+        </div>
+        <div class="flex items-center gap-5">
+          <!-- Facebook -->
+          <a href="#" aria-label="Facebook" class="transition-opacity hover:opacity-70" style="color: #B8AFA4;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <!-- Instagram -->
+          <a href="#" aria-label="Instagram" class="transition-opacity hover:opacity-70" style="color: #B8AFA4;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+          </a>
+          <!-- Viber -->
+          <a href="#" aria-label="Viber" class="transition-opacity hover:opacity-70" style="color: #B8AFA4;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </a>
+        </div>
+        <p class="text-xs" style="color: #8A8078;">&copy; 2025 Fabrika Ajándék</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========== BACK TO TOP ========== -->
+  <button id="back-to-top" class="back-to-top fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full flex items-center justify-center shadow-lg border-none cursor-pointer transition-all duration-200 hover:brightness-110" style="background: var(--color-terracotta); color: white;" aria-label="Vissza az oldal tetejére">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
+  </button>
+
+  <!-- ========== ALL JAVASCRIPT ========== -->
+  <script>
+  (function() {
+    'use strict';
+
+    // --- Reduced motion check ---
+    var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // --- Mobile menu ---
+    var menuToggle = document.getElementById('menu-toggle');
+    var mobileMenu = document.getElementById('mobile-menu');
+    var iconOpen = document.getElementById('menu-icon-open');
+    var iconClose = document.getElementById('menu-icon-close');
+    var menuOpen = false;
+
+    if (menuToggle && mobileMenu) {
+      menuToggle.addEventListener('click', function() {
+        menuOpen = !menuOpen;
+        mobileMenu.classList.toggle('open', menuOpen);
+        iconOpen.classList.toggle('hidden', menuOpen);
+        iconClose.classList.toggle('hidden', !menuOpen);
+        menuToggle.setAttribute('aria-label', menuOpen ? 'Menü bezárása' : 'Menü megnyitása');
+      });
+
+      // Close mobile menu on link click
+      var mobileLinks = mobileMenu.querySelectorAll('a');
+      mobileLinks.forEach(function(link) {
+        link.addEventListener('click', function() {
+          menuOpen = false;
+          mobileMenu.classList.remove('open');
+          iconOpen.classList.remove('hidden');
+          iconClose.classList.add('hidden');
+        });
+      });
+    }
+
+    // --- Navbar shadow on scroll ---
+    var navbar = document.getElementById('navbar');
+    if (navbar) {
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 10) {
+          navbar.style.boxShadow = '0 1px 12px rgba(44,40,36,0.08)';
+        } else {
+          navbar.style.boxShadow = 'none';
+        }
+      }, { passive: true });
+    }
+
+    // --- Sticky image category swap (desktop only) ---
+    var categoryItems = document.querySelectorAll('.category-item');
+    var stickyImg = document.getElementById('sticky-cat-img');
+    var stickyLabel = document.getElementById('sticky-cat-label');
+
+    if (stickyImg && categoryItems.length > 0 && window.innerWidth >= 1024) {
+      var catObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            var newSrc = entry.target.getAttribute('data-image');
+            var newLabel = entry.target.getAttribute('data-label');
+            if (newSrc && stickyImg.getAttribute('src') !== newSrc) {
+              if (prefersReducedMotion) {
+                stickyImg.src = newSrc;
+                if (stickyLabel && newLabel) stickyLabel.textContent = newLabel;
+              } else {
+                stickyImg.style.opacity = '0';
+                if (stickyLabel) stickyLabel.style.opacity = '0';
+                setTimeout(function() {
+                  stickyImg.src = newSrc;
+                  stickyImg.style.opacity = '1';
+                  if (stickyLabel && newLabel) {
+                    stickyLabel.textContent = newLabel;
+                    stickyLabel.style.opacity = '1';
+                  }
+                }, 300);
+              }
+            }
+          }
+        });
+      }, {
+        threshold: 0.4,
+        rootMargin: '-25% 0px -25% 0px'
+      });
+
+      categoryItems.forEach(function(item) {
+        catObserver.observe(item);
+      });
+    }
+
+    // --- FAQ Accordion ---
+    var faqToggles = document.querySelectorAll('.faq-toggle');
+    faqToggles.forEach(function(toggle) {
+      toggle.addEventListener('click', function() {
+        var item = this.closest('.faq-item');
+        var answer = item.querySelector('.faq-answer');
+        var chevron = item.querySelector('.faq-chevron');
+        var isOpen = answer.classList.contains('open');
+
+        // Close all others
+        document.querySelectorAll('.faq-answer.open').forEach(function(openAnswer) {
+          openAnswer.classList.remove('open');
+          openAnswer.closest('.faq-item').querySelector('.faq-chevron').classList.remove('open');
+        });
+
+        // Toggle current
+        if (!isOpen) {
+          answer.classList.add('open');
+          chevron.classList.add('open');
+        }
+      });
+    });
+
+    // --- Back to top ---
+    var backToTop = document.getElementById('back-to-top');
+    if (backToTop) {
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 600) {
+          backToTop.classList.add('visible');
+        } else {
+          backToTop.classList.remove('visible');
+        }
+      }, { passive: true });
+
+      backToTop.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+      });
+    }
+
+    // --- Smooth scroll for anchor links ---
+    document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+      anchor.addEventListener('click', function(e) {
+        var targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        var target = document.querySelector(targetId);
+        if (target) {
+          e.preventDefault();
+          var offset = 80;
+          var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+          window.scrollTo({
+            top: top,
+            behavior: prefersReducedMotion ? 'auto' : 'smooth'
+          });
+        }
+      });
+    });
+
+  })();
+  </script>
+
+</body>
+</html>
