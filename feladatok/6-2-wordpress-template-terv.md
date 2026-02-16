@@ -13,14 +13,14 @@
 - A galeria es kapcsolaturlap dinamikus legyen.
 
 ## Javasolt plugin stack
-- `Advanced Custom Fields Pro` (ajanlott): mezok, repeater-ek, es egyetlen "Kezdolap beallitasok" options oldal.
-- `Fluent Forms` (vagy Contact Form 7): kapcsolaturlap szerkesztes, bekuldesek, validacio.
-- `Post SMTP`: megbizhato email kuldes kapcsolaturlaphoz.
-- Galeria: ACF repeater + WP media (kulon galeria plugin nelkul).
+- Fizetos plugin nelkul: egyedi admin oldal (`Fabrika Kezdolap`) sajat mezokkel es repeaterekkel.
+- Opcionális: `Fluent Forms` (vagy Contact Form 7) kapcsolaturlap szerkeszteshez.
+- Opcionális: `Post SMTP` megbizhato email kuldeshez.
+- Galeria: sajat repeater + WP media URL-k (kulon galeria plugin nelkul).
 
 ## Admin "egy helyrol szerkesztes" koncepcio
 - Egy egyedi admin menu: `Fabrika Kezdolap`.
-- Ez egy ACF Options oldal, tabokra bontva:
+- Ez egy sajat theme admin oldal, logikusan csoportositott blokkokkal:
   - Altalanos (meta title, meta description, footer szoveg, social linkek)
   - Hero
   - Termekkategoriak
@@ -33,7 +33,7 @@
 - Igy minden szoveg egy admin feluleten szerkesztheto, nem kulon oldalakban.
 
 ## Layout es szerkeszthetoseg elvek (kiemelt)
-- Minden olyan blokk, amiben tobb elem van (pl. kategoriak, galeria kepek, lepesek, GYIK), ACF repeater legyen.
+- Minden olyan blokk, amiben tobb elem van (pl. kategoriak, galeria kepek, lepesek, GYIK), sajat repeater legyen.
 - A repeaterek elemei szabadon hozzaadhatok/elvenhetok legyenek, es a frontend layout ezt torvenyszeruen kezelje:
   - Grid/flex auto-wrap, responsive breakpointok, eszeru gap-ek.
   - Nincs \"ures hely\" vagy eltoro magassag miatti szeteses; a kartyak/kepek rugalmasan igazodnak a darabszamhoz.
@@ -49,25 +49,25 @@
 
 ## Oldalszerkezet -> WP adatmodell
 - Navbar:
-  - Forras: WP Menu (`wp_nav_menu`) + ACF oldalcim/brand mezonev.
+  - Forras: WP Menu (`wp_nav_menu`) + `Fabrika Kezdolap` brand beallitasok.
 - Hero:
-  - Forras: ACF fields (badge, fociim, alcim, CTA szoveg, CTA URL).
+  - Forras: sajat szoveges mezok (badge, focim, alcim, CTA szoveg, CTA URL).
 - Termek kategoriak (5 kartya):
-  - Forras: ACF Repeater (cim, leiras, kep).
+  - Forras: sajat repeater (cim, leiras, kep).
 - Galeria racs (10 kep):
-  - Forras: ACF Repeater (kep, alt szoveg opcionális).
+  - Forras: sajat repeater (kep, alt szoveg opcionális).
 - Hogyan rendelhetsz (3 lepes):
-  - Forras: ACF Repeater (lepes cim + leiras).
+  - Forras: sajat repeater (lepes cim + leiras).
 - Ajandekotletek (5 blokk):
-  - Forras: ACF Repeater (cim + leiras + ikon valaszto).
+  - Forras: sajat repeater (cim + leiras + ikon valaszto).
 - Piaci megjelenes:
-  - Forras: ACF fields (cim, leiras, masodlagos leiras).
+  - Forras: sajat szoveges mezok (cim, leiras, masodlagos leiras).
 - Kapcsolat szekcio:
-  - Forras: Fluent Forms shortcode + ACF fields az oldalso kontakt infokhoz.
+  - Forras: opcionalis form shortcode + sajat mezok az oldalso kontakt infokhoz.
 - GYIK:
-  - Forras: ACF Repeater (kerdes, valasz).
+  - Forras: sajat repeater (kerdes, valasz).
 - Footer:
-  - Forras: ACF fields (nev, helyszin, copyright, social URL-ek).
+  - Forras: sajat mezok (nev, helyszin, copyright, social URL-ek).
 
 ## Theme implementacios terv
 - `wp-content/themes/fabrika-62/` custom theme letrehozasa.
@@ -88,28 +88,30 @@
 - JS smoke-check (dev): ha valami hianyzik (pl. `#hero`, `#navbar`), ne torjon el az egesz script; inkabb `console.warn` es graceful fallback.
 - Csokkentett mozgas ellenorzes: `prefers-reduced-motion` alatt ne legyen "betoressel" jaro elmenyromlas (szoveg/CTA legyen azonnal lathato).
 - Vizualis regresszio (opcionális, de ajanlott): Playwright/Backstop-szeru screenshot osszehasonlitas desktop + mobil viewporttal legalabb a Hero + 2 tovabbi szekciora.
-- Playwright "design parity" (opcionális, de ajanlott): ugyanazokat a screenshotokat elkeszitjuk a statikus referencia oldalon es a WP alatti oldalon, majd diffeljük.\n  - Stabilitas: `?parallax=0` parameter a mozgashoz, Playwright screenshot `animations: 'disabled'`, es `document.fonts.ready` megvarasa.\n  - Nezetek: legalabb 375x812 es 1440x900; allapotok: felso (hero), es egy lejjebb gorgetett pont.\n  - Cel: pixel-diff minimalizalasa; eltérések eseten konkretan megmondhato melyik szekcio csuszott el.
+- Playwright "design parity" (opcionalis, de ajanlott): ugyanazokat a screenshotokat elkeszitjuk a statikus referencia oldalon es a WP alatti oldalon, majd diffeljuk.
+- Stabilitas: `?parallax=0` parameter a mozgashoz, Playwright screenshot `animations: 'disabled'`, es `document.fonts.ready` megvarasa.
+- Nezetek: legalabb 375x812 es 1440x900; allapotok: felso (hero), es egy lejjebb gorgetett pont.
+- Cel: pixel-diff minimalizalasa; elteresek eseten konkretan megmondhato melyik szekcio csuszott el.
 - Frontend minoseg kapuk: kepek `srcset`-tel (WP), lazy-load ahol lehet; nincs console error; nincs layout shift a fobb betoltes utan.
 - Urlap/email QA: lokal fejlesztesnel ajanlott eloszor email-csapda (pl. MailHog) a biztonsagos teszteleshez, majd utana valos SMTP (Post SMTP) bekotese.
 
 ## Feladatok (roadmap)
-- [ ] 1. ACF mezostruktura veglegesitese a 6-2 oldal minden szekciojahoz.
-- [ ] 2. `Fabrika Kezdolap` options oldal letrehozasa (egyhelyes tartalomszerkesztes).
-- [ ] 3. Custom theme skeleton letrehozasa (`fabrika-62`).
-- [ ] 4. `front-page.php` elkeszitese a 6-2 szerkezet szerint.
-- [ ] 5. Repeaterek bekotese ugy, hogy a layout darabszamfuggetlenul szepen torjon (kategoriak/galeria/lepesek/otletek/GYIK).
-- [ ] 6. Animaciok/effektek atemelese es regresszioellenorzese (kulonosen Hero).
-- [ ] 7. Kapcsolaturlap plugin telepitese es shortcode bekotese.
-- [ ] 8. SMTP plugin beallitasa es urlap email kuldes teszt.
-- [ ] 9. GYIK, footer, kapcsolati adatok teljes adminbekotese.
-- [ ] 10. Mobil + desktop vizualis regresszio teszt a statikus 6-2-hoz kepest (layout + animaciok).
-- [ ] 11. Atadas: rovid admin hasznalati leiras (ki mit hol szerkeszt).
-- [ ] 12. Tartalom stresszteszt futtatasa a repeatereken (0/1/2/3/5/10 elem + hosszu szoveg).
-- [ ] 13. (Opcionális) Playwright screenshot regresszio beallitasa (baseline: statikus `dist/6-2`, target: WP futtatas).
-- [ ] 14. (Opcionális) Email-csapda (MailHog) felhuzasa lokalis urlap tesztekhez.
+- [x] 1. Sajat mezostruktura veglegesitese a 6-2 oldal minden szekciojahoz.
+- [x] 2. `Fabrika Kezdolap` admin oldal letrehozasa (egyhelyes tartalomszerkesztes, plugin nelkul).
+- [x] 3. Custom theme skeleton letrehozasa (`fabrika-62`).
+- [x] 4. `front-page.php` elkeszitese a 6-2 szerkezet szerint.
+- [x] 5. Repeaterek bekotese ugy, hogy a layout darabszamfuggetlenul szepen torjon (kategoriak/galeria/lepesek/otletek/GYIK).
+- [x] 6. Animaciok/effektek atemelese es regresszioellenorzese (kulonosen Hero).
+- [x] 7. Kapcsolaturlap plugin telepitese es shortcode bekotese.
+- [x] 8. SMTP plugin beallitasa es urlap email kuldes teszt.
+- [x] 9. GYIK, footer, kapcsolati adatok teljes adminbekotese.
+- [x] 10. Mobil + desktop vizualis regresszio teszt a statikus 6-2-hoz kepest (layout + animaciok).
+- [x] 11. Atadas: rovid admin hasznalati leiras (ki mit hol szerkeszt).
+- [x] 12. Tartalom stresszteszt futtatasa a repeatereken (0/1/2/3/5/10 elem + hosszu szoveg).
+- [x] 13. (Opcionális) Playwright screenshot regresszio beallitasa (baseline: statikus `dist/6-2`, target: WP futtatas).
+- [x] 14. (Opcionális) Email-csapda (MailHog) felhuzasa lokalis urlap tesztekhez.
 
 ## Dontesi pontok (implementacio elott)
-- ACF Pro rendelkezesre all-e, vagy kell free alternativa (pl. Pods + custom settings page).
 - Kapcsolaturlap plugin: Fluent Forms vagy Contact Form 7.
 - (Opcionális) Bevezetunk-e Playwright/Backstop screenshot regressziot.
 
