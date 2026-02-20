@@ -75,6 +75,64 @@ docker cp tests/stress-test-repeaters.php fabrika_wp_app:/tmp/
 docker exec fabrika_wp_app php /tmp/stress-test-repeaters.php
 ```
 
+## Deploying to a live site (Theme telepítése)
+
+### 1. Theme zip előállítása
+
+```bash
+bash scripts/export-theme.sh
+```
+
+A script a `dist/` mappába generálja:
+
+| Fájl | Tartalom |
+|---|---|
+| `dist/fabrika-62-theme.zip` | A teljes WP theme, azonnal feltölthető |
+| `dist/fabrika62_options.json` | Az aktuális admin beállítások (ha Docker fut) |
+
+> A script automatikusan kihagyja a fejlesztői fájlokat (test-results, .DS_Store stb.).
+
+### 2. Telepítés a céloldalon
+
+**A. Theme feltöltése**
+
+WP Admin → Megjelenés → Témák → Témafeltöltés → `dist/fabrika-62-theme.zip` → Aktiválás.
+
+Alternatíva: FTP-vel másold a `fabrika-62/` mappát a célszerver `wp-content/themes/` könyvtárába, majd aktiváld az adminban.
+
+**B. Rewrite rules frissítése** (hogy a `/termekek/` URL működjön)
+
+WP Admin → Beállítások → Állandó hivatkozások → Mentés gombra kattintás.
+
+Vagy WP-CLI-vel: `wp rewrite flush`
+
+**C. Admin beállítások importálása** (opcionális)
+
+Az összes szöveg alapértelmezett értékkel indul (lásd `inc/helpers.php: fabrika62_default_options()`), így ez a lépés csak akkor kell, ha a helyi fejlesztőn már testre szabtátok a szövegeket.
+
+```bash
+# WP-CLI-vel (ha elérhető a célszerveren):
+wp option update fabrika62_options "$(cat dist/fabrika62_options.json)"
+
+# Vagy PHP-val (ha nincs WP-CLI):
+# Töltsd fel az options.php fájlt (lásd alább), majd töröld.
+```
+
+Ha a helyi WP-n az admin beállítások soha nem lettek elmentve (csak az alapértelmezett értékeket tartalmazza), a script jelzi, hogy nincs szükség importra – az alapértelmezett szövegek a kódban vannak (`inc/helpers.php`).
+
+**D. Termékek és képek** (új telepítésnél nincs mit importálni – mockadatok nem kerülnek be a zipbe)
+
+A termékeket az admin felületen kell felvinni: WP Admin → Termékek → Új hozzáadása.
+
+### Összefoglalás: mi kerül a zip-be, mi nem
+
+| Benne van ✓ | Nincs benne ✗ |
+|---|---|
+| PHP template-ek | Mock/teszt termékek (csak DB-ben vannak) |
+| CSS + JS assets | `wp-content/uploads/` (médiatár) |
+| Képek (`assets/references/`) | Admin beállítások (külön JSON-ban) |
+| Custom Post Type + taxonomy | Docker / dev config |
+
 ## Tech stack
 
 - **Static sites:** Vite, Tailwind CSS 4
