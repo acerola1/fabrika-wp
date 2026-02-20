@@ -20,7 +20,8 @@ function fabrika62_setup(): void
     // Image sizes for product cards / catalog.
     // These rely on WP's image editor (GD/Imagick) to generate thumbnails on upload.
     add_image_size('square_600', 600, 600, true);
-    add_image_size('square_1200', 1200, 1200, true);
+    // product_large: nem vág, eredeti aspect ratio – carousel / modal használja
+    add_image_size('product_large', 1200, 1200, false);
 
     register_nav_menus([
         'primary' => __('Primary Menu', 'fabrika-62'),
@@ -220,8 +221,8 @@ add_action('save_post_' . FABRIKA62_TERMEK_POST_TYPE, 'fabrika62_ensure_termek_k
 
 function fabrika62_image_size_labels(array $sizes): array
 {
-    $sizes['square_600'] = __('Négyzet 600 (katalógus)', 'fabrika-62');
-    $sizes['square_1200'] = __('Négyzet 1200 (master)', 'fabrika-62');
+    $sizes['square_600']    = __('Négyzet 600 (katalógus kártya)', 'fabrika-62');
+    $sizes['product_large'] = __('Termék nagy (1200, eredeti arány, modal)', 'fabrika-62');
     return $sizes;
 }
 add_filter('image_size_names_choose', 'fabrika62_image_size_labels');

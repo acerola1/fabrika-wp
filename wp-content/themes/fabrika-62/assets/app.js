@@ -309,6 +309,37 @@
 
     if (!filterButtons.length || !productCards.length || !noResults) return;
 
+    function normalizeFilterToken(raw) {
+      if (!raw || raw === 'all') return 'all';
+      var token = String(raw);
+      var tokens = [];
+      filterButtons.forEach(function(btn) {
+        var val = btn.getAttribute('data-filter');
+        if (val) tokens.push(val);
+      });
+      if (tokens.indexOf(token) !== -1) return token;
+      var needle = token.toLowerCase().replace(/[^a-z0-9]+/g, '');
+      var best = '';
+      var bestScore = -1;
+      tokens.forEach(function(val) {
+        if (!val || val === 'all') return;
+        var cand = val.toLowerCase().replace(/[^a-z0-9]+/g, '');
+        if (!cand || !needle) return;
+        if (cand === needle) {
+          best = val;
+          bestScore = 10000;
+          return;
+        }
+        if (needle.indexOf(cand) !== -1 || cand.indexOf(needle) !== -1) {
+          if (cand.length > bestScore) {
+            bestScore = cand.length;
+            best = val;
+          }
+        }
+      });
+      return best || token;
+    }
+
     function applyFilter(filter) {
       var visibleCount = 0;
 
@@ -360,7 +391,15 @@
     try {
       var params = new URLSearchParams(window.location.search);
       var kategoriaParam = params.get('kategoria') || params.get('cimke') || params.get('tag');
-      if (kategoriaParam) applyFilter(kategoriaParam);
+      if (kategoriaParam) {
+        var normalized = normalizeFilterToken(kategoriaParam);
+        applyFilter(normalized);
+        if (normalized !== kategoriaParam && normalized !== 'all') {
+          var url = new URL(window.location.href);
+          url.searchParams.set('kategoria', normalized);
+          history.replaceState(null, '', url);
+        }
+      }
     } catch (err) {
       // Ignore.
     }
@@ -378,6 +417,163 @@
         // Ignore.
       }
     };
+  })();
+
+  // ========== CATALOG MODAL / CAROUSEL (2.16b, 2.16c, 2.16d) ==========
+  (function() {
+    // Only runs on the termékek archive (where the filter bar and modal exist).
+    var modal = document.getElementById('product-modal');
+    if (!modal) return;
+
+    var modalBackdrop = document.getElementById('modal-backdrop');
+    var modalClose    = document.getElementById('modal-close');
+    var modalPrev     = document.getElementById('modal-prev');
+    var modalNext     = document.getElementById('modal-next');
+    var modalImg      = document.getElementById('modal-img');
+    var modalProductId = document.getElementById('modal-product-id');
+    var modalTags     = document.getElementById('modal-tags');
+    var modalTitle    = document.getElementById('modal-title');
+    var modalPrice    = document.getElementById('modal-price');
+    var modalDesc     = document.getElementById('modal-desc');
+    var modalCta      = document.getElementById('modal-cta');
+    var modalCounter  = document.getElementById('modal-counter');
+
+    if (!modalBackdrop || !modalClose || !modalImg || !modalTitle) return;
+
+    var productCards = document.querySelectorAll('.product-card');
+    var currentModalIndex = 0;
+    var visibleProductsList = [];
+    var originalUrl = window.location.href;
+
+    function getVisibleProducts() {
+      return Array.from(productCards).filter(function(c) {
+        return c.style.display !== 'none';
+      });
+    }
+
+    function pushTermekUrl(id) {
+      try {
+        var url = new URL(window.location.href);
+        if (id) { url.searchParams.set('termek', id); } else { url.searchParams.delete('termek'); }
+        history.replaceState(null, '', url);
+      } catch (e) { /* ignore */ }
+    }
+
+    function renderModal(card) {
+      var img    = card.querySelector('img');
+      var id     = card.getAttribute('data-id') || '';
+      var name   = card.querySelector('h3') ? card.querySelector('h3').textContent.trim() : '';
+      var priceEl = card.querySelector('p.text-lg');
+      var price  = priceEl ? priceEl.textContent.trim() : '';
+      var desc   = card.getAttribute('data-desc') || '';
+      var tags   = Array.from(card.querySelectorAll('.tag-badge')).map(function(t) {
+        return t.textContent.trim();
+      });
+      var ctaEl  = card.querySelector('a[href*="#kapcsolat"]');
+      var ctaHref = ctaEl ? ctaEl.getAttribute('href') : '#kapcsolat';
+
+      var largeUrl = card.getAttribute('data-img-large') || (img ? img.src : '');
+      if (modalImg)       { modalImg.src = largeUrl; modalImg.alt = img ? (img.alt || name) : name; }
+      if (modalProductId) { modalProductId.textContent = id; }
+      if (modalTitle)     { modalTitle.textContent = name; }
+      if (modalPrice)     { modalPrice.textContent = price; }
+      if (modalDesc)      { modalDesc.textContent = desc; }
+      if (modalCta)       { modalCta.href = ctaHref; }
+      if (modalTags)      {
+        modalTags.innerHTML = tags.map(function(t) {
+          return '<span class="tag-badge">' + t.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</span>';
+        }).join(' ');
+      }
+      if (modalCounter) {
+        modalCounter.textContent = (currentModalIndex + 1) + ' / ' + visibleProductsList.length;
+      }
+    }
+
+    function openModal(card) {
+      visibleProductsList = getVisibleProducts();
+      currentModalIndex = visibleProductsList.indexOf(card);
+      if (currentModalIndex === -1) { currentModalIndex = 0; }
+      renderModal(visibleProductsList[currentModalIndex]);
+      modal.style.display = 'flex';
+      requestAnimationFrame(function() {
+        modal.classList.add('modal-open');
+      });
+      document.body.classList.add('modal-body-lock');
+      if (modalClose) { modalClose.focus(); }
+      pushTermekUrl(visibleProductsList[currentModalIndex].getAttribute('data-id') || '');
+    }
+
+    function closeModal() {
+      modal.classList.remove('modal-open');
+      document.body.classList.remove('modal-body-lock');
+      setTimeout(function() {
+        modal.style.display = 'none';
+      }, 260);
+      try { history.replaceState(null, '', originalUrl); } catch (e) { /* ignore */ }
+    }
+
+    function navigateModal(direction) {
+      if (visibleProductsList.length < 2) { return; }
+      currentModalIndex = (currentModalIndex + direction + visibleProductsList.length) % visibleProductsList.length;
+      renderModal(visibleProductsList[currentModalIndex]);
+      pushTermekUrl(visibleProductsList[currentModalIndex].getAttribute('data-id') || '');
+    }
+
+    // Kártyára kattintva megnyílik (az "Érdekel" gomb kivételével)
+    productCards.forEach(function(card) {
+      card.style.cursor = 'pointer';
+      card.addEventListener('click', function(e) {
+        if (e.target.closest('a[href*="#kapcsolat"]')) { return; }
+        openModal(card);
+      });
+    });
+
+    // Navigációs gombok
+    if (modalPrev) { modalPrev.addEventListener('click', function() { navigateModal(-1); }); }
+    if (modalNext) { modalNext.addEventListener('click', function() { navigateModal(1); }); }
+
+    // Bezárás: X gomb + backdrop
+    modalClose.addEventListener('click', closeModal);
+    if (modalBackdrop) { modalBackdrop.addEventListener('click', closeModal); }
+
+    // Billentyűzet: ESC + nyilak (2.16c)
+    document.addEventListener('keydown', function(e) {
+      if (!modal.classList.contains('modal-open')) { return; }
+      if (e.key === 'Escape')     { e.preventDefault(); closeModal(); }
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); navigateModal(-1); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); navigateModal(1); }
+    });
+
+    // Mobil swipe
+    var touchStartX = 0;
+    var touchStartY = 0;
+    modal.addEventListener('touchstart', function(e) {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+    modal.addEventListener('touchend', function(e) {
+      var dx = e.changedTouches[0].clientX - touchStartX;
+      var dy = e.changedTouches[0].clientY - touchStartY;
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+        navigateModal(dx < 0 ? 1 : -1);
+      }
+    }, { passive: true });
+
+    // Oldalbetöltéskor ?termek= param alapján megnyitja a megfelelő terméket
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var termekParam = params.get('termek');
+      if (termekParam) {
+        var targetCard = null;
+        productCards.forEach(function(c) {
+          if ((c.getAttribute('data-id') || '') === termekParam) { targetCard = c; }
+        });
+        if (targetCard) {
+          originalUrl = window.location.href;
+          setTimeout(function() { openModal(targetCard); }, 350);
+        }
+      }
+    } catch (e) { /* ignore */ }
   })();
 
 })();

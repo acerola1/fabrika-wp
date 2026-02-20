@@ -46,7 +46,7 @@ A meglévő one-page Fabrika oldalt (6-2) bővítjük egy külön `/termekek` (k
 
 **CTA gomb logika:**
 - A "Megrendelem / Érdekel" gomb a főoldal `#kapcsolat` szekciójára (vagy külön kapcsolat oldalra) navigál.
-- Query paramban átadja a termék nevét/azonosítóját: `/?termek=lezer-portre-30x40#kapcsolat` vagy `/kapcsolat?termek=lezer-portre-30x40`.
+- Query paramban átadja a termék azonosítóját és nevét: `/?termek={kod}&nev={termek-nev}#kapcsolat`.
 - Az űrlap JS-ből automatikusan kitölti a termék nevét egy rejtett vagy látható mezőbe.
 
 **(Ajánlott UX) Termék modal/carousel:**
@@ -84,7 +84,7 @@ Munkáink szekción
   └── "Összes termék megtekintése" → /termekek
 
 /termekek oldal
-  └── Termék kártya → "Megrendelem / Érdekel" → /#kapcsolat?termek={slug}
+  └── Termék kártya → "Megrendelem / Érdekel" → /?termek={kod}&nev={termek-nev}#kapcsolat
 
 Kapcsolat űrlap
   └── Termék mező automatikusan kitöltve (ha query param érkezett)
@@ -114,7 +114,7 @@ A `6-3/` könyvtárba készül egy kattintható statikus prototípus, ami a jele
 
 ## Kiegészítő szempontok (ajánlott)
 
-- **Query param standard:** eldönteni, hogy `?termek=` slug / ID / "FA-XXX" kód legyen-e (és kell-e `?nev=` a displayhez).
+- **Query param standard (lezárva):** `?termek=` = termék kód (WP-ben jelenleg post ID), `?nev=` = termék neve a felhasználóbarát kitöltéshez.
 - **Termék azonosító (FA-XXX):** ha marad a mockban, akkor WP-ben is érdemes egy opcionális meta mezőként kezelni.
 - **SEO minimum:** `/termekek` title/description + canonical (ha nincs SEO plugin).
 - **Minőség kapu:** legalább 1-2 automata e2e teszt (Playwright) a CTA-láncra, hogy refaktoroknál se törjön.

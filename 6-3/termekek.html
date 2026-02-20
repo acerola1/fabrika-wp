@@ -98,6 +98,179 @@
       font-family: 'Source Sans 3', monospace;
       z-index: 1;
     }
+
+    /* ===== STATIKUS LEÍRÁS A KÁRTYÁBAN (1.14) ===== */
+    .desc-short {
+      font-size: 0.78rem;
+      color: #5C3D2E;
+      line-height: 1.4;
+      margin: 0 0 0.5rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* ===== MODAL / CAROUSEL (1.12, 1.13) ===== */
+    #product-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+    #product-modal.modal-open {
+      opacity: 1;
+    }
+    .modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(42, 32, 24, 0.85);
+      backdrop-filter: blur(6px);
+      cursor: pointer;
+    }
+    .modal-box {
+      position: relative;
+      background: #FFFBF5;
+      border-radius: 12px;
+      width: 95vw;
+      max-width: 95vw;
+      max-height: 92vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(24px) scale(0.97);
+      transition: transform 0.25s ease;
+      border: 1px solid rgba(184, 115, 51, 0.2);
+      box-shadow: 0 20px 60px rgba(42, 32, 24, 0.5);
+    }
+    #product-modal.modal-open .modal-box {
+      transform: translateY(0) scale(1);
+    }
+    @media (min-width: 640px) {
+      .modal-box { flex-direction: row; height: 85vh; max-height: 85vh; }
+      .modal-image-wrap { width: 75%; flex-shrink: 0; }
+      .modal-info { flex: 1; overflow-y: auto; }
+    }
+    .modal-image-wrap {
+      position: relative;
+      background: #2a2015;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 55vw;
+    }
+    @media (min-width: 640px) {
+      .modal-image-wrap { min-height: unset; }
+    }
+    .modal-image-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+    .modal-info {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .modal-product-name {
+      font-family: 'Bitter', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #3B2314;
+      margin: 0;
+    }
+    .modal-price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #B87333;
+      margin: 0;
+    }
+    .modal-desc {
+      font-size: 0.9rem;
+      color: #5C3D2E;
+      line-height: 1.6;
+      flex: 1;
+      margin: 0;
+    }
+    .modal-cta-btn {
+      display: block;
+      text-align: center;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      color: #FFFBF5;
+      background: linear-gradient(135deg, #B87333, #C9A84C);
+      transition: transform 0.2s, box-shadow 0.2s;
+      margin-top: 0.5rem;
+      text-decoration: none;
+    }
+    .modal-cta-btn:hover {
+      transform: scale(1.04);
+      box-shadow: 0 4px 16px rgba(184, 115, 51, 0.4);
+    }
+    .modal-close-btn {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      z-index: 10;
+      background: rgba(59, 35, 20, 0.85);
+      color: #FFFBF5;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s;
+      border: none;
+    }
+    .modal-close-btn:hover { background: #B87333; }
+    .modal-nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      background: linear-gradient(135deg, #B87333, #C9A84C);
+      color: #FFFBF5;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 2.4rem;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+      border: 3px solid rgba(255,255,255,0.35);
+      user-select: none;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+    .modal-nav-btn:hover { transform: translateY(-50%) scale(1.12); box-shadow: 0 6px 28px rgba(0,0,0,0.65); }
+    .modal-prev-btn { left: 1rem; }
+    .modal-next-btn { right: 1rem; }
+    .modal-counter {
+      position: absolute;
+      bottom: 0.75rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.75rem;
+      color: #E8DCC8;
+      background: rgba(20, 14, 8, 0.65);
+      padding: 3px 12px;
+      border-radius: 999px;
+      white-space: nowrap;
+      pointer-events: none;
+      backdrop-filter: blur(4px);
+    }
+    body.modal-body-lock { overflow: hidden; }
   </style>
 </head>
 <body class="bg-[#FFFBF5] antialiased">
@@ -179,10 +352,11 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="product-grid">
 
         <!-- Product 1 -->
-        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="lezer-gravirozott-kepek testreszabhato" data-id="FA-001">
+        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="lezer-gravirozott-kepek testreszabhato" data-id="FA-001" data-desc="Egyedi fotóból lézergravírozott portré mágnes. Hűtőre, fémfelületre tapad. Kiváló névnapi vagy születésnapi ajándék.">
           <div class="aspect-square overflow-hidden relative">
             <span class="product-id">FA-001</span>
             <img src="/references/01-laser-engraved-magnet.jpg" alt="Lézer portré mágnes" loading="lazy" class="w-full h-full object-cover" />
+            <div class="desc-overlay" aria-hidden="true"><p class="desc-text">Egyedi fotóból lézergravírozott portré mágnes. Hűtőre, fémfelületre tapad. Kiváló névnapi vagy születésnapi ajándék.</p></div>
           </div>
           <div class="p-4">
             <div class="flex flex-wrap gap-1 mb-2">
@@ -198,10 +372,11 @@
         </div>
 
         <!-- Product 2 -->
-        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="lezer-gravirozott-kepek testreszabhato" data-id="FA-002">
+        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="lezer-gravirozott-kepek testreszabhato" data-id="FA-002" data-desc="Lézergravírozott fali dísz, egyedi felirattal vagy fényképpel. Méret: 30×20 cm, fa alapon. Akasztóval, falra kész.">
           <div class="aspect-square overflow-hidden relative">
             <span class="product-id">FA-002</span>
             <img src="/references/02-laser-engraved-wall-plaque.jpg" alt="Gravírozott fali tábla" loading="lazy" class="w-full h-full object-cover" />
+            <div class="desc-overlay" aria-hidden="true"><p class="desc-text">Lézergravírozott fali dísz, egyedi felirattal vagy fényképpel. Méret: 30×20 cm, fa alapon. Akasztóval, falra kész.</p></div>
           </div>
           <div class="p-4">
             <div class="flex flex-wrap gap-1 mb-2">
@@ -217,10 +392,11 @@
         </div>
 
         <!-- Product 3 -->
-        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="fa-tablak testreszabhato" data-id="FA-003">
+        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="fa-tablak testreszabhato" data-id="FA-003" data-desc="Kézzel festett fa tábla, tetszőleges szöveggel vagy motívummal. Vintage stílus, beltéri és kültéri használatra is alkalmas.">
           <div class="aspect-square overflow-hidden relative">
             <span class="product-id">FA-003</span>
             <img src="/references/03-handmade-wood-sign-shop-1.jpg" alt="Kézműves fa tábla" loading="lazy" class="w-full h-full object-cover" />
+            <div class="desc-overlay" aria-hidden="true"><p class="desc-text">Kézzel festett fa tábla, tetszőleges szöveggel vagy motívummal. Vintage stílus, beltéri és kültéri használatra is alkalmas.</p></div>
           </div>
           <div class="p-4">
             <div class="flex flex-wrap gap-1 mb-2">
@@ -236,10 +412,11 @@
         </div>
 
         <!-- Product 4 -->
-        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="fa-tablak" data-id="FA-004">
+        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="fa-tablak" data-id="FA-004" data-desc="Fa tábla „házirendhez" – ideális nyaralóba, konyhába, irodába. Személyre szabható szöveg, több méretben elérhető.">
           <div class="aspect-square overflow-hidden relative">
             <span class="product-id">FA-004</span>
             <img src="/references/04-waterfront-rules-wood-sign.jpg" alt="Szabályok fa tábla" loading="lazy" class="w-full h-full object-cover" />
+            <div class="desc-overlay" aria-hidden="true"><p class="desc-text">Fa tábla „házirendhez" – ideális nyaralóba, konyhába, irodába. Személyre szabható szöveg, több méretben elérhető.</p></div>
           </div>
           <div class="p-4">
             <div class="flex flex-wrap gap-1 mb-2">
@@ -254,10 +431,11 @@
         </div>
 
         <!-- Product 5 -->
-        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="kis-ajandektargyak" data-id="FA-005">
+        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="kis-ajandektargyak" data-id="FA-005" data-desc="4 db-os hűtőmágnes szett fa alappal. Tájkép, állat vagy saját fotó alapján is megrendelhető. Remek kis ajándék.">
           <div class="aspect-square overflow-hidden relative">
             <span class="product-id">FA-005</span>
             <img src="/references/05-fridge-magnets.jpg" alt="Hűtőmágnesek szett" loading="lazy" class="w-full h-full object-cover" />
+            <div class="desc-overlay" aria-hidden="true"><p class="desc-text">4 db-os hűtőmágnes szett fa alappal. Tájkép, állat vagy saját fotó alapján is megrendelhető. Remek kis ajándék.</p></div>
           </div>
           <div class="p-4">
             <div class="flex flex-wrap gap-1 mb-2">
@@ -272,10 +450,11 @@
         </div>
 
         <!-- Product 6 -->
-        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="kis-ajandektargyak" data-id="FA-006">
+        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="kis-ajandektargyak" data-id="FA-006" data-desc="Piknik kosár ajándékba csomagolva, fa kísérőkártyával. Saját fotóval vagy üzenettel személyre szabható.">
           <div class="aspect-square overflow-hidden relative">
             <span class="product-id">FA-006</span>
             <img src="/references/06-picnic-basket-gifts.jpg" alt="Piknik ajándék kosár" loading="lazy" class="w-full h-full object-cover" />
+            <div class="desc-overlay" aria-hidden="true"><p class="desc-text">Piknik kosár ajándékba csomagolva, fa kísérőkártyával. Saját fotóval vagy üzenettel személyre szabható.</p></div>
           </div>
           <div class="p-4">
             <div class="flex flex-wrap gap-1 mb-2">
@@ -290,10 +469,11 @@
         </div>
 
         <!-- Product 7 -->
-        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="kerti-diszek" data-id="FA-007">
+        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="kerti-diszek" data-id="FA-007" data-desc="Terrárium tartó fa kerettel, ültetett növénnyel. Kézműves, természetes anyagokból. Beltéri dekorációnak tökéletes.">
           <div class="aspect-square overflow-hidden relative">
             <span class="product-id">FA-007</span>
             <img src="/references/07-terrariums-florist.jpg" alt="Fa virágtartó terrárium" loading="lazy" class="w-full h-full object-cover" />
+            <div class="desc-overlay" aria-hidden="true"><p class="desc-text">Terrárium tartó fa kerettel, ültetett növénnyel. Kézműves, természetes anyagokból. Beltéri dekorációnak tökéletes.</p></div>
           </div>
           <div class="p-4">
             <div class="flex flex-wrap gap-1 mb-2">
@@ -308,10 +488,11 @@
         </div>
 
         <!-- Product 8 -->
-        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="kerti-diszek" data-id="FA-008">
+        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="kerti-diszek" data-id="FA-008" data-desc="Falra akasztható virágtartó szett (3 db), fafaragott kerettel és dekoratív cserepekkel. Festett bevonat, többféle színben.">
           <div class="aspect-square overflow-hidden relative">
             <span class="product-id">FA-008</span>
             <img src="/references/08-blue-painted-wall-planters.jpg" alt="Fali virágtartó szett" loading="lazy" class="w-full h-full object-cover" />
+            <div class="desc-overlay" aria-hidden="true"><p class="desc-text">Falra akasztható virágtartó szett (3 db), fafaragott kerettel és dekoratív cserepekkel. Festett bevonat, többféle színben.</p></div>
           </div>
           <div class="p-4">
             <div class="flex flex-wrap gap-1 mb-2">
@@ -326,10 +507,11 @@
         </div>
 
         <!-- Product 9 -->
-        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="szines-nyomatok" data-id="FA-009">
+        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="szines-nyomatok" data-id="FA-009" data-desc="Színes utazási poszter nyomat, A3-as méretben. Kedvenc városod, tájad alapján is rendelhető. Matt papír, keret nélkül.">
           <div class="aspect-square overflow-hidden relative">
             <span class="product-id">FA-009</span>
             <img src="/references/09-california-travel-poster.jpg" alt="Utazási poszter nyomat" loading="lazy" class="w-full h-full object-cover" />
+            <div class="desc-overlay" aria-hidden="true"><p class="desc-text">Színes utazási poszter nyomat, A3-as méretben. Kedvenc városod, tájad alapján is rendelhető. Matt papír, keret nélkül.</p></div>
           </div>
           <div class="p-4">
             <div class="flex flex-wrap gap-1 mb-2">
@@ -344,10 +526,11 @@
         </div>
 
         <!-- Product 10 -->
-        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="szines-nyomatok" data-id="FA-010">
+        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="szines-nyomatok" data-id="FA-010" data-desc="Vintage stílusú művészi poszter nyomat, A3-as méretben. Egyedi illusztráció, matt papír. Keret nélkül szállítjuk.">
           <div class="aspect-square overflow-hidden relative">
             <span class="product-id">FA-010</span>
             <img src="/references/10-jane-avril-poster.jpg" alt="Művészi poszter nyomat" loading="lazy" class="w-full h-full object-cover" />
+            <div class="desc-overlay" aria-hidden="true"><p class="desc-text">Vintage stílusú művészi poszter nyomat, A3-as méretben. Egyedi illusztráció, matt papír. Keret nélkül szállítjuk.</p></div>
           </div>
           <div class="p-4">
             <div class="flex flex-wrap gap-1 mb-2">
@@ -362,10 +545,11 @@
         </div>
 
         <!-- Product 11 -->
-        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="lezer-gravirozott-kepek testreszabhato" data-id="FA-011">
+        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="lezer-gravirozott-kepek testreszabhato" data-id="FA-011" data-desc="Lézergravírozott nagy méretű portré (30×40 cm), keretezve. Fotó alapján gravírozzuk, egyedi, maradandó ajándék.">
           <div class="aspect-square overflow-hidden relative">
             <span class="product-id">FA-011</span>
             <img src="/references/01-laser-engraved-magnet.jpg" alt="Lézer portré 30x40" loading="lazy" class="w-full h-full object-cover" />
+            <div class="desc-overlay" aria-hidden="true"><p class="desc-text">Lézergravírozott nagy méretű portré (30×40 cm), keretezve. Fotó alapján gravírozzuk, egyedi, maradandó ajándék.</p></div>
           </div>
           <div class="p-4">
             <div class="flex flex-wrap gap-1 mb-2">
@@ -381,10 +565,11 @@
         </div>
 
         <!-- Product 12 -->
-        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="fa-tablak testreszabhato" data-id="FA-012">
+        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="fa-tablak testreszabhato" data-id="FA-012" data-desc="Személyre szabott fali felirat, tetszőleges szöveggel. 40×15 cm, keményfa alap, lézervágott betűkkel.">
           <div class="aspect-square overflow-hidden relative">
             <span class="product-id">FA-012</span>
             <img src="/references/03-handmade-wood-sign-shop-1.jpg" alt="Személyre szabott felirat" loading="lazy" class="w-full h-full object-cover" />
+            <div class="desc-overlay" aria-hidden="true"><p class="desc-text">Személyre szabott fali felirat, tetszőleges szöveggel. 40×15 cm, keményfa alap, lézervágott betűkkel.</p></div>
           </div>
           <div class="p-4">
             <div class="flex flex-wrap gap-1 mb-2">
@@ -447,6 +632,35 @@
       </div>
     </div>
   </footer>
+
+  <!-- ===================== PRODUCT MODAL / CAROUSEL (1.12, 1.13) ===================== -->
+  <div id="product-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" style="display:none">
+    <!-- Háttér overlay – kattintva bezár -->
+    <div id="modal-backdrop" class="modal-backdrop"></div>
+    <!-- Modal doboz -->
+    <div class="modal-box">
+      <!-- Bezárás gomb -->
+      <button id="modal-close" class="modal-close-btn" aria-label="Bezárás (ESC)">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+      <!-- Kép + gombok + számláló a képszekción belül -->
+      <div class="modal-image-wrap">
+        <img id="modal-img" src="" alt="" loading="eager" />
+        <span id="modal-product-id" class="product-id"></span>
+        <button id="modal-prev" class="modal-nav-btn modal-prev-btn" aria-label="Előző termék">&#8249;</button>
+        <button id="modal-next" class="modal-nav-btn modal-next-btn" aria-label="Következő termék">&#8250;</button>
+        <div id="modal-counter" class="modal-counter" aria-live="polite"></div>
+      </div>
+      <!-- Info -->
+      <div class="modal-info">
+        <div id="modal-tags" class="flex flex-wrap gap-1"></div>
+        <h2 id="modal-title" class="modal-product-name"></h2>
+        <p id="modal-price" class="modal-price"></p>
+        <p id="modal-desc" class="modal-desc"></p>
+        <a id="modal-cta" href="#" class="modal-cta-btn">Érdekel</a>
+      </div>
+    </div>
+  </div>
 
   <!-- Back to top button -->
   <button id="back-to-top" class="back-to-top fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full flex items-center justify-center text-[#FFFBF5] shadow-lg transition-all duration-300 hover:scale-110 cursor-pointer" style="background: linear-gradient(135deg, #B87333, #C9A84C);" aria-label="Vissza a tetejere">
@@ -576,6 +790,167 @@
         ctaLink.href = 'index.html?termek=' + encodeURIComponent(id) + '&nev=' + encodeURIComponent(name) + '#kapcsolat';
       }
     });
+
+    // ========== LEÍRÁS A KÁRTYÁBAN (1.14) ==========
+    // Az overlay-t eltávolítjuk, a leírást statikusan injektáljuk az h3 alá
+    productCards.forEach(function(card) {
+      var overlay = card.querySelector('.desc-overlay');
+      if (overlay) { overlay.parentNode.removeChild(overlay); }
+      var desc = card.getAttribute('data-desc');
+      var h3 = card.querySelector('h3');
+      if (desc && h3) {
+        var p = document.createElement('p');
+        p.className = 'desc-short';
+        p.textContent = desc;
+        h3.parentNode.insertBefore(p, h3.nextSibling);
+      }
+    });
+
+    // ========== MODAL / CAROUSEL (1.12, 1.13) ==========
+    var modal = document.getElementById('product-modal');
+    var modalBackdrop = document.getElementById('modal-backdrop');
+    var modalClose = document.getElementById('modal-close');
+    var modalPrev = document.getElementById('modal-prev');
+    var modalNext = document.getElementById('modal-next');
+    var modalImg = document.getElementById('modal-img');
+    var modalProductId = document.getElementById('modal-product-id');
+    var modalTags = document.getElementById('modal-tags');
+    var modalTitle = document.getElementById('modal-title');
+    var modalPrice = document.getElementById('modal-price');
+    var modalDesc = document.getElementById('modal-desc');
+    var modalCta = document.getElementById('modal-cta');
+    var modalCounter = document.getElementById('modal-counter');
+
+    var currentModalIndex = 0;
+    var visibleProductsList = [];
+    var originalUrl = window.location.href;
+
+    function getVisibleProducts() {
+      return Array.from(productCards).filter(function(c) {
+        return c.style.display !== 'none';
+      });
+    }
+
+    function pushTermekUrl(id) {
+      try {
+        var url = new URL(window.location.href);
+        if (id) { url.searchParams.set('termek', id); } else { url.searchParams.delete('termek'); }
+        history.replaceState(null, '', url);
+      } catch (e) { /* ignore */ }
+    }
+
+    function renderModal(card) {
+      var img = card.querySelector('img');
+      var id = card.getAttribute('data-id') || '';
+      var name = card.querySelector('h3').textContent.trim();
+      var priceEl = card.querySelector('p.text-lg');
+      var price = priceEl ? priceEl.textContent.trim() : '';
+      var desc = card.getAttribute('data-desc') || '';
+      var tags = Array.from(card.querySelectorAll('.tag-badge')).map(function(t) {
+        return t.textContent.trim();
+      });
+      var ctaEl = card.querySelector('a[href*="#kapcsolat"]');
+      var ctaHref = ctaEl ? ctaEl.getAttribute('href') : 'index.html#kapcsolat';
+
+      modalImg.src = img ? img.src : '';
+      modalImg.alt = img ? img.alt : name;
+      modalProductId.textContent = id;
+      modalTitle.textContent = name;
+      modalPrice.textContent = price;
+      modalDesc.textContent = desc;
+      modalCta.href = ctaHref;
+      modalTags.innerHTML = tags.map(function(t) {
+        return '<span class="tag-badge">' + t + '</span>';
+      }).join(' ');
+      modalCounter.textContent = (currentModalIndex + 1) + ' / ' + visibleProductsList.length;
+    }
+
+    function openModal(card) {
+      visibleProductsList = getVisibleProducts();
+      currentModalIndex = visibleProductsList.indexOf(card);
+      if (currentModalIndex === -1) { currentModalIndex = 0; }
+      renderModal(visibleProductsList[currentModalIndex]);
+      modal.style.display = 'flex';
+      requestAnimationFrame(function() {
+        modal.classList.add('modal-open');
+      });
+      document.body.classList.add('modal-body-lock');
+      modalClose.focus();
+      pushTermekUrl(visibleProductsList[currentModalIndex].getAttribute('data-id') || '');
+    }
+
+    function closeModal() {
+      modal.classList.remove('modal-open');
+      document.body.classList.remove('modal-body-lock');
+      setTimeout(function() {
+        modal.style.display = 'none';
+      }, 260);
+      try { history.replaceState(null, '', originalUrl); } catch (e) { /* ignore */ }
+    }
+
+    function navigateModal(direction) {
+      if (visibleProductsList.length < 2) { return; }
+      currentModalIndex = (currentModalIndex + direction + visibleProductsList.length) % visibleProductsList.length;
+      renderModal(visibleProductsList[currentModalIndex]);
+      pushTermekUrl(visibleProductsList[currentModalIndex].getAttribute('data-id') || '');
+    }
+
+    // Kártya kattintható (de az Érdekel gomb ne nyissa a modalt)
+    productCards.forEach(function(card) {
+      card.style.cursor = 'pointer';
+      card.addEventListener('click', function(e) {
+        if (e.target.closest('a[href*="#kapcsolat"]')) { return; }
+        openModal(card);
+      });
+    });
+
+    // Navigáció gombok
+    modalPrev.addEventListener('click', function() { navigateModal(-1); });
+    modalNext.addEventListener('click', function() { navigateModal(1); });
+
+    // Bezárás: X + backdrop
+    modalClose.addEventListener('click', closeModal);
+    modalBackdrop.addEventListener('click', closeModal);
+
+    // Billentyűzet: ESC + nyilak
+    document.addEventListener('keydown', function(e) {
+      if (!modal.classList.contains('modal-open')) { return; }
+      if (e.key === 'Escape')     { e.preventDefault(); closeModal(); }
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); navigateModal(-1); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); navigateModal(1); }
+    });
+
+    // Mobil swipe (1.13)
+    var touchStartX = 0;
+    var touchStartY = 0;
+    modal.addEventListener('touchstart', function(e) {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+    modal.addEventListener('touchend', function(e) {
+      var dx = e.changedTouches[0].clientX - touchStartX;
+      var dy = e.changedTouches[0].clientY - touchStartY;
+      // Csak vízszintes swipe (|dx| > |dy| és legalább 50px)
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+        navigateModal(dx < 0 ? 1 : -1);
+      }
+    }, { passive: true });
+
+    // Oldalbetöltéskor ?termek= param alapján megnyitja a megfelelő terméket
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var termekParam = params.get('termek');
+      if (termekParam) {
+        var targetCard = null;
+        productCards.forEach(function(c) {
+          if ((c.getAttribute('data-id') || '') === termekParam) { targetCard = c; }
+        });
+        if (targetCard) {
+          originalUrl = window.location.href;
+          setTimeout(function() { openModal(targetCard); }, 350);
+        }
+      }
+    } catch (e) { /* ignore */ }
 
   })();
   </script>

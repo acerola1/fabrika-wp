@@ -17,7 +17,7 @@ A teljes kezdőoldal tartalma **egyetlen admin oldalon** szerkeszthető, plugin 
 | **Általános** | Meta description, Brand név | A brand név a navbarban és a footerben jelenik meg. |
 | **Hero** | Badge szöveg, Hero cím, Hero alcím, CTA felirat, CTA link | A badge és alcím HTML-t is elfogad (pl. `<br>`). |
 | **Termékkategóriák** | Szekció cím + repeater (kép, cím, leírás) | Kártya hozzáadás: "Új kártya" gomb. Törlés: "Sor törlése". |
-| **Galéria** | Szekció cím + repeater (kép, alt szöveg) | Kép hozzáadás: "Új kép" gomb, majd "Kép választása" a Media Library-ból. |
+| **Galéria** | Szekció cím | A képek automatikusan a feltöltött termékek kiemelt képeiből jönnek. |
 | **Rendelés lépései** | Szekció cím + repeater (lépés cím, leírás) | A lépések automatikusan számozódnak (1, 2, 3...). |
 | **Ajándékötletek** | Szekció cím + repeater (ikon, cím, leírás) | Ikon választható: Ajándék, Szív, Ember, Csillag, Mosoly. |
 | **Piaci megjelenés** | Szekció cím, Fő szöveg, Másodlagos szöveg | Egyszerűen szöveg mezők. |
@@ -61,7 +61,7 @@ Termék feltöltéshez nem kell a klasszikus "dobozos" WordPress szerkesztő: va
 Az űrlap a **Contact Form 7** pluginnal működik.
 
 - **Űrlap szerkesztése:** WP Admin -> **Kapcsolat** -> **Fabrika Kapcsolat** form
-- **Mezők:** Név, Email, Telefon (opcionális), Kategória (lenyíló), Üzenet
+- **Mezők:** Név, E-mail, Telefon (opcionális), Kategória (lenyíló), **Melyik termék érdekli?**, Üzenet
 - **Email címzett:** az űrlap beállításokban (Contact Form 7 -> Fabrika Kapcsolat -> Mail fül)
 
 ### Email küldés (fejlesztői környezet)

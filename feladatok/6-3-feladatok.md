@@ -18,12 +18,12 @@
 - [x] **1.9** Vizuális ellenőrzés: a főoldal animációi, Hero, navbar, FAQ, anchorok, effektek változatlanul működnek
 - [x] **1.10** Mobil responsive ellenőrzés: termék grid, szűrő sáv, kártyák 375px-től
 - [x] **1.11** Mock terv elfogadtatása (review)
-- [ ] **1.12** Mock – Termék kártyára kattintva termék modal/carousel megjelenítése (nagy kép + infók + CTA)
+- [x] **1.12** Mock – Termék kártyára kattintva termék modal/carousel megjelenítése (nagy kép + infók + CTA)
   - Bezárás: X, overlay click, ESC
-- [ ] **1.13** Mock – Carousel navigáció: előző/következő + mobil swipe + billentyűzet nyilak
+- [x] **1.13** Mock – Carousel navigáció: előző/következő + mobil swipe + billentyűzet nyilak
   - Sorrend: ugyanaz, mint a gridben (szűrő után csak a látható termékek között lép)
-- [ ] **1.14** Mock – Termék leírás megjelenítése hoverre (áttetsző panel, animáció)
-  - Mobilon: fallback (pl. mindig látszik, vagy tapra toggle)
+- [x] **1.14** Mock – Termék leírás megjelenítése hoverre (áttetsző panel, animáció)
+  - Mobilon: fallback (mindig látszik, 2 sorra csonkítva – `@media (hover: none)`)
 
 ## Fázis 2 – WordPress integrálás
 
@@ -38,9 +38,12 @@
 - [x] **2.5** Ár mező mentése és szanitizálása (`save_post` hook)
 - [x] **2.5a** (Opcionális, de ajánlott) Termék azonosító mező: "FA-XXX" (meta) + megjelenítés a katalógus kártyákon
 - [x] **2.5b** (Ajánlott) Rewrite rules frissítés theme aktiváláskor (`after_switch_theme` + `flush_rewrite_rules`)
-- [x] **2.5c** Képek átméretezése (ingyen, WP core): új képméretek regisztrálása (1:1) + használat
-  - `square_600` (600×600, hard crop) – katalógus kártya
-  - `square_1200` (1200×1200, hard crop) – nagy/retina vagy galéria
+- [x] **2.5c** Képek átméretezése (ingyen, WP core): új képméretek regisztrálása + használat
+  - `square_600` (600×600, hard crop) – katalógus kártya + főoldal galéria
+  - `product_large` (1200×1200, **no crop**, eredeti aspect ratio) – modal / carousel
+    - A modalban `object-fit: contain` mutatja az eredeti arányban a képet
+    - Régi `square_1200` slug törölve (hard crop volt, nem megfelelő)
+    - Meglévő képeket újra kell generálni: `wp media regenerate --yes`
   - Ellenőrzés: feltöltés után legenerálja-e a WP a méreteket (Docker + később éles)
 - [ ] **2.5d** (Fallback, ha szerveroldali méretgenerálás nem megy) JS-es feltöltés/átméretezés
   - Custom "Termék kép" mező a termék szerkesztőben (media picker), **feltöltés előtt** canvas/WebP vagy JPEG 1200×1200 export
@@ -68,18 +71,18 @@
 - [x] **2.14** Termék kártyák renderelése: kép, név, ár (meta), kategória/tag badge-ek, CTA gomb
 - [x] **2.14a** Termék kép render: `wp_get_attachment_image()` + `square_600` (srcset, lazy-load, alt)
 - [x] **2.15** "Megrendelem / Érdekel" gomb: link a főoldal `/?termek={kod}&nev={cim}#kapcsolat` URL-re
-- [ ] **2.16** Képek betöltése lazy loadinggal (katalógus + galéria): `loading="lazy"` (+ ahol lehet `decoding="async"`)
+- [x] **2.16** Képek betöltése lazy loadinggal (katalógus + galéria): `loading="lazy"` (+ ahol lehet `decoding="async"`)
 - [x] **2.16a** (Ajánlott) Üres szűrő állapot: ha nincs találat, legyen "Szűrő törlése" CTA + vissza az összeshez
-- [ ] **2.16b** WP – Termék kártyára kattintva ugyanaz a modal/carousel, mint a mockban (nagy kép + infók + CTA)
-- [ ] **2.16c** WP – Modal/carousel A11y: fókusz kezelés (open/close), `aria-*`, keyboard (ESC/nyilak)
-- [ ] **2.16d** WP – Termék leírás megjelenítése a kártyán hoverre (mock paritás, áttetsző panel + animáció)
+- [x] **2.16b** WP – Termék kártyára kattintva ugyanaz a modal/carousel, mint a mockban (nagy kép + infók + CTA)
+- [x] **2.16c** WP – Modal/carousel A11y: fókusz kezelés (open/close), `aria-*`, keyboard (ESC/nyilak)
+- [x] **2.16d** WP – Termék leírás megjelenítése a kártyán (static szöveg a kártya bodyban, 2 sorra csonkítva)
 
 ### Kapcsolat űrlap integrálás
 
-- [ ] **2.17** CF7 űrlap bővítése: "Melyik termék érdekli?" mező (text input, látható)
-- [ ] **2.18** JS: `?termek=` query param kiolvasása és a CF7 mező automatikus kitöltése
-- [ ] **2.19** Tesztelés: termék oldalról érkező link → űrlap kitöltve a termék nevével
-- [ ] **2.19a** (Ajánlott) Param standard: egyeztetni, hogy a link `?termek=` értéke **slug / ID / FA-kód** legyen-e, és ehhez igazítsuk a kitöltést (mock + WP ugyanúgy)
+- [x] **2.17** CF7 űrlap bővítése: "Melyik termék érdekli?" mező (text input, látható)
+- [x] **2.18** JS: `?termek=` query param kiolvasása és a CF7 mező automatikus kitöltése
+- [x] **2.19** Tesztelés: termék oldalról érkező link → űrlap kitöltve a termék nevével
+- [x] **2.19a** (Ajánlott) Param standard: egyeztetni, hogy a link `?termek=` értéke **slug / ID / FA-kód** legyen-e, és ehhez igazítsuk a kitöltést (mock + WP ugyanúgy) — **Döntés:** `?termek=` = termék kód (WP-ben jelenleg post ID), `?nev=` = termék neve; az űrlap mező kitöltése: `{termek} – {nev}`.
 
 ### Mobil feltöltés tesztelés
 
@@ -89,12 +92,12 @@
 
 ### Minőségbiztosítás
 
-- [ ] **2.22** Főoldal animációk regressziós ellenőrzése (Hero, parallax, gear, scroll reveal, FAQ)
-- [ ] **2.23** DOM contract ellenőrzés: id-k, classok, data-* attribútumok változatlanok
-- [ ] **2.24** Termék oldal responsive teszt: 375px, 768px, 1440px
+- [x] **2.22** Főoldal animációk regressziós ellenőrzése (Hero, parallax, gear, scroll reveal, FAQ)
+- [x] **2.23** DOM contract ellenőrzés: id-k, classok, data-* attribútumok változatlanok
+- [x] **2.24** Termék oldal responsive teszt: 375px, 768px, 1440px
 - [x] **2.25** 0 termék állapot: üres katalógus oldal üzenettel ("Még nincsenek termékek")
-- [ ] **2.26** Szűrő működés ellenőrzés: kategória linkek a főoldalról, szűrő gombok a termék oldalon
-- [ ] **2.27** CTA-lánc teljes tesztelés: Hero → Katalógus → Termék → Megrendelem → Kapcsolat űrlap (kitöltve)
+- [x] **2.26** Szűrő működés ellenőrzés: kategória linkek a főoldalról, szűrő gombok a termék oldalon
+- [x] **2.27** CTA-lánc teljes tesztelés: Hero → Katalógus → Termék → Megrendelem → Kapcsolat űrlap (kitöltve)
 - [ ] **2.28** Admin használati leírás frissítése: termék feltöltés, kategória kezelés, ár megadás
 - [ ] **2.29** (Ajánlott) SEO alapok: /termekek oldal title/description, OG kép (ha nincs SEO plugin), canonical
 - [ ] **2.30** (Ajánlott) A11y: szűrő gombok `aria-pressed`, fókusz állapotok, keyboard navigáció minimálisan
@@ -102,9 +105,14 @@
 ## Fázis 3 – Automata tesztek és CI (ajánlott)
 
 - [x] **3.1** Playwright e2e tesztek a `6-3/` mockhoz (szűrő, CTA-lánc, űrlap termék mező kitöltése)
-- [x] **3.2** CI workflow (pl. GitHub Actions): `npm ci` + `npm run build` + `npm run test:e2e`
-- [ ] **3.3** (Opcionális) Vizuális regresszió CI-ban: Playwright screenshot snapshotok (stabil beállításokkal: `parallax=0`, animációk tiltása)
-- [ ] **3.4** (Később) WP E2E tesztek: Docker compose + WP bootstrap (wp-cli) + `/termekek` szűrés + CTA-lánc smoke
+- [ ] **3.2** WP bootstrap CI-hoz (üres indulás): Docker compose + üres DB + alap theme/plugin/options seed script
+  - Theme aktiválás, permalink flush, `fabrika62_options` alapértékek, alap címkék, CF7 alap űrlap
+- [ ] **3.3** WP E2E – admin termék feltöltés (kritikus): belépés → egylépéses feltöltés → mentés → publikus megjelenés
+- [ ] **3.4** WP E2E – admin termék szerkesztés (kritikus): listából szerkesztés → ugyanazon űrlap → mentés → frontend ellenőrzés
+- [ ] **3.5** WP smoke – `/termekek` megjelenés: kártyák (kép, cím, ár/ár-egyeztetéssel), szűrő sáv, CTA gombok
+- [ ] **3.6** WP E2E – CTA lánc: Hero → Katalógus → Érdekel → Kapcsolat (`?termek=` + `?nev=`) mező előtöltés
+- [ ] **3.7** WP smoke – üres állapot: seed nélküli futásban nincs termék, üres üzenet helyes
+- [ ] **3.8** CI workflow frissítés: külön `empty-state` és `seeded-state` job, stabil smoke/E2E futtatás
 
 ## Döntési pontok (implementáció előtt)
 
@@ -112,5 +120,5 @@
 2. Ár mező formátum: egyszerű szám (Ft) vagy lehetőség "Ártól" / "X Ft-tól" típusú megjelenítésre?
 3. Galéria szekció: a termék kép kattintásra lightbox vagy link a termék oldalra (ha lesz single template)?
 4. Szűrő: JS-alapú kliens oldali szűrés (gyorsabb, de max ~100 termék) vagy szerver oldali (WP query, lapozással)?
-5. `?termek=` paraméter: slug / ID / FA-kód? (és kell-e mellette `?nev=` a displayhez)
+5. `?termek=` paraméter: **lezárva** → termék kód (WP-ben jelenleg post ID), mellette `?nev=` a megjelenített kitöltési értékhez.
 6. Képek: elég a WP featured image + WP core méretgenerálás, vagy kell custom JS-es átméretezős feltöltés fallbackként?
