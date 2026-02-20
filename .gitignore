@@ -5,3 +5,5 @@ dist/
 .DS_Store
 Thumbs.db
 tests/screenshots/
+playwright-report/
+test-results/

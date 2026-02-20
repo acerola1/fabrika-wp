@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="hu" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Termekek – Fabrika Ajandek</title>
+  <meta name="description" content="Kezmuves fa ajandekok katalogusa. Lezergravírozas, fa tablak, kerti diszek es egyedi nyomatok – Fabrika Ajandek, Szarvas." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bitter:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/style.css" />
+  <style>
+    body { font-family: 'Source Sans 3', sans-serif; color: #2A2018; }
+    h1, h2, h3, h4, h5, h6 { font-family: 'Bitter', serif; }
+
+    /* Copper divider */
+    .copper-divider {
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #B87333, #C9A84C, #B87333, transparent);
+    }
+
+    /* Navbar scroll state */
+    .navbar-scrolled {
+      background-color: rgba(59, 35, 20, 0.97) !important;
+      box-shadow: 0 2px 16px rgba(42, 32, 24, 0.2);
+    }
+
+    /* Mobile menu */
+    .mobile-menu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+    .mobile-menu.open {
+      max-height: 300px;
+    }
+
+    /* Back to top */
+    .back-to-top {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Filter buttons */
+    .filter-btn {
+      transition: all 0.2s ease;
+    }
+    .filter-btn.active {
+      background: linear-gradient(135deg, #B87333, #C9A84C) !important;
+      color: #FFFBF5 !important;
+      border-color: transparent !important;
+    }
+
+    /* Product card */
+    .product-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 30px rgba(92, 61, 46, 0.2);
+    }
+    .product-card img {
+      transition: transform 0.4s ease;
+    }
+    .product-card:hover img {
+      transform: scale(1.05);
+    }
+
+    /* Tag badge */
+    .tag-badge {
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      background: rgba(184, 115, 51, 0.1);
+      color: #B87333;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    /* Product ID badge */
+    .product-id {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: rgba(59, 35, 20, 0.85);
+      backdrop-filter: blur(4px);
+      color: #E8DCC8;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-family: 'Source Sans 3', monospace;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body class="bg-[#FFFBF5] antialiased">
+
+  <!-- Fixed Navbar -->
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" style="background-color: rgba(59, 35, 20, 0.85); backdrop-filter: blur(8px);">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Brand -->
+        <a href="index.html" class="flex items-center gap-2 text-[#FFFBF5] font-bold text-lg" style="font-family: 'Bitter', serif;">
+          <svg class="w-7 h-7 text-[#B87333]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+          Fabrika Ajandek
+        </a>
+        <!-- Desktop Nav -->
+        <div class="hidden md:flex items-center gap-8">
+          <a href="index.html#termekek" class="text-[#F4EDE4] hover:text-[#B87333] transition-colors text-sm font-medium tracking-wide">Termekeink</a>
+          <a href="index.html#galeria" class="text-[#F4EDE4] hover:text-[#B87333] transition-colors text-sm font-medium tracking-wide">Galeria</a>
+          <a href="index.html#rendeles" class="text-[#F4EDE4] hover:text-[#B87333] transition-colors text-sm font-medium tracking-wide">Rendeles</a>
+          <a href="index.html#kapcsolat" class="text-[#F4EDE4] hover:text-[#B87333] transition-colors text-sm font-medium tracking-wide">Kapcsolat</a>
+        </div>
+        <!-- Hamburger -->
+        <button id="menu-toggle" class="md:hidden text-[#FFFBF5] p-2" aria-label="Menu">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="mobile-menu md:hidden">
+        <div class="pb-4 pt-2 flex flex-col gap-3">
+          <a href="index.html#termekek" class="text-[#F4EDE4] hover:text-[#B87333] transition-colors text-sm font-medium tracking-wide mobile-link">Termekeink</a>
+          <a href="index.html#galeria" class="text-[#F4EDE4] hover:text-[#B87333] transition-colors text-sm font-medium tracking-wide mobile-link">Galeria</a>
+          <a href="index.html#rendeles" class="text-[#F4EDE4] hover:text-[#B87333] transition-colors text-sm font-medium tracking-wide mobile-link">Rendeles</a>
+          <a href="index.html#kapcsolat" class="text-[#F4EDE4] hover:text-[#B87333] transition-colors text-sm font-medium tracking-wide mobile-link">Kapcsolat</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===================== PAGE HEADER ===================== -->
+  <section class="pt-28 pb-12 sm:pt-32 sm:pb-16" style="background-color: #3B2314;">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-[#FFFBF5] mb-4">Termekkatalogus</h1>
+      <div class="copper-divider max-w-[200px] mx-auto mb-4"></div>
+      <p class="text-[#E8DCC8] max-w-xl mx-auto">Bongeszd at kezmuves termekeinket! Ha valami megtetszik, kattints az "Erdekel" gombra es irj nekunk.</p>
+    </div>
+  </section>
+
+  <!-- ===================== FILTER BAR ===================== -->
+  <section class="py-6 sticky top-16 z-40" style="background-color: #F4EDE4; border-bottom: 1px solid rgba(184, 115, 51, 0.15);">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-wrap gap-2 justify-center" id="filter-bar">
+        <button class="filter-btn active px-4 py-2 rounded-full text-sm font-semibold border cursor-pointer" style="border-color: rgba(184, 115, 51, 0.3); color: #3B2314;" data-filter="all">
+          Osszes
+        </button>
+        <button class="filter-btn px-4 py-2 rounded-full text-sm font-semibold border cursor-pointer" style="border-color: rgba(184, 115, 51, 0.3); color: #3B2314; background: #FFFBF5;" data-filter="lezer-gravirozott-kepek">
+          Lezergravirozott kepek
+        </button>
+        <button class="filter-btn px-4 py-2 rounded-full text-sm font-semibold border cursor-pointer" style="border-color: rgba(184, 115, 51, 0.3); color: #3B2314; background: #FFFBF5;" data-filter="fa-tablak">
+          Fa tablak
+        </button>
+        <button class="filter-btn px-4 py-2 rounded-full text-sm font-semibold border cursor-pointer" style="border-color: rgba(184, 115, 51, 0.3); color: #3B2314; background: #FFFBF5;" data-filter="kis-ajandektargyak">
+          Kis ajandektargyak
+        </button>
+        <button class="filter-btn px-4 py-2 rounded-full text-sm font-semibold border cursor-pointer" style="border-color: rgba(184, 115, 51, 0.3); color: #3B2314; background: #FFFBF5;" data-filter="kerti-diszek">
+          Kerti diszek
+        </button>
+        <button class="filter-btn px-4 py-2 rounded-full text-sm font-semibold border cursor-pointer" style="border-color: rgba(184, 115, 51, 0.3); color: #3B2314; background: #FFFBF5;" data-filter="szines-nyomatok">
+          Szines nyomatok
+        </button>
+        <button class="filter-btn px-4 py-2 rounded-full text-sm font-semibold border cursor-pointer" style="border-color: rgba(184, 115, 51, 0.3); color: #3B2314; background: #FFFBF5;" data-filter="testreszabhato">
+          Testreszabhato
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PRODUCT GRID ===================== -->
+  <section class="py-12 sm:py-16" style="background-color: #F4EDE4;">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="product-grid">
+
+        <!-- Product 1 -->
+        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="lezer-gravirozott-kepek testreszabhato" data-id="FA-001">
+          <div class="aspect-square overflow-hidden relative">
+            <span class="product-id">FA-001</span>
+            <img src="/references/01-laser-engraved-magnet.jpg" alt="Lezer portre magnes" loading="lazy" class="w-full h-full object-cover" />
+          </div>
+          <div class="p-4">
+            <div class="flex flex-wrap gap-1 mb-2">
+              <span class="tag-badge">Lezer gravir</span>
+              <span class="tag-badge">Testreszabhato</span>
+            </div>
+            <h3 class="text-base font-bold text-[#3B2314] mb-1">Lezer portre magnes</h3>
+            <p class="text-lg font-bold text-[#B87333] mb-3">3 500 Ft</p>
+            <a href="index.html?termek=FA-001#kapcsolat" class="block text-center px-4 py-2.5 rounded-lg font-semibold text-[#FFFBF5] transition-all duration-300 hover:scale-105" style="background: linear-gradient(135deg, #B87333, #C9A84C);">
+              Erdekel
+            </a>
+          </div>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="lezer-gravirozott-kepek testreszabhato" data-id="FA-002">
+          <div class="aspect-square overflow-hidden relative">
+            <span class="product-id">FA-002</span>
+            <img src="/references/02-laser-engraved-wall-plaque.jpg" alt="Gravírozott fali tabla" loading="lazy" class="w-full h-full object-cover" />
+          </div>
+          <div class="p-4">
+            <div class="flex flex-wrap gap-1 mb-2">
+              <span class="tag-badge">Lezer gravir</span>
+              <span class="tag-badge">Testreszabhato</span>
+            </div>
+            <h3 class="text-base font-bold text-[#3B2314] mb-1">Gravírozott fali tabla</h3>
+            <p class="text-lg font-bold text-[#B87333] mb-3">8 900 Ft</p>
+            <a href="index.html?termek=FA-002#kapcsolat" class="block text-center px-4 py-2.5 rounded-lg font-semibold text-[#FFFBF5] transition-all duration-300 hover:scale-105" style="background: linear-gradient(135deg, #B87333, #C9A84C);">
+              Erdekel
+            </a>
+          </div>
+        </div>
+
+        <!-- Product 3 -->
+        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="fa-tablak testreszabhato" data-id="FA-003">
+          <div class="aspect-square overflow-hidden relative">
+            <span class="product-id">FA-003</span>
+            <img src="/references/03-handmade-wood-sign-shop-1.jpg" alt="Kezmuves fa tabla" loading="lazy" class="w-full h-full object-cover" />
+          </div>
+          <div class="p-4">
+            <div class="flex flex-wrap gap-1 mb-2">
+              <span class="tag-badge">Fa tabla</span>
+              <span class="tag-badge">Testreszabhato</span>
+            </div>
+            <h3 class="text-base font-bold text-[#3B2314] mb-1">Kezmuves fa tabla</h3>
+            <p class="text-lg font-bold text-[#B87333] mb-3">6 500 Ft</p>
+            <a href="index.html?termek=FA-003#kapcsolat" class="block text-center px-4 py-2.5 rounded-lg font-semibold text-[#FFFBF5] transition-all duration-300 hover:scale-105" style="background: linear-gradient(135deg, #B87333, #C9A84C);">
+              Erdekel
+            </a>
+          </div>
+        </div>
+
+        <!-- Product 4 -->
+        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="fa-tablak" data-id="FA-004">
+          <div class="aspect-square overflow-hidden relative">
+            <span class="product-id">FA-004</span>
+            <img src="/references/04-waterfront-rules-wood-sign.jpg" alt="Szabalyok fa tabla" loading="lazy" class="w-full h-full object-cover" />
+          </div>
+          <div class="p-4">
+            <div class="flex flex-wrap gap-1 mb-2">
+              <span class="tag-badge">Fa tabla</span>
+            </div>
+            <h3 class="text-base font-bold text-[#3B2314] mb-1">Szabalyok fa tabla</h3>
+            <p class="text-lg font-bold text-[#B87333] mb-3">5 200 Ft</p>
+            <a href="index.html?termek=FA-004#kapcsolat" class="block text-center px-4 py-2.5 rounded-lg font-semibold text-[#FFFBF5] transition-all duration-300 hover:scale-105" style="background: linear-gradient(135deg, #B87333, #C9A84C);">
+              Erdekel
+            </a>
+          </div>
+        </div>
+
+        <!-- Product 5 -->
+        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="kis-ajandektargyak" data-id="FA-005">
+          <div class="aspect-square overflow-hidden relative">
+            <span class="product-id">FA-005</span>
+            <img src="/references/05-fridge-magnets.jpg" alt="Hutomagnesesk szett" loading="lazy" class="w-full h-full object-cover" />
+          </div>
+          <div class="p-4">
+            <div class="flex flex-wrap gap-1 mb-2">
+              <span class="tag-badge">Kis ajandek</span>
+            </div>
+            <h3 class="text-base font-bold text-[#3B2314] mb-1">Hutomagnesesk szett</h3>
+            <p class="text-lg font-bold text-[#B87333] mb-3">2 800 Ft</p>
+            <a href="index.html?termek=FA-005#kapcsolat" class="block text-center px-4 py-2.5 rounded-lg font-semibold text-[#FFFBF5] transition-all duration-300 hover:scale-105" style="background: linear-gradient(135deg, #B87333, #C9A84C);">
+              Erdekel
+            </a>
+          </div>
+        </div>
+
+        <!-- Product 6 -->
+        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="kis-ajandektargyak" data-id="FA-006">
+          <div class="aspect-square overflow-hidden relative">
+            <span class="product-id">FA-006</span>
+            <img src="/references/06-picnic-basket-gifts.jpg" alt="Piknik ajandek kosar" loading="lazy" class="w-full h-full object-cover" />
+          </div>
+          <div class="p-4">
+            <div class="flex flex-wrap gap-1 mb-2">
+              <span class="tag-badge">Kis ajandek</span>
+            </div>
+            <h3 class="text-base font-bold text-[#3B2314] mb-1">Piknik ajandek kosar</h3>
+            <p class="text-lg font-bold text-[#B87333] mb-3">4 500 Ft</p>
+            <a href="index.html?termek=FA-006#kapcsolat" class="block text-center px-4 py-2.5 rounded-lg font-semibold text-[#FFFBF5] transition-all duration-300 hover:scale-105" style="background: linear-gradient(135deg, #B87333, #C9A84C);">
+              Erdekel
+            </a>
+          </div>
+        </div>
+
+        <!-- Product 7 -->
+        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="kerti-diszek" data-id="FA-007">
+          <div class="aspect-square overflow-hidden relative">
+            <span class="product-id">FA-007</span>
+            <img src="/references/07-terrariums-florist.jpg" alt="Fa viragtarto terrarium" loading="lazy" class="w-full h-full object-cover" />
+          </div>
+          <div class="p-4">
+            <div class="flex flex-wrap gap-1 mb-2">
+              <span class="tag-badge">Kerti disz</span>
+            </div>
+            <h3 class="text-base font-bold text-[#3B2314] mb-1">Fa viragtarto terrarium</h3>
+            <p class="text-lg font-bold text-[#B87333] mb-3">7 200 Ft</p>
+            <a href="index.html?termek=FA-007#kapcsolat" class="block text-center px-4 py-2.5 rounded-lg font-semibold text-[#FFFBF5] transition-all duration-300 hover:scale-105" style="background: linear-gradient(135deg, #B87333, #C9A84C);">
+              Erdekel
+            </a>
+          </div>
+        </div>
+
+        <!-- Product 8 -->
+        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="kerti-diszek" data-id="FA-008">
+          <div class="aspect-square overflow-hidden relative">
+            <span class="product-id">FA-008</span>
+            <img src="/references/08-blue-painted-wall-planters.jpg" alt="Fali viragtarto szett" loading="lazy" class="w-full h-full object-cover" />
+          </div>
+          <div class="p-4">
+            <div class="flex flex-wrap gap-1 mb-2">
+              <span class="tag-badge">Kerti disz</span>
+            </div>
+            <h3 class="text-base font-bold text-[#3B2314] mb-1">Fali viragtarto szett</h3>
+            <p class="text-lg font-bold text-[#B87333] mb-3">5 800 Ft</p>
+            <a href="index.html?termek=FA-008#kapcsolat" class="block text-center px-4 py-2.5 rounded-lg font-semibold text-[#FFFBF5] transition-all duration-300 hover:scale-105" style="background: linear-gradient(135deg, #B87333, #C9A84C);">
+              Erdekel
+            </a>
+          </div>
+        </div>
+
+        <!-- Product 9 -->
+        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="szines-nyomatok" data-id="FA-009">
+          <div class="aspect-square overflow-hidden relative">
+            <span class="product-id">FA-009</span>
+            <img src="/references/09-california-travel-poster.jpg" alt="Utazasi poszter nyomat" loading="lazy" class="w-full h-full object-cover" />
+          </div>
+          <div class="p-4">
+            <div class="flex flex-wrap gap-1 mb-2">
+              <span class="tag-badge">Szines nyomat</span>
+            </div>
+            <h3 class="text-base font-bold text-[#3B2314] mb-1">Utazasi poszter nyomat</h3>
+            <p class="text-lg font-bold text-[#B87333] mb-3">4 200 Ft</p>
+            <a href="index.html?termek=FA-009#kapcsolat" class="block text-center px-4 py-2.5 rounded-lg font-semibold text-[#FFFBF5] transition-all duration-300 hover:scale-105" style="background: linear-gradient(135deg, #B87333, #C9A84C);">
+              Erdekel
+            </a>
+          </div>
+        </div>
+
+        <!-- Product 10 -->
+        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="szines-nyomatok" data-id="FA-010">
+          <div class="aspect-square overflow-hidden relative">
+            <span class="product-id">FA-010</span>
+            <img src="/references/10-jane-avril-poster.jpg" alt="Muveszi poszter nyomat" loading="lazy" class="w-full h-full object-cover" />
+          </div>
+          <div class="p-4">
+            <div class="flex flex-wrap gap-1 mb-2">
+              <span class="tag-badge">Szines nyomat</span>
+            </div>
+            <h3 class="text-base font-bold text-[#3B2314] mb-1">Muveszi poszter nyomat</h3>
+            <p class="text-lg font-bold text-[#B87333] mb-3">4 800 Ft</p>
+            <a href="index.html?termek=FA-010#kapcsolat" class="block text-center px-4 py-2.5 rounded-lg font-semibold text-[#FFFBF5] transition-all duration-300 hover:scale-105" style="background: linear-gradient(135deg, #B87333, #C9A84C);">
+              Erdekel
+            </a>
+          </div>
+        </div>
+
+        <!-- Product 11 -->
+        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="lezer-gravirozott-kepek testreszabhato" data-id="FA-011">
+          <div class="aspect-square overflow-hidden relative">
+            <span class="product-id">FA-011</span>
+            <img src="/references/01-laser-engraved-magnet.jpg" alt="Lezer portre 30x40" loading="lazy" class="w-full h-full object-cover" />
+          </div>
+          <div class="p-4">
+            <div class="flex flex-wrap gap-1 mb-2">
+              <span class="tag-badge">Lezer gravir</span>
+              <span class="tag-badge">Testreszabhato</span>
+            </div>
+            <h3 class="text-base font-bold text-[#3B2314] mb-1">Lezer portre 30x40</h3>
+            <p class="text-lg font-bold text-[#B87333] mb-3">12 500 Ft</p>
+            <a href="index.html?termek=FA-011#kapcsolat" class="block text-center px-4 py-2.5 rounded-lg font-semibold text-[#FFFBF5] transition-all duration-300 hover:scale-105" style="background: linear-gradient(135deg, #B87333, #C9A84C);">
+              Erdekel
+            </a>
+          </div>
+        </div>
+
+        <!-- Product 12 -->
+        <div class="product-card rounded-lg overflow-hidden shadow-md" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15);" data-categories="fa-tablak testreszabhato" data-id="FA-012">
+          <div class="aspect-square overflow-hidden relative">
+            <span class="product-id">FA-012</span>
+            <img src="/references/03-handmade-wood-sign-shop-1.jpg" alt="Szemelyre szabott felirat" loading="lazy" class="w-full h-full object-cover" />
+          </div>
+          <div class="p-4">
+            <div class="flex flex-wrap gap-1 mb-2">
+              <span class="tag-badge">Fa tabla</span>
+              <span class="tag-badge">Testreszabhato</span>
+            </div>
+            <h3 class="text-base font-bold text-[#3B2314] mb-1">Szemelyre szabott felirat</h3>
+            <p class="text-lg font-bold text-[#B87333] mb-3">7 800 Ft</p>
+            <a href="index.html?termek=FA-012#kapcsolat" class="block text-center px-4 py-2.5 rounded-lg font-semibold text-[#FFFBF5] transition-all duration-300 hover:scale-105" style="background: linear-gradient(135deg, #B87333, #C9A84C);">
+              Erdekel
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- No results message (hidden by default) -->
+      <div id="no-results" class="hidden text-center py-16">
+        <svg class="w-16 h-16 text-[#B87333] mx-auto mb-4 opacity-40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
+        <p class="text-lg text-[#5C3D2E]">Ebben a kategoriaban meg nincsenek termekek.</p>
+        <button onclick="resetFilter()" class="mt-4 px-6 py-2 rounded-lg font-semibold text-[#B87333] border-2 border-[#B87333] hover:bg-[#B87333] hover:text-[#FFFBF5] transition-all cursor-pointer">
+          Osszes termek mutatasa
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CTA BANNER ===================== -->
+  <section class="py-16" style="background-color: #E8DCC8;">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-2xl sm:text-3xl font-bold text-[#3B2314] mb-4">Nem talaltad, amit kerestel?</h2>
+      <p class="text-[#5C3D2E] mb-8">Irj nekunk es keszitunk barmit egyedire! Egyedi meretben, felirattal, sajat keped alapjan.</p>
+      <a href="index.html#kapcsolat" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-lg font-semibold text-[#FFFBF5] transition-all duration-300 hover:scale-105 hover:shadow-lg" style="background: linear-gradient(135deg, #B87333, #C9A84C); box-shadow: 0 4px 15px rgba(184, 115, 51, 0.35);">
+        Egyedi rendeles
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="py-12" style="background-color: #3B2314;">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <p class="text-lg font-bold text-[#FFFBF5] mb-2" style="font-family: 'Bitter', serif;">Fabrika Ajandek</p>
+        <p class="text-sm text-[#E8DCC8] mb-6">Szarvas, Magyarorszag</p>
+
+        <div class="copper-divider max-w-[120px] mx-auto mb-6"></div>
+
+        <!-- Social links -->
+        <div class="flex justify-center gap-5 mb-6">
+          <a href="#" class="text-[#B87333] hover:text-[#C9A84C] transition-colors" aria-label="Facebook">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <a href="#" class="text-[#B87333] hover:text-[#C9A84C] transition-colors" aria-label="Instagram">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+        </div>
+
+        <p class="text-xs text-[#E8DCC8] opacity-60">&copy; 2025 Fabrika Ajandek. Minden jog fenntartva.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to top button -->
+  <button id="back-to-top" class="back-to-top fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full flex items-center justify-center text-[#FFFBF5] shadow-lg transition-all duration-300 hover:scale-110 cursor-pointer" style="background: linear-gradient(135deg, #B87333, #C9A84C);" aria-label="Vissza a tetejere">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg>
+  </button>
+
+  <!-- ===================== ALL JAVASCRIPT ===================== -->
+  <script>
+  (function() {
+    'use strict';
+
+    // ========== MOBILE MENU ==========
+    var menuToggle = document.getElementById('menu-toggle');
+    var mobileMenu = document.getElementById('mobile-menu');
+
+    menuToggle.addEventListener('click', function() {
+      mobileMenu.classList.toggle('open');
+    });
+
+    document.querySelectorAll('.mobile-link').forEach(function(link) {
+      link.addEventListener('click', function() {
+        mobileMenu.classList.remove('open');
+      });
+    });
+
+    // ========== NAVBAR SCROLL EFFECT ==========
+    var navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 50) {
+        navbar.classList.add('navbar-scrolled');
+      } else {
+        navbar.classList.remove('navbar-scrolled');
+      }
+    }, { passive: true });
+
+    // ========== BACK TO TOP ==========
+    var backToTop = document.getElementById('back-to-top');
+
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 600) {
+        backToTop.classList.add('visible');
+      } else {
+        backToTop.classList.remove('visible');
+      }
+    }, { passive: true });
+
+    backToTop.addEventListener('click', function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // ========== FILTER LOGIC ==========
+    var filterButtons = document.querySelectorAll('.filter-btn');
+    var productCards = document.querySelectorAll('.product-card');
+    var noResults = document.getElementById('no-results');
+    var currentFilter = 'all';
+
+    function applyFilter(filter) {
+      currentFilter = filter;
+      var visibleCount = 0;
+
+      // Update button states
+      filterButtons.forEach(function(btn) {
+        if (btn.getAttribute('data-filter') === filter) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      // Show/hide cards
+      productCards.forEach(function(card) {
+        var categories = card.getAttribute('data-categories') || '';
+        if (filter === 'all' || categories.indexOf(filter) !== -1) {
+          card.style.display = '';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      // Show/hide no results message
+      if (visibleCount === 0) {
+        noResults.classList.remove('hidden');
+      } else {
+        noResults.classList.add('hidden');
+      }
+    }
+
+    // Filter button click handlers
+    filterButtons.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var filter = btn.getAttribute('data-filter');
+        applyFilter(filter);
+
+        // Update URL without reload
+        var url = new URL(window.location);
+        if (filter === 'all') {
+          url.searchParams.delete('kategoria');
+        } else {
+          url.searchParams.set('kategoria', filter);
+        }
+        history.replaceState(null, '', url);
+      });
+    });
+
+    // Apply filter from URL on page load
+    var params = new URLSearchParams(window.location.search);
+    var kategoriaParam = params.get('kategoria');
+    if (kategoriaParam) {
+      applyFilter(kategoriaParam);
+    }
+
+    // Global reset function for "no results" button
+    window.resetFilter = function() {
+      applyFilter('all');
+      var url = new URL(window.location);
+      url.searchParams.delete('kategoria');
+      history.replaceState(null, '', url);
+    };
+
+    // ========== GENERATE CTA LINKS WITH ID + NAME ==========
+    productCards.forEach(function(card) {
+      var id = card.getAttribute('data-id');
+      var name = card.querySelector('h3').textContent.trim();
+      var ctaLink = card.querySelector('a[href*="#kapcsolat"]');
+      if (id && name && ctaLink) {
+        ctaLink.href = 'index.html?termek=' + encodeURIComponent(id) + '&nev=' + encodeURIComponent(name) + '#kapcsolat';
+      }
+    });
+
+  })();
+  </script>
+</body>
+</html>

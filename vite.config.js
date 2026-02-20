@@ -15,6 +15,8 @@ export default defineConfig({
         design5: resolve(__dirname, '5/index.html'),
         design6: resolve(__dirname, '6/index.html'),
         design62: resolve(__dirname, '6-2/index.html'),
+        design63: resolve(__dirname, '6-3/index.html'),
+        design63termekek: resolve(__dirname, '6-3/termekek.html'),
         design7: resolve(__dirname, '7/index.html'),
         design8: resolve(__dirname, '8/index.html'),
         design9: resolve(__dirname, '9/index.html'),

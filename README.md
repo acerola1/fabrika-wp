@@ -52,6 +52,13 @@ The contact form (Contact Form 7) sends emails to MailHog in the dev environment
 
 ## Running the tests
 
+**E2E (static mock `6-3/`)**:
+
+```bash
+npx playwright install chromium
+npm test
+```
+
 **Visual regression** (compares static `6-2` design vs WordPress output):
 
 ```bash
