@@ -16,8 +16,21 @@ import { existsSync, mkdirSync, copyFileSync } from 'fs';
 const WP_URL = process.env.WP_URL || 'http://localhost:8080';
 const WP_ADMIN_USER = process.env.WP_ADMIN_USER;
 const WP_ADMIN_PASS = process.env.WP_ADMIN_PASS;
-const UPLOAD_FILE = resolve(process.env.WP_PRODUCT_UPLOAD_FILE || 'wp-content/themes/fabrika-62/test-results/upload-test.jpg');
 const TEMP_DIR = resolve(process.env.WP_UPLOAD_TEMP_DIR || 'test-results');
+const UPLOAD_CANDIDATES = [
+  process.env.WP_PRODUCT_UPLOAD_FILE || '',
+  'wp-content/themes/fabrika-62/test-results/upload-test.jpg',
+  'wp-content/themes/fabrika-62/assets/references/01-laser-engraved-magnet.jpg',
+  'references/01-laser-engraved-magnet.jpg',
+].filter(Boolean);
+
+function resolveUploadFile() {
+  for (const candidate of UPLOAD_CANDIDATES) {
+    const abs = resolve(candidate);
+    if (existsSync(abs)) return abs;
+  }
+  return '';
+}
 
 function required(name, value) {
   if (!value) throw new Error(`Missing env var: ${name}`);
@@ -34,7 +47,10 @@ async function main() {
   required('WP_ADMIN_USER', WP_ADMIN_USER);
   required('WP_ADMIN_PASS', WP_ADMIN_PASS);
 
-  if (!existsSync(UPLOAD_FILE)) throw new Error(`Upload file not found: ${UPLOAD_FILE}`);
+  const UPLOAD_FILE = resolveUploadFile();
+  if (!UPLOAD_FILE) {
+    throw new Error(`Upload file not found. Tried: ${UPLOAD_CANDIDATES.join(', ')}`);
+  }
   if (!existsSync(TEMP_DIR)) mkdirSync(TEMP_DIR, { recursive: true });
 
   const ext = extname(basename(UPLOAD_FILE)) || '.jpg';
