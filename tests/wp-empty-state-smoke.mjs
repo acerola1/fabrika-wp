@@ -15,17 +15,33 @@ async function main() {
   const page = await ctx.newPage();
 
   try {
-    await page.goto(`${WP_URL}/termekek/`, { waitUntil: 'networkidle' });
+    async function openCatalogAndFindEmptyState() {
+      const candidates = [
+        `${WP_URL}/termekek/`,
+        `${WP_URL}/?post_type=fabrika_termek`,
+      ];
+      for (const url of candidates) {
+        await page.goto(url, { waitUntil: 'networkidle' });
+        const box = page.locator('#no-results');
+        if (await box.count()) {
+          return { box, url: page.url() };
+        }
+      }
+      return null;
+    }
+
+    const result = await openCatalogAndFindEmptyState();
+    if (!result) {
+      const bodySnippet = (await page.locator('body').innerText()).replace(/\s+/g, ' ').slice(0, 220);
+      throw new Error(`Empty state container (#no-results) is missing on archive URLs. Last URL: ${page.url()} Body: ${bodySnippet}`);
+    }
+    const { box: emptyBox } = result;
 
     const cards = await page.locator('.product-card').count();
     if (cards !== 0) {
       throw new Error(`Expected empty catalog, but found ${cards} product card(s).`);
     }
 
-    const emptyBox = page.locator('#no-results');
-    if (!(await emptyBox.count())) {
-      throw new Error('Empty state container (#no-results) is missing.');
-    }
     const isVisible = await emptyBox.isVisible();
     if (!isVisible) {
       throw new Error('Empty state container is hidden.');
