@@ -3,6 +3,16 @@
 declare(strict_types=1);
 
 $root = '/var/www/html';
+if (!defined('WP_INSTALLING')) {
+    // On a fresh DB, wp-load.php can otherwise redirect+die to install.php before this script runs.
+    define('WP_INSTALLING', true);
+}
+if (!isset($_SERVER['HTTP_HOST']) || !is_string($_SERVER['HTTP_HOST']) || $_SERVER['HTTP_HOST'] === '') {
+    $_SERVER['HTTP_HOST'] = 'localhost';
+}
+if (!isset($_SERVER['REQUEST_URI']) || !is_string($_SERVER['REQUEST_URI']) || $_SERVER['REQUEST_URI'] === '') {
+    $_SERVER['REQUEST_URI'] = '/';
+}
 require_once $root . '/wp-load.php';
 
 $mode = getenv('WP_BOOTSTRAP_MODE');

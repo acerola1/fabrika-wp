@@ -43,6 +43,31 @@ function nowStamp() {
   return `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}-${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`;
 }
 
+async function loginToWpAdmin(page) {
+  for (let i = 0; i < 8; i += 1) {
+    await page.goto(`${WP_URL}/wp-admin/`, { waitUntil: 'domcontentloaded' });
+
+    if (await page.locator('#wpadminbar').count()) return;
+
+    if (await page.locator('#user_login').count()) {
+      await page.fill('#user_login', WP_ADMIN_USER);
+      await page.fill('#user_pass', WP_ADMIN_PASS);
+      await page.click('#wp-submit');
+      await page.waitForLoadState('domcontentloaded');
+
+      if (await page.locator('#wpadminbar').count()) return;
+      if (await page.locator('#login_error').count()) {
+        const err = (await page.locator('#login_error').innerText()).trim();
+        throw new Error(`Login failed: ${err}`);
+      }
+    }
+
+    await page.waitForTimeout(2000);
+  }
+
+  throw new Error(`Could not reach WP admin login/dashboard. Last URL: ${page.url()}`);
+}
+
 async function main() {
   required('WP_ADMIN_USER', WP_ADMIN_USER);
   required('WP_ADMIN_PASS', WP_ADMIN_PASS);
@@ -62,16 +87,7 @@ async function main() {
   const page = await ctx.newPage();
 
   try {
-    await page.goto(`${WP_URL}/wp-login.php`, { waitUntil: 'domcontentloaded' });
-    await page.fill('#user_login', WP_ADMIN_USER);
-    await page.fill('#user_pass', WP_ADMIN_PASS);
-    await page.click('#wp-submit');
-
-    await page.waitForLoadState('domcontentloaded');
-    if (await page.locator('#login_error').count()) {
-      const err = (await page.locator('#login_error').innerText()).trim();
-      throw new Error(`Login failed: ${err}`);
-    }
+    await loginToWpAdmin(page);
 
     // Quick-add page (Termekek -> Uj termek).
     await page.goto(`${WP_URL}/wp-admin/edit.php?post_type=fabrika_termek&page=fabrika62-termek-add`, {
