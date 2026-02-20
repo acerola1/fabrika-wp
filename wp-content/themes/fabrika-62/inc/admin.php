@@ -5,8 +5,8 @@ declare(strict_types=1);
 function fabrika62_admin_menu(): void
 {
     add_menu_page(
-        'Fabrika Kezdolap',
-        'Fabrika Kezdolap',
+        'Fabrika Kezdőlap',
+        'Fabrika Kezdőlap',
         'manage_options',
         'fabrika62-home',
         'fabrika62_render_admin_page',
@@ -70,13 +70,13 @@ function fabrika62_render_repeater_row(string $name, int $index, array $row, arr
         } else {
             echo '<input type="text" name="' . esc_attr($input_name) . '" value="' . esc_attr($value) . '" style="width:100%;" />';
             if ($type === 'image') {
-                echo '<button type="button" class="button fabrika62-media-pick" style="margin-top:6px;">Kep valasztasa</button>';
+                echo '<button type="button" class="button fabrika62-media-pick" style="margin-top:6px;">Kép választása</button>';
             }
         }
         echo '</label>';
     }
     echo '</div>';
-    echo '<p style="margin-top:10px;"><button type="button" class="button-link-delete fabrika62-remove-row">Sor torlese</button></p>';
+    echo '<p style="margin-top:10px;"><button type="button" class="button-link-delete fabrika62-remove-row">Sor törlése</button></p>';
     echo '</div>';
 }
 
@@ -104,115 +104,126 @@ function fabrika62_render_admin_page(): void
     $updated = isset($_GET['updated']) && $_GET['updated'] === '1';
     ?>
     <div class="wrap">
-      <h1>Fabrika Kezdolap</h1>
+      <h1>Fabrika Kezdőlap</h1>
       <?php if ($updated) : ?>
-        <div class="notice notice-success is-dismissible"><p>Beallitasok mentve.</p></div>
+        <div class="notice notice-success is-dismissible"><p>Beállítások mentve.</p></div>
       <?php endif; ?>
-      <p>Itt tudod szerkeszteni a kezdooldal teljes statikus tartalmat egy helyen, plugin nelkul.</p>
+      <p>Itt tudod szerkeszteni a kezdőoldal teljes statikus tartalmát egy helyen, plugin nélkül.</p>
 
       <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
         <?php wp_nonce_field('fabrika62_save_options'); ?>
         <input type="hidden" name="action" value="fabrika62_save_options" />
 
-        <h2>Altalanos</h2>
+        <h2>Általános</h2>
         <table class="form-table">
           <?php
           fabrika62_render_text_field('meta_description', 'Meta description', $options, 'textarea');
-          fabrika62_render_text_field('brand_name', 'Brand nev', $options);
+          fabrika62_render_text_field('brand_name', 'Brand név', $options);
           ?>
         </table>
 
         <h2>Hero</h2>
         <table class="form-table">
           <?php
-          fabrika62_render_text_field('hero_badge', 'Badge szoveg (HTML engedett)', $options);
-          fabrika62_render_text_field('hero_title', 'Hero cim', $options);
-          fabrika62_render_text_field('hero_subtitle', 'Hero alcim (HTML engedett)', $options, 'textarea');
+          fabrika62_render_text_field('hero_badge', 'Badge szöveg (HTML engedett)', $options);
+          fabrika62_render_text_field('hero_title', 'Hero cím', $options);
+          fabrika62_render_text_field('hero_subtitle', 'Hero alcím (HTML engedett)', $options, 'textarea');
           fabrika62_render_text_field('hero_cta_label', 'CTA felirat', $options);
           fabrika62_render_text_field('hero_cta_href', 'CTA link', $options);
+          fabrika62_render_text_field('hero_cta2_label', 'Másodlagos CTA felirat', $options);
+          fabrika62_render_text_field('hero_cta2_href', 'Másodlagos CTA link', $options);
           ?>
         </table>
 
-        <h2>Termekkategoriak</h2>
+        <h2>Termékkatalógus oldal</h2>
         <table class="form-table">
-          <?php fabrika62_render_text_field('products_title', 'Szekcio cim', $options); ?>
+          <?php
+          fabrika62_render_text_field('catalog_title', 'Oldal cím', $options);
+          fabrika62_render_text_field('catalog_subtitle', 'Oldal bevezető szöveg', $options, 'textarea');
+          fabrika62_render_text_field('catalog_filter_all_label', 'Szűrő: Összes felirat', $options);
+          fabrika62_render_text_field('catalog_no_image_label', 'Kép hiányzik felirat', $options);
+          fabrika62_render_text_field('catalog_price_contact_label', 'Ár egyeztetéssel felirat', $options);
+          fabrika62_render_text_field('catalog_interest_label', 'Érdekel gomb felirat', $options);
+          fabrika62_render_text_field('catalog_empty_filtered_label', 'Nincs találat (szűrt) szöveg', $options);
+          fabrika62_render_text_field('catalog_show_all_button_label', 'Összes termék mutatása gomb', $options);
+          fabrika62_render_text_field('catalog_empty_label', 'Nincs termék szöveg', $options);
+          fabrika62_render_text_field('catalog_cta_title', 'Alsó CTA cím', $options);
+          fabrika62_render_text_field('catalog_cta_text', 'Alsó CTA szöveg', $options, 'textarea');
+          fabrika62_render_text_field('catalog_cta_button_label', 'Alsó CTA gomb felirat', $options);
+          ?>
+        </table>
+
+        <h2>Termékkategóriák</h2>
+        <table class="form-table">
+          <?php fabrika62_render_text_field('products_title', 'Szekció cím', $options); ?>
         </table>
         <?php
         fabrika62_render_repeater(
             'product_categories',
             is_array($options['product_categories'] ?? null) ? $options['product_categories'] : [],
             [
-                ['key' => 'image', 'label' => 'Kep URL vagy fajlnev', 'type' => 'image'],
-                ['key' => 'title', 'label' => 'Cim', 'type' => 'text'],
-                ['key' => 'description', 'label' => 'Leiras', 'type' => 'textarea'],
+                ['key' => 'image', 'label' => 'Kép URL vagy fájlnév', 'type' => 'image'],
+                ['key' => 'title', 'label' => 'Cím', 'type' => 'text'],
+                ['key' => 'slug', 'label' => 'Cimke (slug)', 'type' => 'text'],
+                ['key' => 'description', 'label' => 'Leírás', 'type' => 'textarea'],
             ],
-            'Uj kartya'
+            'Új kártya'
         );
         ?>
 
-        <h2>Galeria</h2>
+        <h2>Galéria</h2>
         <table class="form-table">
-          <?php fabrika62_render_text_field('gallery_title', 'Szekcio cim', $options); ?>
+          <?php fabrika62_render_text_field('gallery_title', 'Szekció cím', $options); ?>
         </table>
-        <?php
-        fabrika62_render_repeater(
-            'gallery_items',
-            is_array($options['gallery_items'] ?? null) ? $options['gallery_items'] : [],
-            [
-                ['key' => 'image', 'label' => 'Kep URL vagy fajlnev', 'type' => 'image'],
-                ['key' => 'alt', 'label' => 'Alt szoveg', 'type' => 'text'],
-            ],
-            'Uj kep'
-        );
-        ?>
+        <p>A galéria képei automatikusan a termékek kiemelt képeiből jönnek.</p>
 
-        <h2>Rendeles lepesei</h2>
+        <h2>Rendelés lépései</h2>
         <table class="form-table">
-          <?php fabrika62_render_text_field('order_title', 'Szekcio cim', $options); ?>
+          <?php fabrika62_render_text_field('order_title', 'Szekció cím', $options); ?>
         </table>
         <?php
         fabrika62_render_repeater(
             'order_steps',
             is_array($options['order_steps'] ?? null) ? $options['order_steps'] : [],
             [
-                ['key' => 'title', 'label' => 'Cim', 'type' => 'text'],
-                ['key' => 'description', 'label' => 'Leiras', 'type' => 'textarea'],
+                ['key' => 'title', 'label' => 'Cím', 'type' => 'text'],
+                ['key' => 'description', 'label' => 'Leírás', 'type' => 'textarea'],
             ],
-            'Uj lepes'
+            'Új lépés'
         );
         ?>
 
-        <h2>Ajandekotletek</h2>
+        <h2>Ajándékötletek</h2>
         <table class="form-table">
-          <?php fabrika62_render_text_field('gifts_title', 'Szekcio cim', $options); ?>
+          <?php fabrika62_render_text_field('gifts_title', 'Szekció cím', $options); ?>
         </table>
         <?php
         fabrika62_render_repeater(
             'gift_ideas',
             is_array($options['gift_ideas'] ?? null) ? $options['gift_ideas'] : [],
             [
-                ['key' => 'icon', 'label' => 'Ikon', 'type' => 'select', 'choices' => ['gift' => 'Ajandek', 'heart' => 'Sziv', 'user' => 'Ember', 'sparkles' => 'Csillag', 'smile' => 'Mosoly']],
-                ['key' => 'title', 'label' => 'Cim', 'type' => 'text'],
-                ['key' => 'description', 'label' => 'Leiras', 'type' => 'textarea'],
+                ['key' => 'icon', 'label' => 'Ikon', 'type' => 'select', 'choices' => ['gift' => 'Ajándék', 'heart' => 'Szív', 'user' => 'Ember', 'sparkles' => 'Csillag', 'smile' => 'Mosoly']],
+                ['key' => 'title', 'label' => 'Cím', 'type' => 'text'],
+                ['key' => 'description', 'label' => 'Leírás', 'type' => 'textarea'],
             ],
-            'Uj otlet'
+            'Új ötlet'
         );
         ?>
 
-        <h2>Piaci megjelenes</h2>
+        <h2>Piaci megjelenés</h2>
         <table class="form-table">
           <?php
-          fabrika62_render_text_field('market_title', 'Szekcio cim', $options);
-          fabrika62_render_text_field('market_lead', 'Fo szoveg', $options);
-          fabrika62_render_text_field('market_sub', 'Masodlagos szoveg', $options);
+          fabrika62_render_text_field('market_title', 'Szekció cím', $options);
+          fabrika62_render_text_field('market_lead', 'Fő szöveg', $options);
+          fabrika62_render_text_field('market_sub', 'Másodlagos szöveg', $options);
           ?>
         </table>
 
         <h2>Kapcsolat</h2>
         <table class="form-table">
           <?php
-          fabrika62_render_text_field('contact_title', 'Szekcio cim', $options);
-          fabrika62_render_text_field('contact_form_shortcode', 'Urlap shortcode (opcionalis)', $options, 'textarea');
+          fabrika62_render_text_field('contact_title', 'Szekció cím', $options);
+          fabrika62_render_text_field('contact_form_shortcode', 'Űrlap shortcode (opcionális)', $options, 'textarea');
           fabrika62_render_text_field('contact_email', 'Email', $options);
           fabrika62_render_text_field('contact_facebook_label', 'Facebook felirat', $options);
           fabrika62_render_text_field('contact_facebook_url', 'Facebook URL', $options);
@@ -224,24 +235,24 @@ function fabrika62_render_admin_page(): void
 
         <h2>GYIK</h2>
         <table class="form-table">
-          <?php fabrika62_render_text_field('faq_title', 'Szekcio cim', $options); ?>
+          <?php fabrika62_render_text_field('faq_title', 'Szekció cím', $options); ?>
         </table>
         <?php
         fabrika62_render_repeater(
             'faq_items',
             is_array($options['faq_items'] ?? null) ? $options['faq_items'] : [],
             [
-                ['key' => 'question', 'label' => 'Kerdes', 'type' => 'text'],
-                ['key' => 'answer', 'label' => 'Valasz', 'type' => 'textarea'],
+                ['key' => 'question', 'label' => 'Kérdés', 'type' => 'text'],
+                ['key' => 'answer', 'label' => 'Válasz', 'type' => 'textarea'],
             ],
-            'Uj kerdes'
+            'Új kérdés'
         );
         ?>
 
         <h2>Footer</h2>
         <table class="form-table">
           <?php
-          fabrika62_render_text_field('footer_location', 'Helyszin', $options);
+          fabrika62_render_text_field('footer_location', 'Helyszín', $options);
           fabrika62_render_text_field('footer_facebook_url', 'Footer Facebook URL', $options);
           fabrika62_render_text_field('footer_instagram_url', 'Footer Instagram URL', $options);
           ?>
@@ -292,8 +303,8 @@ function fabrika62_render_admin_page(): void
               var field = mediaBtn.parentElement.querySelector('input[type="text"]');
               if (!field) return;
               var picker = wp.media({
-                title: 'Valassz kepet',
-                button: { text: 'Kep hasznalata' },
+                title: 'Válassz képet',
+                button: { text: 'Kép használata' },
                 library: { type: 'image' },
                 multiple: false
               });
@@ -345,7 +356,7 @@ function fabrika62_sanitize_repeater(array $rows, array $shape): array
 function fabrika62_save_options(): void
 {
     if (!current_user_can('manage_options')) {
-        wp_die('Nincs jogosultsag.');
+        wp_die('Nincs jogosultság.');
     }
     check_admin_referer('fabrika62_save_options');
 
@@ -358,7 +369,10 @@ function fabrika62_save_options(): void
     $clean = [];
 
     $text_fields = [
-        'brand_name', 'hero_title', 'hero_cta_label', 'hero_cta_href',
+        'brand_name', 'hero_title', 'hero_cta_label', 'hero_cta_href', 'hero_cta2_label', 'hero_cta2_href',
+        'catalog_title', 'catalog_filter_all_label', 'catalog_no_image_label',
+        'catalog_price_contact_label', 'catalog_interest_label', 'catalog_empty_filtered_label',
+        'catalog_show_all_button_label', 'catalog_empty_label', 'catalog_cta_title', 'catalog_cta_button_label',
         'products_title', 'gallery_title', 'order_title', 'gifts_title',
         'market_title', 'market_lead', 'market_sub', 'contact_title',
         'contact_email', 'contact_facebook_label', 'contact_facebook_url',
@@ -376,7 +390,7 @@ function fabrika62_save_options(): void
         $clean[$field] = wp_kses_post($value);
     }
 
-    $textarea_fields = ['meta_description', 'contact_form_shortcode'];
+    $textarea_fields = ['meta_description', 'catalog_subtitle', 'catalog_cta_text', 'contact_form_shortcode'];
     foreach ($textarea_fields as $field) {
         $value = isset($raw[$field]) && is_string($raw[$field]) ? trim($raw[$field]) : '';
         $clean[$field] = sanitize_textarea_field($value);
@@ -384,11 +398,7 @@ function fabrika62_save_options(): void
 
     $clean['product_categories'] = fabrika62_sanitize_repeater(
         isset($raw['product_categories']) && is_array($raw['product_categories']) ? $raw['product_categories'] : [],
-        ['image' => 'text', 'title' => 'text', 'description' => 'textarea']
-    );
-    $clean['gallery_items'] = fabrika62_sanitize_repeater(
-        isset($raw['gallery_items']) && is_array($raw['gallery_items']) ? $raw['gallery_items'] : [],
-        ['image' => 'text', 'alt' => 'text']
+        ['image' => 'text', 'title' => 'text', 'slug' => 'text', 'description' => 'textarea']
     );
     $clean['order_steps'] = fabrika62_sanitize_repeater(
         isset($raw['order_steps']) && is_array($raw['order_steps']) ? $raw['order_steps'] : [],
@@ -417,4 +427,3 @@ function fabrika62_save_options(): void
     exit;
 }
 add_action('admin_post_fabrika62_save_options', 'fabrika62_save_options');
-

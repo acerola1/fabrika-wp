@@ -35,6 +35,10 @@ services:
       - wp_data:/var/www/html
       # Live theme development (repo -> container)
       - ./wp-content/themes/fabrika-62:/var/www/html/wp-content/themes/fabrika-62
+      # Ensure pretty permalinks work in local dev
+      - ./docker/apache/wordpress.htaccess:/var/www/html/.htaccess:ro
+      # PHP upload limits for local dev (keeps mobile uploads usable)
+      - ./docker/php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini:ro
 
   mailhog:
     image: mailhog/mailhog:latest

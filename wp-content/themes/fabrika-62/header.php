@@ -5,7 +5,7 @@ declare(strict_types=1);
 <head>
   <meta charset="<?php bloginfo('charset'); ?>" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="<?php echo esc_attr(fabrika62_opt_str('meta_description', 'Kezmuves fa ajandekok, lezergravírozas, fa tablak, kerti diszek es egyedi nyomatok. Fabrika Ajandek, Szarvas.')); ?>" />
+  <meta name="description" content="<?php echo esc_attr(fabrika62_opt_str('meta_description', 'Kézműves fa ajándékok, lézergravírozás, fa táblák, kerti díszek és egyedi nyomatok. Fabrika Ajándék, Szarvas.')); ?>" />
   <?php wp_head(); ?>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -175,6 +175,65 @@ declare(strict_types=1);
       box-shadow: 0 8px 30px rgba(92, 61, 46, 0.25);
     }
 
+    /* ===== Catalog (termekek) – match 6-3 mock ===== */
+    /* Tailwind utilities missing from compiled app.css (PHP templates not scanned by Vite) */
+    .pb-12 { padding-bottom: calc(var(--spacing) * 12); }
+    .top-16 { top: calc(var(--spacing) * 16); }
+    @media (min-width: 40rem) {
+      .sm\:pt-32 { padding-top: calc(var(--spacing) * 32); }
+      .sm\:pb-16 { padding-bottom: calc(var(--spacing) * 16); }
+      .sm\:py-16 { padding-block: calc(var(--spacing) * 16); }
+    }
+    @media (min-width: 80rem) {
+      .xl\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+
+    .post-type-archive-fabrika_termek .filter-btn {
+      transition: all 0.2s ease;
+    }
+    .post-type-archive-fabrika_termek .filter-btn.active {
+      background: linear-gradient(135deg, #B87333, #C9A84C) !important;
+      color: #FFFBF5 !important;
+      border-color: transparent !important;
+    }
+    .post-type-archive-fabrika_termek .product-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .post-type-archive-fabrika_termek .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 30px rgba(92, 61, 46, 0.2);
+    }
+    .post-type-archive-fabrika_termek .product-card img {
+      transition: transform 0.4s ease;
+    }
+    .post-type-archive-fabrika_termek .product-card:hover img {
+      transform: scale(1.05);
+    }
+    .post-type-archive-fabrika_termek .tag-badge {
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      background: rgba(184, 115, 51, 0.1);
+      color: #B87333;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .post-type-archive-fabrika_termek .product-id {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: rgba(59, 35, 20, 0.85);
+      backdrop-filter: blur(4px);
+      color: #E8DCC8;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-family: 'Source Sans 3', monospace;
+      z-index: 1;
+    }
+
     /* Category card rotations */
     .cat-card:nth-child(odd) { transform: rotate(-0.5deg); }
     .cat-card:nth-child(even) { transform: rotate(0.5deg); }
@@ -302,9 +361,10 @@ declare(strict_types=1);
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
         <!-- Brand -->
-        <a href="#hero" class="flex items-center gap-2 text-[#FFFBF5] font-bold text-lg" style="font-family: 'Bitter', serif;">
+        <?php $brand_href = is_front_page() ? '#hero' : home_url('/'); ?>
+        <a href="<?php echo esc_url($brand_href); ?>" class="flex items-center gap-2 text-[#FFFBF5] font-bold text-lg" style="font-family: 'Bitter', serif;">
           <svg class="w-7 h-7 text-[#B87333]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
-          <?php echo esc_html(fabrika62_opt_str('brand_name', 'Fabrika Ajandek')); ?>
+          <?php echo esc_html(fabrika62_opt_str('brand_name', 'Fabrika Ajándék')); ?>
         </a>
         <!-- Desktop Nav -->
         <div class="hidden md:flex items-center gap-8">

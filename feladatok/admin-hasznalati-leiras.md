@@ -1,92 +1,112 @@
-# Fabrika Ajandek - Admin hasznalati leiras
+# Fabrika Ajándék - Admin használati leírás
 
-## Bejelentkezes
+## Bejelentkezés
 1. Nyisd meg: `http://localhost:8080/wp-admin/`
-2. Jelentkezz be az admin fiokkal.
+2. Jelentkezz be az admin fiókkal.
 
-## Tartalom szerkesztes: "Fabrika Kezdolap" menu
+## Tartalom szerkesztés: "Fabrika Kezdőlap" menü
 
-A teljes kezdooldal tartalma **egyetlen admin oldalon** szerkesztheto, plugin nelkul.
+A teljes kezdőoldal tartalma **egyetlen admin oldalon** szerkeszthető, plugin nélkül.
 
-**Megtalalhato:** WP Admin bal oldali menuben -> **Fabrika Kezdolap** (ecset ikon)
+**Megtalálható:** WP Admin bal oldali menüben -> **Fabrika Kezdőlap** (ecset ikon)
 
-### Blokkok es mezoik
+### Blokkok és mezőik
 
-| Blokk | Mezok | Megjegyzes |
+| Blokk | Mezők | Megjegyzés |
 |-------|-------|------------|
-| **Altalanos** | Meta description, Brand nev | A brand nev a navbarban es a footerben jelenik meg. |
-| **Hero** | Badge szoveg, Hero cim, Hero alcim, CTA felirat, CTA link | A badge es alcim HTML-t is elfogad (pl. `<br>`). |
-| **Termekkategoriak** | Szekcio cim + repeater (kep, cim, leiras) | Kartya hozzaadas: "Uj kartya" gomb. Torles: "Sor torlese". |
-| **Galeria** | Szekcio cim + repeater (kep, alt szoveg) | Kep hozzaadas: "Uj kep" gomb, majd "Kep valasztasa" a Media Library-bol. |
-| **Rendeles lepesei** | Szekcio cim + repeater (lepes cim, leiras) | A lepesek automatikusan szamozodnak (1, 2, 3...). |
-| **Ajandekotletek** | Szekcio cim + repeater (ikon, cim, leiras) | Ikon valaszthato: Ajandek, Sziv, Ember, Csillag, Mosoly. |
-| **Piaci megjelenes** | Szekcio cim, Fo szoveg, Masodlagos szoveg | Egyszeruen szoveg mezok. |
-| **Kapcsolat** | Szekcio cim, Urlap shortcode, Email, Facebook, Viber, Instagram | A contact form shortcode-ot nem kell modositani, hacsak nem cserelik a plugint. |
-| **GYIK** | Szekcio cim + repeater (kerdes, valasz) | Az accordion (lenyilo) automatikusan mukodik a frontenden. |
-| **Footer** | Helyszin, Facebook URL, Instagram URL | A copyright szoveg automatikus (ev + brand nev). |
+| **Általános** | Meta description, Brand név | A brand név a navbarban és a footerben jelenik meg. |
+| **Hero** | Badge szöveg, Hero cím, Hero alcím, CTA felirat, CTA link | A badge és alcím HTML-t is elfogad (pl. `<br>`). |
+| **Termékkategóriák** | Szekció cím + repeater (kép, cím, leírás) | Kártya hozzáadás: "Új kártya" gomb. Törlés: "Sor törlése". |
+| **Galéria** | Szekció cím + repeater (kép, alt szöveg) | Kép hozzáadás: "Új kép" gomb, majd "Kép választása" a Media Library-ból. |
+| **Rendelés lépései** | Szekció cím + repeater (lépés cím, leírás) | A lépések automatikusan számozódnak (1, 2, 3...). |
+| **Ajándékötletek** | Szekció cím + repeater (ikon, cím, leírás) | Ikon választható: Ajándék, Szív, Ember, Csillag, Mosoly. |
+| **Piaci megjelenés** | Szekció cím, Fő szöveg, Másodlagos szöveg | Egyszerűen szöveg mezők. |
+| **Kapcsolat** | Szekció cím, Űrlap shortcode, Email, Facebook, Viber, Instagram | A contact form shortcode-ot nem kell módosítani, hacsak nem cserélik a plugint. |
+| **GYIK** | Szekció cím + repeater (kérdés, válasz) | Az accordion (lenyíló) automatikusan működik a frontenden. |
+| **Footer** | Helyszín, Facebook URL, Instagram URL | A copyright szöveg automatikus (év + brand név). |
 
-### Repeaterek (ismetlodo elemek) kezelese
+### Repeaterek (ismétlődő elemek) kezelése
 
-A repeater blokkok (kategoriak, galeria, lepesek, otletek, GYIK) igy mukonek:
+A repeater blokkok (kategóriák, galéria, lépések, ötletek, GYIK) így működnek:
 
-- **Uj elem hozzaadasa:** kattints az "Uj kartya" / "Uj kep" / "Uj lepes" / "Uj otlet" / "Uj kerdes" gombra a blokk aljan.
-- **Elem torlese:** kattints az adott sor aljan levo "Sor torlese" linkre.
-- **Kep valasztasa:** a kep mezo mellett levo "Kep valasztasa" gomb megnyitja a WordPress Media Library-t. Valassz kepet, vagy tolts fel ujat.
-- **Mentes:** mindig kattints az oldal aljan levo **"Mentes"** gombra a modositasok utan!
+- **Új elem hozzáadása:** kattints az "Új kártya" / "Új kép" / "Új lépés" / "Új ötlet" / "Új kérdés" gombra a blokk alján.
+- **Elem törlése:** kattints az adott sor alján lévő "Sor törlése" linkre.
+- **Kép választása:** a kép mező mellett lévő "Kép választása" gomb megnyitja a WordPress Media Library-t. Válassz képet, vagy tölts fel újat.
+- **Mentés:** mindig kattints az oldal alján lévő **"Mentés"** gombra a módosítások után.
 
-> A frontend layout automatikusan alkalmazkodik a darabszamhoz: ha tobb vagy kevesebb elem van, a grid/flex elrendezes tores nelkul kezeli.
+> A frontend layout automatikusan alkalmazkodik a darabszámhoz: ha több vagy kevesebb elem van, a grid/flex elrendezés törés nélkül kezeli.
 
-## Kapcsolaturlap (Contact Form 7)
+## Termékek feltöltése (egylépéses)
 
-Az urlap a **Contact Form 7** pluginnal mukodik.
+Termék feltöltéshez nem kell a klasszikus "dobozos" WordPress szerkesztő: van egy egyszerű, telefonbarát form.
 
-- **Urlap szerkesztese:** WP Admin -> **Kapcsolat** -> **Fabrika Kapcsolat** form
-- **Mezok:** Nev, Email, Telefon (opcionalis), Kategoria (lenyilo), Uzenet
-- **Email cimzett:** az urlap beallitasokban (Contact Form 7 -> Fabrika Kapcsolat -> Mail ful)
+**Megtalálható:** WP Admin bal oldali menüben -> **Termékek** -> **Termék feltöltés**
 
-### Email kuldes (fejlesztoi kornyezet)
+### Mezők
+- **Név** (kötelező)
+- **Leírás** (opcionális)
+- **Ár (Ft)** (opcionális, csak szám)
+- **Kép** (kötelező, 1 db)
+- **Címkék** (opcionális, csak választás a meglévőkből)
 
-Lokalis fejlesztesnel az emailek a **MailHog** email-csapdaba erkeznek (nem mennek ki valodi email cimre):
+### Mentés
+- A **"Termék mentése (publikus)"** gombbal a termék azonnal publikus lesz.
+- A **Termék kód** automatikus: a termék ID (szám).
+
+### Címkék szerkesztése (ritkán kell)
+- WP Admin -> **Termékek** -> **Címkék**
+
+## Kapcsolatűrlap (Contact Form 7)
+
+Az űrlap a **Contact Form 7** pluginnal működik.
+
+- **Űrlap szerkesztése:** WP Admin -> **Kapcsolat** -> **Fabrika Kapcsolat** form
+- **Mezők:** Név, Email, Telefon (opcionális), Kategória (lenyíló), Üzenet
+- **Email címzett:** az űrlap beállításokban (Contact Form 7 -> Fabrika Kapcsolat -> Mail fül)
+
+### Email küldés (fejlesztői környezet)
+
+Lokális fejlesztésnél az emailek a **MailHog** email-csapdába érkeznek (nem mennek ki valódi email címre):
 
 - **MailHog Web UI:** `http://localhost:8025`
-- Itt lathatod az osszes teszt-emailt, amit az urlap kuld.
+- Itt láthatod az összes teszt-emailt, amit az űrlap küld.
 
-> **Eles kornyezetben:** a MailHog-ot le kell cserelni valos SMTP-re (pl. Post SMTP plugin + Gmail/SMTP szerver).
+> **Éles környezetben:** a MailHog-ot le kell cserélni valós SMTP-re (pl. Post SMTP plugin + Gmail/SMTP szerver).
 
-## Technikai informaciok
+## Technikai információk
 
 ### Docker parancsok
-| Parancs | Leiras |
+| Parancs | Leírás |
 |---------|--------|
-| `docker compose up -d` | Inditja a WordPress + DB + MailHog kontenert |
-| `docker compose down` | Leallitja a konternereket (adatok megmaradnak) |
-| `docker compose ps` | Kontenerek allapota |
+| `docker compose up -d` | Indítja a WordPress + DB + MailHog konténert |
+| `docker compose down` | Leállítja a konténereket (adatok megmaradnak) |
+| `docker compose ps` | Konténerek állapota |
 
-### Elerhetosegek (lokal)
-| Szolgaltatas | URL |
+### Elérhetőségek (lokál)
+| Szolgáltatás | URL |
 |-------------|-----|
 | Frontend | http://localhost:8080 |
 | WP Admin | http://localhost:8080/wp-admin/ |
 | MailHog | http://localhost:8025 |
 
-### Theme fajlok
-A theme a `wp-content/themes/fabrika-62/` konyvtarban talalhato (bind mount a Docker-ben, tehat a helyi fajlrendszerben szerkesztheto):
+### Theme fájlok
+A theme a `wp-content/themes/fabrika-62/` könyvtárban található (bind mount a Docker-ben, tehát a helyi fájlrendszerben szerkeszthető):
 
-| Fajl | Funkcio |
+| Fájl | Funkció |
 |------|---------|
-| `front-page.php` | A fooldal sablon (minden szekcio) |
-| `header.php` | Fejlec, navbar, CSS |
-| `footer.php` | Lablec, back-to-top, JS betoltes |
-| `functions.php` | Theme setup, asset-ek, helper fuggvenyek |
-| `inc/admin.php` | Admin felulet ("Fabrika Kezdolap") |
+| `front-page.php` | A főoldal sablon (minden szekció) |
+| `header.php` | Fejléc, navbar, CSS |
+| `footer.php` | Lábléc, back-to-top, JS betöltés |
+| `functions.php` | Theme setup, asset-ek, helper függvények |
+| `inc/admin.php` | Admin felület ("Fabrika Kezdőlap") |
 | `assets/app.css` | Tailwind CSS |
-| `assets/app.js` | Animaciok, effektek (parallax, scroll reveal, FAQ, stb.) |
+| `assets/app.js` | Animációk, effektek (parallax, scroll reveal, FAQ, stb.) |
 
-### Vizualis regresszio teszt
-A statikus referencia (`6-2/index.html`) es a WP oldal vizualis osszehasonlitasa Playwright-tel:
+### Vizuális regresszió teszt
+A statikus referencia (`6-2/index.html`) és a WP oldal vizuális összehasonlítása Playwright-tal:
 
 ```bash
-# 1. Inditsd el a Vite dev szervert (statikus referencia)
+# 1. Indítsd el a Vite dev szervert (statikus referencia)
 npx vite --port 3999
 
 # 2. A Docker fusson (WP)
@@ -95,6 +115,6 @@ docker compose up -d
 # 3. Futtasd a tesztet
 node tests/visual-regression.mjs
 
-# 4. Eredmenyek: tests/screenshots/
-#    static_*.png vs wp_*.png osszehasonlitas
+# 4. Eredmények: tests/screenshots/
+#    static_*.png vs wp_*.png összehasonlítás
 ```

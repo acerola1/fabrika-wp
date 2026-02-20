@@ -257,5 +257,127 @@
     });
   });
 
-})();
+  // ========== QUERY PARAM: PRE-FILL PRODUCT FIELD ==========
+  (function() {
+    var params = new URLSearchParams(window.location.search);
+    var termek = params.get('termek');
+    if (!termek) return;
 
+    var nev = params.get('nev');
+    var displayValue = decodeURIComponent(termek);
+    if (nev) {
+      displayValue += ' \u2013 ' + decodeURIComponent(nev);
+    }
+
+    var kapcsolat = document.getElementById('kapcsolat');
+    var input = null;
+    if (kapcsolat) {
+      input =
+        kapcsolat.querySelector('input#termek') ||
+        kapcsolat.querySelector('input[name="termek"]') ||
+        kapcsolat.querySelector('input[name="your-termek"]') ||
+        kapcsolat.querySelector('input[name="product"]');
+    }
+    if (input) {
+      input.value = displayValue;
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+
+    // Auto-scroll to contact section on load when query param is present.
+    var hash = window.location.hash;
+    if (hash === '#kapcsolat' || hash === '') {
+      setTimeout(function() {
+        var target = document.getElementById('kapcsolat');
+        if (!target) return;
+        var offset = 64;
+        var top = target.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top: top, behavior: 'smooth' });
+      }, 150);
+    }
+  })();
+
+  // ========== CATALOG FILTER BAR (6-3 mock parity) ==========
+  (function() {
+    // Only run on the /termekek archive, where the filter bar exists.
+    var filterBar = document.getElementById('filter-bar');
+    if (!filterBar) return;
+
+    var filterButtons = document.querySelectorAll('.filter-btn');
+    var productCards = document.querySelectorAll('.product-card');
+    var noResults = document.getElementById('no-results');
+
+    if (!filterButtons.length || !productCards.length || !noResults) return;
+
+    function applyFilter(filter) {
+      var visibleCount = 0;
+
+      // Update button states
+      filterButtons.forEach(function(btn) {
+        if (btn.getAttribute('data-filter') === filter) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      // Show/hide cards
+      productCards.forEach(function(card) {
+        var categories = card.getAttribute('data-categories') || '';
+        if (filter === 'all' || categories.indexOf(filter) !== -1) {
+          card.style.display = '';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      if (visibleCount === 0) noResults.classList.remove('hidden');
+      else noResults.classList.add('hidden');
+    }
+
+    // Click handlers (prevent full reload, update URL like the mock)
+    filterButtons.forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        var filter = btn.getAttribute('data-filter') || 'all';
+        applyFilter(filter);
+
+        try {
+          var url = new URL(window.location.href);
+          if (filter === 'all') url.searchParams.delete('kategoria');
+          else url.searchParams.set('kategoria', filter);
+          history.replaceState(null, '', url);
+        } catch (err) {
+          // Ignore URL update errors (very old browsers).
+        }
+
+        // If it's a link, stop navigation (we already updated URL).
+        if (e && typeof e.preventDefault === 'function') e.preventDefault();
+      });
+    });
+
+    // Apply filter from URL on page load
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var kategoriaParam = params.get('kategoria') || params.get('cimke') || params.get('tag');
+      if (kategoriaParam) applyFilter(kategoriaParam);
+    } catch (err) {
+      // Ignore.
+    }
+
+    // Global reset (used by the "no results" button markup, like in the mock).
+    window.resetFilter = function() {
+      applyFilter('all');
+      try {
+        var url = new URL(window.location.href);
+        url.searchParams.delete('kategoria');
+        url.searchParams.delete('cimke');
+        url.searchParams.delete('tag');
+        history.replaceState(null, '', url);
+      } catch (err) {
+        // Ignore.
+      }
+    };
+  })();
+
+})();

@@ -1,91 +1,116 @@
 # 6-3 Feladatpontok
 
-## Fazis 1 – Kattinthato mock (statikus HTML prototipus)
+## Fázis 1 – Kattintható mock (statikus HTML prototípus)
 
-- [x] **1.1** `6-3/` konyvtar letrehozasa a `6-2/index.html` masolatabol
-- [x] **1.2** Fooldal mock – Hero szekcion masodlagos CTA gomb hozzaadasa ("Katalogus" → `termekek.html`)
-- [x] **1.3** Fooldal mock – Kategoriak szekcion: minden kartya aljara "Nezd meg a termekeket →" link (`termekek.html?kategoria={cimke}`)
-- [x] **1.4** Fooldal mock – Munkaink szekcion: galeria aljara "Osszes termek megtekintese →" gomb (`termekek.html`)
-- [x] **1.5** Uj oldal mock – `6-3/termekek.html` letrehozasa:
-  - Navbar (azonos a fooldalival, "Fabrika Ajandek" logo linkje a fooldara mutat)
-  - Szuro sav kategoriak/tagek alapjan (kattinthato badge-ek/gombok)
-  - Termek grid (3-4 oszlop desktop, 2 tablet, 1 mobil)
-  - Minta kartyak (12 db): kep, nev, ar ("3 500 Ft"), kategoria badge-ek, "Erdekel" gomb, FA-XXX azonosito badge
-  - Footer (azonos a fooldalival)
-- [x] **1.6** Termek kartya "Erdekel" gomb: link vissza a fooldara `index.html?termek=FA-XXX&nev={nev}#kapcsolat`
-- [x] **1.7** Fooldal JS: URL query param (`?termek=FA-XXX&nev=...`) kiolvasasa es a kapcsolat urlap termek mezo automatikus kitoltese ("FA-007 – Fa viragtarto terrarium" formatum)
-- [x] **1.8** Szuro mukodes: query param (`?kategoria=...`) kiolvasasa es a megfelelo kartyak szurese JS-bol
-- [ ] **1.9** Vizualis ellenorzes: a fooldal animacioi, Hero, navbar, FAQ, anchorok, effektek valtozatlanul mukodnek
-- [ ] **1.10** Mobil responsive ellenorzes: termek grid, szuro sav, kartyak 375px-tol
-- [ ] **1.11** Mock terv elfogadtatasa (review)
+- [x] **1.1** `6-3/` könyvtár létrehozása a `6-2/index.html` másolatából
+- [x] **1.2** Főoldal mock – Hero szekción másodlagos CTA gomb hozzáadása ("Katalógus" → `termekek.html`)
+- [x] **1.3** Főoldal mock – Kategóriák szekción: minden kártya aljára "Nézd meg a termékeket →" link (`termekek.html?kategoria={cimke}`)
+- [x] **1.4** Főoldal mock – Munkáink szekción: galéria aljára "Összes termék megtekintése →" gomb (`termekek.html`)
+- [x] **1.5** Új oldal mock – `6-3/termekek.html` létrehozása:
+  - Navbar (azonos a főoldalival, "Fabrika Ajándék" logó linkje a főoldalra mutat)
+  - Szűrő sáv kategóriák/tagek alapján (kattintható badge-ek/gombok)
+  - Termék grid (3-4 oszlop desktop, 2 tablet, 1 mobil)
+  - Minta kártyák (12 db): kép, név, ár ("3 500 Ft"), kategória badge-ek, "Érdekel" gomb, FA-XXX azonosító badge
+  - Footer (azonos a főoldalival)
+- [x] **1.6** Termék kártya "Érdekel" gomb: link vissza a főoldalra `index.html?termek=FA-XXX&nev={nev}#kapcsolat`
+- [x] **1.7** Főoldal JS: URL query param (`?termek=FA-XXX&nev=...`) kiolvasása és a kapcsolat űrlap termék mező automatikus kitöltése ("FA-007 – Fa virágtartó terrárium" formátum)
+- [x] **1.8** Szűrő működés: query param (`?kategoria=...`) kiolvasása és a megfelelő kártyák szűrése JS-ből
+- [x] **1.9** Vizuális ellenőrzés: a főoldal animációi, Hero, navbar, FAQ, anchorok, effektek változatlanul működnek
+- [x] **1.10** Mobil responsive ellenőrzés: termék grid, szűrő sáv, kártyák 375px-től
+- [x] **1.11** Mock terv elfogadtatása (review)
+- [ ] **1.12** Mock – Termék kártyára kattintva termék modal/carousel megjelenítése (nagy kép + infók + CTA)
+  - Bezárás: X, overlay click, ESC
+- [ ] **1.13** Mock – Carousel navigáció: előző/következő + mobil swipe + billentyűzet nyilak
+  - Sorrend: ugyanaz, mint a gridben (szűrő után csak a látható termékek között lép)
+- [ ] **1.14** Mock – Termék leírás megjelenítése hoverre (áttetsző panel, animáció)
+  - Mobilon: fallback (pl. mindig látszik, vagy tapra toggle)
 
-## Fazis 2 – WordPress integralas
+## Fázis 2 – WordPress integrálás
 
 ### Adatmodell
 
-- [ ] **2.1** Custom Post Type regisztracio: `fabrika_termek` (`functions.php`)
-  - Cim, editor, featured image tamogatas
+- [x] **2.1** Custom Post Type regisztráció: `fabrika_termek` (`functions.php`)
+  - Cím, editor, featured image támogatás
   - Public, has_archive = true, rewrite slug = `termekek`
-- [ ] **2.2** Custom taxonomy: `fabrika_kategoria` (hierarchikus, mint WP kategoriak)
-- [ ] **2.3** Custom taxonomy: `fabrika_tag` (nem hierarchikus, mint WP cimkek)
-- [ ] **2.4** Admin meta box: "Ar (Ft)" mezo a termek szerkeszto oldalon (`add_meta_box`)
-- [ ] **2.5** Ar mezo mentese es sanitizalasa (`save_post` hook)
-- [ ] **2.5a** (Opcionalis, de ajanlott) Termek azonosito mezo: "FA-XXX" (meta) + megjelenites a katalogus kartyakon
-- [ ] **2.5b** (Ajanlott) Rewrite rules frissites theme aktivlaskor (`after_switch_theme` + `flush_rewrite_rules`)
+- [x] **2.2** Custom taxonomy: `fabrika_tag` (címkék) – **egyetlen** szűrő dimenzió
+- [x] **2.3** (N/A) Külön `fabrika_kategoria` taxonomy nem kell
+- [x] **2.4** Admin meta box: "Ár (Ft)" mező a termék szerkesztő oldalon (`add_meta_box`)
+- [x] **2.5** Ár mező mentése és szanitizálása (`save_post` hook)
+- [x] **2.5a** (Opcionális, de ajánlott) Termék azonosító mező: "FA-XXX" (meta) + megjelenítés a katalógus kártyákon
+- [x] **2.5b** (Ajánlott) Rewrite rules frissítés theme aktiváláskor (`after_switch_theme` + `flush_rewrite_rules`)
+- [x] **2.5c** Képek átméretezése (ingyen, WP core): új képméretek regisztrálása (1:1) + használat
+  - `square_600` (600×600, hard crop) – katalógus kártya
+  - `square_1200` (1200×1200, hard crop) – nagy/retina vagy galéria
+  - Ellenőrzés: feltöltés után legenerálja-e a WP a méreteket (Docker + később éles)
+- [ ] **2.5d** (Fallback, ha szerveroldali méretgenerálás nem megy) JS-es feltöltés/átméretezés
+  - Custom "Termék kép" mező a termék szerkesztőben (media picker), **feltöltés előtt** canvas/WebP vagy JPEG 1200×1200 export
+  - Megjegyzés: csak ingyenes, saját theme kód (nincs fizetős plugin)
 
-### Fooldal modositasok (front-page.php)
+### Admin UX (termék feltöltés egyszerűsítése)
 
-- [ ] **2.6** Kategoriak repeater bovitese: uj `cimke` (slug) mezo hozzaadasa az admin oldalon
-- [ ] **2.7** Kategoriak szekcion: link generalas a kartya aljara (`/termekek?kategoria={cimke}`)
-- [ ] **2.8** Munkaink szekcion atalakitasa: `WP_Query` a legutolso 10 `fabrika_termek` posztbol (featured image kiolvasas)
-- [ ] **2.9** Munkaink szekcion aljara "Osszes termek megtekintese" gomb (`/termekek`)
-- [ ] **2.10** Hero szekcio: masodlagos CTA gomb ("Katalogus" → `/termekek`)
+- [x] **2.5e** Egylépéses termék feltöltés admin oldalon (név, leírás, ár, 1 kép, címkék) – azonnal publikus
+- [x] **2.5f** Termék kód automatikus (egyedi, egyszerű): post ID (szám), és ne legyen kézzel szerkeszthető
+- [ ] **2.5g** (Ajánlott) Playwright smoke teszt: "Új termék" oldalról termék létrehozás + kép feltöltés (lokál)
 
-### Termekoldal template
+### Főoldal módosítások (front-page.php)
 
-- [ ] **2.11** `archive-fabrika_termek.php` template letrehozasa a mock alap alapjan
-- [ ] **2.12** Szuro sav megvalositasa: `fabrika_kategoria` es `fabrika_tag` taxonomy-k listazasa gombkent
-- [ ] **2.13** Szures megvalositasa: `tax_query` a `WP_Query`-ben, query param (`?kategoria=slug` es/vagy `?tag=slug`) feldolgozas
-- [ ] **2.14** Termek kartyak renderelese: kep, nev, ar (meta), kategoria/tag badge-ek, CTA gomb
-- [ ] **2.15** "Megrendelem / Erdekel" gomb: link a fooldal `/#kapcsolat?termek={post_slug}` URL-re
-- [ ] **2.16** Lapozas (pagination) ha tobb mint X termek van
-- [ ] **2.16a** (Ajanlott) Ures szuro allapot: ha nincs talalat, legyen "Szuro torlese" CTA + vissza az osszeshez
+- [x] **2.6** Kategóriák repeater bővítése: új `cimke` (slug) mező hozzáadása az admin oldalon
+- [x] **2.7** Kategóriák szekción: link generálás a kártya aljára (`/termekek?kategoria={cimke}`)
+- [x] **2.8** Munkáink szekción átalakítása: `WP_Query` a legutolsó 10 `fabrika_termek` posztból (featured image kiolvasás)
+- [x] **2.9** Munkáink szekción aljára "Összes termék megtekintése" gomb (`/termekek`)
+- [x] **2.10** Hero szekció: másodlagos CTA gomb ("Katalógus" → `/termekek`)
 
-### Kapcsolat urlap integralas
+### Termékoldal template
 
-- [ ] **2.17** CF7 urlap bovitese: "Melyik termek erdekli?" mezo (text input, lathhato)
-- [ ] **2.18** JS: `?termek=` query param kiolvasasa es a CF7 mezo automatikus kitoltese
-- [ ] **2.19** Teszteles: termek oldalrol erkezo link → urlap kitoltve a termek nevevel
-- [ ] **2.19a** (Ajanlott) Param standard: egyeztetni, hogy a link `?termek=` erteke **slug / ID / FA-kod** legyen-e, es ehhez igazitsuk a kitoltest (mock + WP ugyanugy)
+- [x] **2.11** `archive-fabrika_termek.php` template létrehozása a mock alap alapján
+- [x] **2.12** Szűrő sáv megvalósítása: `fabrika_tag` (címkék) listázása gombként
+- [x] **2.13** Szűrés megvalósítása: mock-paritás kliens oldali filter (`?kategoria=slug`), alias: `?cimke=`, `?tag=`
+- [x] **2.14** Termék kártyák renderelése: kép, név, ár (meta), kategória/tag badge-ek, CTA gomb
+- [x] **2.14a** Termék kép render: `wp_get_attachment_image()` + `square_600` (srcset, lazy-load, alt)
+- [x] **2.15** "Megrendelem / Érdekel" gomb: link a főoldal `/?termek={kod}&nev={cim}#kapcsolat` URL-re
+- [ ] **2.16** Képek betöltése lazy loadinggal (katalógus + galéria): `loading="lazy"` (+ ahol lehet `decoding="async"`)
+- [x] **2.16a** (Ajánlott) Üres szűrő állapot: ha nincs találat, legyen "Szűrő törlése" CTA + vissza az összeshez
+- [ ] **2.16b** WP – Termék kártyára kattintva ugyanaz a modal/carousel, mint a mockban (nagy kép + infók + CTA)
+- [ ] **2.16c** WP – Modal/carousel A11y: fókusz kezelés (open/close), `aria-*`, keyboard (ESC/nyilak)
+- [ ] **2.16d** WP – Termék leírás megjelenítése a kártyán hoverre (mock paritás, áttetsző panel + animáció)
 
-### Mobil feltoltes teszteles
+### Kapcsolat űrlap integrálás
 
-- [ ] **2.20** Mobil bongeszbol kep feltoltes teszteles (WP media uploader)
-- [ ] **2.21** WP admin mobil nézet teszteles: termek hozzaadasa telefonrol (cim, kep, ar, kategoriak)
+- [ ] **2.17** CF7 űrlap bővítése: "Melyik termék érdekli?" mező (text input, látható)
+- [ ] **2.18** JS: `?termek=` query param kiolvasása és a CF7 mező automatikus kitöltése
+- [ ] **2.19** Tesztelés: termék oldalról érkező link → űrlap kitöltve a termék nevével
+- [ ] **2.19a** (Ajánlott) Param standard: egyeztetni, hogy a link `?termek=` értéke **slug / ID / FA-kód** legyen-e, és ehhez igazítsuk a kitöltést (mock + WP ugyanúgy)
 
-### Minosegbiztositas
+### Mobil feltöltés tesztelés
 
-- [ ] **2.22** Fooldal animaciok regresszios ellenorzese (Hero, parallax, gear, scroll reveal, FAQ)
-- [ ] **2.23** DOM contract ellenorzes: id-k, classok, data-* attributumok valtozatlanok
-- [ ] **2.24** Termek oldal responsive teszt: 375px, 768px, 1440px
-- [ ] **2.25** 0 termek allapot: ures katalogus oldal uzenettel ("Meg nincsenek termekek")
-- [ ] **2.26** Szuro mukodes ellenorzes: kategoria linkek a fooldalrol, szuro gombok a termek oldalon
-- [ ] **2.27** CTA-lanc teljes teszteles: Hero → Katalogus → Termek → Megrendelem → Kapcsolat urlap (kitoltve)
-- [ ] **2.28** Admin hasznalati leiras frissitese: termek feltoltes, kategoria kezeles, ar megadas
-- [ ] **2.29** (Ajanlott) SEO alapok: /termekek oldal title/description, OG kep (ha nincs SEO plugin), canonical
-- [ ] **2.30** (Ajanlott) A11y: szuro gombok `aria-pressed`, fokusz allapotok, keyboard navigacio minimalisan
+- [ ] **2.20** Mobil böngészőből kép feltöltés tesztelés (WP media uploader)
+- [ ] **2.21** WP admin mobil nézet tesztelés: termék hozzáadása telefonról (cím, kép, ár, kategóriák)
+- [ ] **2.21a** Képek QA: 1200×1200 feltöltés, fájlméret (cél: ~200–600 KB), vágás/középre komponálás ellenőrzése
 
-## Fazis 3 – Automata tesztek es CI (ajanlott)
+### Minőségbiztosítás
 
-- [ ] **3.1** Playwright e2e tesztek a `6-3/` mockhoz (szuro, CTA-lanc, urlap termek mez kitoltese)
-- [ ] **3.2** CI workflow (pl. GitHub Actions): `npm ci` + `npm run build` + `npm run test:e2e`
-- [ ] **3.3** (Opcionalis) Vizualis regresszio CI-ban: Playwright screenshot snapshotok (stabil beallitasokkal: `parallax=0`, animaciok tiltasa)
-- [ ] **3.4** (Kesobb) WP E2E tesztek: Docker compose + WP bootstrap (wp-cli) + `/termekek` szures + CTA-lanc smoke
+- [ ] **2.22** Főoldal animációk regressziós ellenőrzése (Hero, parallax, gear, scroll reveal, FAQ)
+- [ ] **2.23** DOM contract ellenőrzés: id-k, classok, data-* attribútumok változatlanok
+- [ ] **2.24** Termék oldal responsive teszt: 375px, 768px, 1440px
+- [x] **2.25** 0 termék állapot: üres katalógus oldal üzenettel ("Még nincsenek termékek")
+- [ ] **2.26** Szűrő működés ellenőrzés: kategória linkek a főoldalról, szűrő gombok a termék oldalon
+- [ ] **2.27** CTA-lánc teljes tesztelés: Hero → Katalógus → Termék → Megrendelem → Kapcsolat űrlap (kitöltve)
+- [ ] **2.28** Admin használati leírás frissítése: termék feltöltés, kategória kezelés, ár megadás
+- [ ] **2.29** (Ajánlott) SEO alapok: /termekek oldal title/description, OG kép (ha nincs SEO plugin), canonical
+- [ ] **2.30** (Ajánlott) A11y: szűrő gombok `aria-pressed`, fókusz állapotok, keyboard navigáció minimálisan
 
-## Dontesi pontok (implementacio elott)
+## Fázis 3 – Automata tesztek és CI (ajánlott)
 
-1. Termek reszletes oldal (`single-fabrika_termek.php`) kell-e, vagy elég a katalogus grid + CTA?
-2. Ar mezo formatum: egyszeru szam (Ft) vagy lehetoseg "Artol" / "X Ft-tol" tipusu megjelenitesre?
-3. Galeria szekcio: a termek kep kattintasra lightbox vagy link a termek oldalra (ha lesz single template)?
-4. Szuro: JS-alapu kliens oldali szures (gyorsabb, de max ~100 termek) vagy szerver oldali (WP query, lapozassal)?
-5. `?termek=` parameter: slug / ID / FA-kod? (es kell-e mellette `?nev=` a displayhez)
+- [x] **3.1** Playwright e2e tesztek a `6-3/` mockhoz (szűrő, CTA-lánc, űrlap termék mező kitöltése)
+- [x] **3.2** CI workflow (pl. GitHub Actions): `npm ci` + `npm run build` + `npm run test:e2e`
+- [ ] **3.3** (Opcionális) Vizuális regresszió CI-ban: Playwright screenshot snapshotok (stabil beállításokkal: `parallax=0`, animációk tiltása)
+- [ ] **3.4** (Később) WP E2E tesztek: Docker compose + WP bootstrap (wp-cli) + `/termekek` szűrés + CTA-lánc smoke
+
+## Döntési pontok (implementáció előtt)
+
+1. Termék részletes oldal (`single-fabrika_termek.php`) kell-e, vagy elég a katalógus grid + CTA?
+2. Ár mező formátum: egyszerű szám (Ft) vagy lehetőség "Ártól" / "X Ft-tól" típusú megjelenítésre?
+3. Galéria szekció: a termék kép kattintásra lightbox vagy link a termék oldalra (ha lesz single template)?
+4. Szűrő: JS-alapú kliens oldali szűrés (gyorsabb, de max ~100 termék) vagy szerver oldali (WP query, lapozással)?
+5. `?termek=` paraméter: slug / ID / FA-kód? (és kell-e mellette `?nev=` a displayhez)
+6. Képek: elég a WP featured image + WP core méretgenerálás, vagy kell custom JS-es átméretezős feltöltés fallbackként?

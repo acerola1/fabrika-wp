@@ -6,8 +6,8 @@ declare(strict_types=1);
   <footer class="py-12" style="background-color: #3B2314;">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
-        <p class="text-lg font-bold text-[#FFFBF5] mb-2" style="font-family: 'Bitter', serif;"><?php echo esc_html(fabrika62_opt_str('brand_name', 'Fabrika Ajandek')); ?></p>
-        <p class="text-sm text-[#E8DCC8] mb-6"><?php echo esc_html(fabrika62_opt_str('footer_location', 'Szarvas, Magyarorszag')); ?></p>
+        <p class="text-lg font-bold text-[#FFFBF5] mb-2" style="font-family: 'Bitter', serif;"><?php echo esc_html(fabrika62_opt_str('brand_name', 'Fabrika Ajándék')); ?></p>
+        <p class="text-sm text-[#E8DCC8] mb-6"><?php echo esc_html(fabrika62_opt_str('footer_location', 'Szarvas, Magyarország')); ?></p>
 
         <div class="copper-divider max-w-[120px] mx-auto mb-6"></div>
 
@@ -21,13 +21,13 @@ declare(strict_types=1);
           </a>
         </div>
 
-        <p class="text-xs text-[#E8DCC8] opacity-60">&copy; 2025 Fabrika Ajandek. Minden jog fenntartva.</p>
+        <p class="text-xs text-[#E8DCC8] opacity-60">&copy; 2025 Fabrika Ajándék. Minden jog fenntartva.</p>
       </div>
     </div>
   </footer>
 
   <!-- Back to top button -->
-  <button id="back-to-top" class="back-to-top fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full flex items-center justify-center text-[#FFFBF5] shadow-lg transition-all duration-300 hover:scale-110 cursor-pointer" style="background: linear-gradient(135deg, #B87333, #C9A84C);" aria-label="Vissza a tetejere">
+  <button id="back-to-top" class="back-to-top fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full flex items-center justify-center text-[#FFFBF5] shadow-lg transition-all duration-300 hover:scale-110 cursor-pointer" style="background: linear-gradient(135deg, #B87333, #C9A84C);" aria-label="Vissza a tetejére">
     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg>
   </button>
 

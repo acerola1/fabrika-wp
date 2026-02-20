@@ -1,124 +1,124 @@
 # 6-2 statikus terv -> WordPress template terv
 
-## WordPress elerhetoseg (lokal)
+## WordPress elérhetőség (lokál)
 - Frontend: http://localhost:8080
 - Installer/Admin: http://localhost:8080/wp-admin/install.php
 - Docker status: `docker compose ps`
 - Stop: `docker compose down`
 
-## Cel
-- A `6-2/index.html` one-page oldal teljes atemelese egy custom WordPress theme-be.
-- A tartalom ne kodban legyen, hanem adminbol szerkesztheto legyen.
-- A teljes kezdooldal szoveges tartalma egy helyrol kezelheto legyen.
-- A galeria es kapcsolaturlap dinamikus legyen.
+## Cél
+- A `6-2/index.html` one-page oldal teljes átemelése egy custom WordPress theme-be.
+- A tartalom ne kódban legyen, hanem adminból szerkeszthető legyen.
+- A teljes kezdőoldal szöveges tartalma egy helyről kezelhető legyen.
+- A galéria és kapcsolatűrlap dinamikus legyen.
 
 ## Javasolt plugin stack
-- Fizetos plugin nelkul: egyedi admin oldal (`Fabrika Kezdolap`) sajat mezokkel es repeaterekkel.
-- Opcionális: `Fluent Forms` (vagy Contact Form 7) kapcsolaturlap szerkeszteshez.
-- Opcionális: `Post SMTP` megbizhato email kuldeshez.
-- Galeria: sajat repeater + WP media URL-k (kulon galeria plugin nelkul).
+- Fizetős plugin nélkül: egyedi admin oldal (`Fabrika Kezdőlap`) saját mezőkkel és repeaterekkel.
+- Opcionális: `Fluent Forms` (vagy Contact Form 7) kapcsolatűrlap szerkesztéshez.
+- Opcionális: `Post SMTP` megbízható email küldéshez.
+- Galéria: saját repeater + WP media URL-k (külön galéria plugin nélkül).
 
-## Admin "egy helyrol szerkesztes" koncepcio
-- Egy egyedi admin menu: `Fabrika Kezdolap`.
-- Ez egy sajat theme admin oldal, logikusan csoportositott blokkokkal:
-  - Altalanos (meta title, meta description, footer szoveg, social linkek)
+## Admin "egy helyről szerkesztés" koncepció
+- Egy egyedi admin menü: `Fabrika Kezdőlap`.
+- Ez egy saját theme admin oldal, logikusan csoportosított blokkokkal:
+  - Általános (meta title, meta description, footer szöveg, social linkek)
   - Hero
-  - Termekkategoriak
-  - Galeria
-  - Rendeles lepesei
-  - Ajandekotletek
-  - Piaci megjelenes
+  - Termékkategóriák
+  - Galéria
+  - Rendelés lépései
+  - Ajándékötletek
+  - Piaci megjelenés
   - Kapcsolat blokk
   - GYIK
-- Igy minden szoveg egy admin feluleten szerkesztheto, nem kulon oldalakban.
+- Így minden szöveg egy admin felületen szerkeszthető, nem külön oldalakban.
 
-## Layout es szerkeszthetoseg elvek (kiemelt)
-- Minden olyan blokk, amiben tobb elem van (pl. kategoriak, galeria kepek, lepesek, GYIK), sajat repeater legyen.
-- A repeaterek elemei szabadon hozzaadhatok/elvenhetok legyenek, es a frontend layout ezt torvenyszeruen kezelje:
-  - Grid/flex auto-wrap, responsive breakpointok, eszeru gap-ek.
-  - Nincs \"ures hely\" vagy eltoro magassag miatti szeteses; a kartyak/kepek rugalmasan igazodnak a darabszamhoz.
-- A tartalommodell legyen logikus: ahol kell cim+leiras+kep, ott ezek egyetlen repeater sorban legyenek, ne kulon mezokben.
+## Layout és szerkeszthetőség elvek (kiemelt)
+- Minden olyan blokk, amiben több elem van (pl. kategóriák, galéria képek, lépések, GYIK), saját repeater legyen.
+- A repeaterek elemei szabadon hozzáadhatók/elvenhetők legyenek, és a frontend layout ezt törvényszerűen kezelje:
+  - Grid/flex auto-wrap, responsive breakpointok, ésszerű gap-ek.
+  - Nincs "üres hely" vagy eltérő magasság miatti szétesés; a kártyák/képek rugalmasan igazodnak a darabszámhoz.
+- A tartalommodell legyen logikus: ahol kell cím+leírás+kép, ott ezek egyetlen repeater sorban legyenek, ne külön mezőkben.
 
-## Animaciok es effektek megorzese (kiemelt)
-- A jelenlegi animaciok/effektek maradjanak meg, kulonosen a `Hero` szekcio:
-  - Hero hatter interaction reveal
+## Animációk és effektek megőrzése (kiemelt)
+- A jelenlegi animációk/effektek maradjanak meg, különösen a `Hero` szekció:
+  - Hero háttér interaction reveal
   - Gear spin / scroll state
   - Parallax engine
   - Scroll reveal, navbar scroll state, back-to-top, smooth scroll
-- Implementacios szabaly: a JS csak ugy mozgathato/theme-be szervezheto, hogy az eredeti DOM struktura (id-k, classok, `data-*` attributumok) kompatibilis maradjon, kulonben az animaciok eltornek.
+- Implementációs szabály: a JS csak úgy mozgatható/theme-be szervezhető, hogy az eredeti DOM struktúra (id-k, classok, `data-*` attribútumok) kompatibilis maradjon, különben az animációk eltörnek.
 
 ## Oldalszerkezet -> WP adatmodell
 - Navbar:
-  - Forras: WP Menu (`wp_nav_menu`) + `Fabrika Kezdolap` brand beallitasok.
+  - Forrás: WP Menu (`wp_nav_menu`) + `Fabrika Kezdőlap` brand beállítások.
 - Hero:
-  - Forras: sajat szoveges mezok (badge, focim, alcim, CTA szoveg, CTA URL).
-- Termek kategoriak (5 kartya):
-  - Forras: sajat repeater (cim, leiras, kep).
-- Galeria racs (10 kep):
-  - Forras: sajat repeater (kep, alt szoveg opcionális).
-- Hogyan rendelhetsz (3 lepes):
-  - Forras: sajat repeater (lepes cim + leiras).
-- Ajandekotletek (5 blokk):
-  - Forras: sajat repeater (cim + leiras + ikon valaszto).
-- Piaci megjelenes:
-  - Forras: sajat szoveges mezok (cim, leiras, masodlagos leiras).
-- Kapcsolat szekcio:
-  - Forras: opcionalis form shortcode + sajat mezok az oldalso kontakt infokhoz.
+  - Forrás: saját szöveges mezők (badge, főcím, alcím, CTA szöveg, CTA URL).
+- Termék kategóriák (5 kártya):
+  - Forrás: saját repeater (cím, leírás, kép).
+- Galéria rács (10 kép):
+  - Forrás: saját repeater (kép, alt szöveg opcionális).
+- Hogyan rendelhetsz (3 lépés):
+  - Forrás: saját repeater (lépés cím + leírás).
+- Ajándékötletek (5 blokk):
+  - Forrás: saját repeater (cím + leírás + ikon választó).
+- Piaci megjelenés:
+  - Forrás: saját szöveges mezők (cím, leírás, másodlagos leírás).
+- Kapcsolat szekció:
+  - Forrás: opcionális form shortcode + saját mezők az oldalsó kontakt infókhoz.
 - GYIK:
-  - Forras: sajat repeater (kerdes, valasz).
+  - Forrás: saját repeater (kérdés, válasz).
 - Footer:
-  - Forras: sajat mezok (nev, helyszin, copyright, social URL-ek).
+  - Forrás: saját mezők (név, helyszín, copyright, social URL-ek).
 
-## Theme implementacios terv
-- `wp-content/themes/fabrika-62/` custom theme letrehozasa.
-- Alap fajlok: `style.css`, `functions.php`, `front-page.php`, `header.php`, `footer.php`.
-- Asset kezeles:
-  - A jelenlegi design CSS/JS atemelese kulon `assets/css` es `assets/js` fajlokba.
+## Theme implementációs terv
+- `wp-content/themes/fabrika-62/` custom theme létrehozása.
+- Alap fájlok: `style.css`, `functions.php`, `front-page.php`, `header.php`, `footer.php`.
+- Asset kezelés:
+  - A jelenlegi design CSS/JS átemelése külön `assets/css` és `assets/js` fájlokba.
   - `functions.php`-ban enqueue (`wp_enqueue_style`, `wp_enqueue_script`).
-- Statikus HTML feldarabolasa:
-  - Fejlec es footer resz kiszervezese.
-  - Minden szekcio dinamikus adatokkal renderelve.
-- URL-ek WP kompatibilisse tetele:
-  - Kepa hivatkozasok `wp_get_attachment_image()` vagy attachment ID alapon.
+- Statikus HTML feldarabolása:
+  - Fejléc és footer rész kiszervezése.
+  - Minden szekció dinamikus adatokkal renderelve.
+- URL-ek WP kompatibilissé tétele:
+  - Kép hivatkozások `wp_get_attachment_image()` vagy attachment ID alapon.
 
-## Minosegbiztositas (hogyan tartjuk magas szinten a minoseget)
-- "Golden master" referencia: a statikus `6-2/index.html` (es/vagy `dist/6-2/index.html`) legyen a vizualis/viselkedesi etalon; minden szekciot ehhez hasonlitunk.
-- Tartalom stresszteszt minden repeaterre: 0 / 1 / 2 / 3 / 5 / 10 elem; rovid/extra hosszu szoveg; kep nelkul; alt szoveg nelkul. A layoutnak toras nelkul kell alkalmazkodnia.
-- Animacio "DOM contract": a Hero es a scroll/parallax JS mukodese fugg id-k/classok/`data-*` attributumok jelenletetol; ezekbol csinalunk egy rovid checklistet, es implementacio kozben nem torjuk meg.
-- JS smoke-check (dev): ha valami hianyzik (pl. `#hero`, `#navbar`), ne torjon el az egesz script; inkabb `console.warn` es graceful fallback.
-- Csokkentett mozgas ellenorzes: `prefers-reduced-motion` alatt ne legyen "betoressel" jaro elmenyromlas (szoveg/CTA legyen azonnal lathato).
-- Vizualis regresszio (opcionális, de ajanlott): Playwright/Backstop-szeru screenshot osszehasonlitas desktop + mobil viewporttal legalabb a Hero + 2 tovabbi szekciora.
-- Playwright "design parity" (opcionalis, de ajanlott): ugyanazokat a screenshotokat elkeszitjuk a statikus referencia oldalon es a WP alatti oldalon, majd diffeljuk.
-- Stabilitas: `?parallax=0` parameter a mozgashoz, Playwright screenshot `animations: 'disabled'`, es `document.fonts.ready` megvarasa.
-- Nezetek: legalabb 375x812 es 1440x900; allapotok: felso (hero), es egy lejjebb gorgetett pont.
-- Cel: pixel-diff minimalizalasa; elteresek eseten konkretan megmondhato melyik szekcio csuszott el.
-- Frontend minoseg kapuk: kepek `srcset`-tel (WP), lazy-load ahol lehet; nincs console error; nincs layout shift a fobb betoltes utan.
-- Urlap/email QA: lokal fejlesztesnel ajanlott eloszor email-csapda (pl. MailHog) a biztonsagos teszteleshez, majd utana valos SMTP (Post SMTP) bekotese.
+## Minőségbiztosítás (hogyan tartjuk magas szinten a minőséget)
+- "Golden master" referencia: a statikus `6-2/index.html` (és/vagy `dist/6-2/index.html`) legyen a vizuális/viselkedési etalon; minden szekciót ehhez hasonlítunk.
+- Tartalom stresszteszt minden repeaterre: 0 / 1 / 2 / 3 / 5 / 10 elem; rövid/extra hosszú szöveg; kép nélkül; alt szöveg nélkül. A layoutnak törés nélkül kell alkalmazkodnia.
+- Animáció "DOM contract": a Hero és a scroll/parallax JS működése függ id-k/classok/`data-*` attribútumok jelenlététől; ezekből csinálunk egy rövid checklistet, és implementáció közben nem törjük meg.
+- JS smoke-check (dev): ha valami hiányzik (pl. `#hero`, `#navbar`), ne törjön el az egész script; inkább `console.warn` és graceful fallback.
+- Csökkentett mozgás ellenőrzés: `prefers-reduced-motion` alatt ne legyen "betöréssel" járó élményromlás (szöveg/CTA legyen azonnal látható).
+- Vizuális regresszió (opcionális, de ajánlott): Playwright/Backstop-szerű screenshot összehasonlítás desktop + mobil viewporttal legalább a Hero + 2 további szekcióra.
+- Playwright "design parity" (opcionális, de ajánlott): ugyanazokat a screenshotokat elkészítjük a statikus referencia oldalon és a WP alatti oldalon, majd diffeljük.
+- Stabilitás: `?parallax=0` paraméter a mozgáshoz, Playwright screenshot `animations: 'disabled'`, és `document.fonts.ready` megvárása.
+- Nézetek: legalább 375x812 és 1440x900; állapotok: felső (hero), és egy lejjebb görgetett pont.
+- Cél: pixel-diff minimalizálása; eltérések esetén konkrétan megmondható melyik szekció csúszott el.
+- Frontend minőség kapuk: képek `srcset`-tel (WP), lazy-load ahol lehet; nincs console error; nincs layout shift a főbb betöltés után.
+- Űrlap/email QA: lokál fejlesztésnél ajánlott először email-csapda (pl. MailHog) a biztonságos teszteléshez, majd utána valós SMTP (Post SMTP) bekötése.
 
 ## Feladatok (roadmap)
-- [x] 1. Sajat mezostruktura veglegesitese a 6-2 oldal minden szekciojahoz.
-- [x] 2. `Fabrika Kezdolap` admin oldal letrehozasa (egyhelyes tartalomszerkesztes, plugin nelkul).
-- [x] 3. Custom theme skeleton letrehozasa (`fabrika-62`).
-- [x] 4. `front-page.php` elkeszitese a 6-2 szerkezet szerint.
-- [x] 5. Repeaterek bekotese ugy, hogy a layout darabszamfuggetlenul szepen torjon (kategoriak/galeria/lepesek/otletek/GYIK).
-- [x] 6. Animaciok/effektek atemelese es regresszioellenorzese (kulonosen Hero).
-- [x] 7. Kapcsolaturlap plugin telepitese es shortcode bekotese.
-- [x] 8. SMTP plugin beallitasa es urlap email kuldes teszt.
-- [x] 9. GYIK, footer, kapcsolati adatok teljes adminbekotese.
-- [x] 10. Mobil + desktop vizualis regresszio teszt a statikus 6-2-hoz kepest (layout + animaciok).
-- [x] 11. Atadas: rovid admin hasznalati leiras (ki mit hol szerkeszt).
-- [x] 12. Tartalom stresszteszt futtatasa a repeatereken (0/1/2/3/5/10 elem + hosszu szoveg).
-- [x] 13. (Opcionális) Playwright screenshot regresszio beallitasa (baseline: statikus `dist/6-2`, target: WP futtatas).
-- [x] 14. (Opcionális) Email-csapda (MailHog) felhuzasa lokalis urlap tesztekhez.
+- [x] 1. Saját mezőstruktúra véglegesítése a 6-2 oldal minden szekciójához.
+- [x] 2. `Fabrika Kezdőlap` admin oldal létrehozása (egyhelyes tartalomszerkesztés, plugin nélkül).
+- [x] 3. Custom theme skeleton létrehozása (`fabrika-62`).
+- [x] 4. `front-page.php` elkészítése a 6-2 szerkezet szerint.
+- [x] 5. Repeaterek bekötése úgy, hogy a layout darabszámfüggetlenül szépen törjön (kategóriák/galéria/lépések/ötletek/GYIK).
+- [x] 6. Animációk/effektek átemelése és regresszióellenőrzése (különösen Hero).
+- [x] 7. Kapcsolatűrlap plugin telepítése és shortcode bekötése.
+- [x] 8. SMTP plugin beállítása és űrlap email küldés teszt.
+- [x] 9. GYIK, footer, kapcsolati adatok teljes admin bekötése.
+- [x] 10. Mobil + desktop vizuális regresszió teszt a statikus 6-2-höz képest (layout + animációk).
+- [x] 11. Átadás: rövid admin használati leírás (ki mit hol szerkeszt).
+- [x] 12. Tartalom stresszteszt futtatása a repeatereken (0/1/2/3/5/10 elem + hosszú szöveg).
+- [x] 13. (Opcionális) Playwright screenshot regresszió beállítása (baseline: statikus `dist/6-2`, target: WP futtatás).
+- [x] 14. (Opcionális) Email-csapda (MailHog) felhúzása lokális űrlap tesztekhez.
 
-## Dontesi pontok (implementacio elott)
-- Kapcsolaturlap plugin: Fluent Forms vagy Contact Form 7.
-- (Opcionális) Bevezetunk-e Playwright/Backstop screenshot regressziot.
+## Döntési pontok (implementáció előtt)
+- Kapcsolatűrlap plugin: Fluent Forms vagy Contact Form 7.
+- (Opcionális) Bevezetünk-e Playwright/Backstop screenshot regressziót.
 
-## Elfogadasi kriteriumok
-- A kezdooldal layoutja es viselkedese vizualisan megfelel a `6-2` tervnek.
-- Minden jelenlegi statikus szoveg szerkesztheto a `Fabrika Kezdolap` admin oldalon.
-- A tobbelemu blokkok (kategoriak/galeria/lepesek/otletek/GYIK) adminbol bovithetoek/csokkenthetoek, es a layout toras nelkul alkalmazkodik.
-- A Hero es a tobbi animacio/effekt megmarad (parallax/reveal/navbar/back-to-top/smooth scroll).
-- A repeaterek stressztesztjein (0/1/2/3/5/10 elem + hosszu szoveg) a layout es a JS nem torik.
-- Kapcsolaturlap sikeresen kuld emailt.
+## Elfogadási kritériumok
+- A kezdőoldal layoutja és viselkedése vizuálisan megfelel a `6-2` tervnek.
+- Minden jelenlegi statikus szöveg szerkeszthető a `Fabrika Kezdőlap` admin oldalon.
+- A több elemű blokkok (kategóriák/galéria/lépések/ötletek/GYIK) adminból bővíthetők/csökkenthetők, és a layout törés nélkül alkalmazkodik.
+- A Hero és a többi animáció/effekt megmarad (parallax/reveal/navbar/back-to-top/smooth scroll).
+- A repeaterek stressztesztjein (0/1/2/3/5/10 elem + hosszú szöveg) a layout és a JS nem törik.
+- Kapcsolatűrlap sikeresen küld emailt.

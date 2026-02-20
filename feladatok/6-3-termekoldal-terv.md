@@ -1,112 +1,136 @@
-# 6-3 Termekoldal bovites – Feladatleiras es terv
+# 6-3 Termékoldal bővítés – Feladatleírás és terv
 
-## Attekintes
+## Áttekintés
 
-A meglevo one-page Fabrika oldalt (6-2) bovitjuk egy kulon `/termekek` (katalogus) oldallal. A fooldal storytellingje, animacioi es DOM szerkezete valtozatlan marad. A katalogus nem webshop – nincs kosar/checkout –, hanem egy arak + termeklista + kapcsolatfelvetel CTA lancot valosit meg.
+A meglévő one-page Fabrika oldalt (6-2) bővítjük egy külön `/termekek` (katalógus) oldallal. A főoldal storytellingje, animációi és DOM szerkezete változatlan marad. A katalógus nem webshop, nincs kosár/checkout, hanem egy árak + terméklista + kapcsolatfelvétel CTA láncot valósít meg.
 
-## Jelenlegi allapot (6-2)
+## Jelenlegi állapot (6-2)
 
-- One-page landing: Hero → Kategoriak → Galeria (Munkaink) → Rendeles lepesei → Ajandekotletek → Piaci megjelenes → Kapcsolat → GYIK → Footer
-- WP theme: `fabrika-62`, egyedi admin oldal (`Fabrika Kezdolap`), repeaterek, CF7 urlap
-- Animaciok: Hero interaction, gear spin, parallax, scroll reveal, navbar scroll, back-to-top, smooth scroll
-- Docker dev kornyezet: WP + MariaDB + MailHog
+- One-page landing: Hero → Kategóriák → Galéria (Munkáink) → Rendelés lépései → Ajándékötletek → Piaci megjelenés → Kapcsolat → GYIK → Footer
+- WP theme: `fabrika-62`, egyedi admin oldal (`Fabrika Kezdőlap`), repeaterek, CF7 űrlap
+- Animációk: Hero interaction, gear spin, parallax, scroll reveal, navbar scroll, back-to-top, smooth scroll
+- Docker dev környezet: WP + MariaDB + MailHog
 
-## Uj funkciok osszefoglalasa
+## Új funkciók összefoglalása
 
-### 1. Fooldal modositasok (minimalis)
+### 1. Főoldal módosítások (minimális)
 
-**Kategoriak szekcion:**
-- A jelenlegi admin repeater (cim + leiras + kep) kiegeszul egy **cimke** (slug/tag) mezoval.
-- Minden kategoria kartya aljara kerul egy link: "Nezd meg a termekeket →", ami a `/termekek?kategoria={cimke}` URL-re mutat.
-- A kategoria kartya vizualisan valtozatlan marad (kep + cim + leiras); a link egy uj elem a kartya aljan.
+**Kategóriák szekción:**
+- A jelenlegi admin repeater (cím + leírás + kép) kiegészül egy **címke** (slug/tag) mezővel.
+- Minden kategória kártya aljára kerül egy link: "Nézd meg a termékeket →", ami a `/termekek?kategoria={cimke}` URL-re mutat.
+- A kategória kártya vizuálisan változatlan marad (kép + cím + leírás); a link egy új elem a kártya alján.
 
-**Munkaink (Galeria) szekcion:**
-- A jelenlegi statikus 10 kepes galeria **dinamikussa** valik: a legutoljara feltoltott 10 termek kepei jelennek meg automatikusan.
-- Minden kep kattinthato, a termek reszleteit megjelenithetjuk (opcionalis: lightbox vagy link a termek oldalra).
-- A szekcion aljan egy gomb: **"Osszes termek megtekintese →"** → `/termekek`.
+**Munkáink (Galéria) szekción:**
+- A jelenlegi statikus 10 képes galéria **dinamikussá** válik: a legutoljára feltöltött 10 termék képei jelennek meg automatikusan.
+- Minden kép kattintható, a termék részleteit megjeleníthetjük (opcionális: lightbox vagy link a termék oldalra).
+- A szekción alján egy gomb: **"Összes termék megtekintése →"** → `/termekek`.
 
-**Hero szekcion:**
-- Az elsodleges CTA marad: `#kapcsolat` ("Egyedi rendeles").
-- Uj masodlagos CTA gomb a Hero-ban: **"Katalogus / Osszes termek"** → `/termekek`.
+**Hero szekción:**
+- Az elsődleges CTA marad: `#kapcsolat` ("Egyedi rendelés").
+- Új másodlagos CTA gomb a Hero-ban: **"Katalógus / Összes termék"** → `/termekek`.
 
-### 2. Uj oldal: `/termekek` (Katalogus)
+### 2. Új oldal: `/termekek` (Katalógus)
 
-**Megjelenes:**
-- Racsos (grid) nezet, responsive: 1 oszlop mobil, 2 tablet, 3-4 desktop.
-- Minden termek kartya tartalmazza:
-  - Kep (thumbnail)
-  - Termek nev
-  - Fix ar megjelenitest (pl. "3 500 Ft")
-  - Kategoriak/tagek badge-kent
-  - **"Megrendelem / Erdekel"** gomb
+**Megjelenés:**
+- Rácsos (grid) nézet, responsive: 1 oszlop mobil, 2 tablet, 3-4 desktop.
+- Minden termék kártya tartalmazza:
+  - Kép (thumbnail)
+  - Termék név
+  - Fix ár megjelenítést (pl. "3 500 Ft")
+  - Címkék badge-ként
+  - **"Megrendelem / Érdekel"** gomb
 
-**Szures:**
-- Kategoriak/tagek alapjan szurheto (pl. "lezer gravir", "testreszabhato", "kerti").
-- A szuro URL-ben query paramben tarolodik (`?kategoria=lezer-gravir`), igy a fooldal kategoria linkjei is mukodnek.
+**Szűrés:**
+- Címkék alapján szűrhető (pl. "lézer gravír", "testreszabható", "kerti").
+- A szűrő URL-ben query paramben tárolódik (`?kategoria=lezer-gravir`), így a főoldal kategória linkjei is működnek (alias: `?cimke=`, `?tag=`).
 
 **CTA gomb logika:**
-- A "Megrendelem / Erdekel" gomb a fooldal `#kapcsolat` szekciojara (vagy kulon kapcsolat oldalra) navigal.
-- Query paramban atadja a termek nevet/azonositojat: `/?termek=lezer-portre-30x40#kapcsolat` vagy `/kapcsolat?termek=lezer-portre-30x40`.
-- Az urlap JS-bol automatikusan kitolti a termek nevet egy rejtett vagy lathato mezobe.
+- A "Megrendelem / Érdekel" gomb a főoldal `#kapcsolat` szekciójára (vagy külön kapcsolat oldalra) navigál.
+- Query paramban átadja a termék nevét/azonosítóját: `/?termek=lezer-portre-30x40#kapcsolat` vagy `/kapcsolat?termek=lezer-portre-30x40`.
+- Az űrlap JS-ből automatikusan kitölti a termék nevét egy rejtett vagy látható mezőbe.
 
-### 3. WP adatmodell (Termekek)
+**(Ajánlott UX) Termék modal/carousel:**
+- Termék kártyára kattintva egy modal/lightbox jön fel nagyobb képpel, ugyanazzal az infóval és ugyanazzal a CTA gombbal.
+- A modalban lehet előző/következő termékek között lépni (ugyanabban a sorrendben, mint a grid, és a szűrőt is követve).
+
+**(Ajánlott UX) Leírás hoverre:**
+- A termék képen/kártyán egy áttetsző, animált panel jelenik meg hoverre (mobilon fallbackkel), ami a rövid leírást mutatja.
+
+### 3. WP adatmodell (Termékek)
 
 **Custom Post Type: `fabrika_termek`**
-- Mezok:
-  - Cim (beepitett WP title)
-  - Kep (beepitett WP featured image – mobilrol is feltoltheto)
-  - Leiras (beepitett WP editor vagy egyedi mezo)
-  - **Ar** (egyedi meta mezo, szam, Ft)
-  - **Kategoriak** (egyedi taxonomy: `fabrika_kategoria`)
-  - **Tagek** (egyedi taxonomy: `fabrika_tag`)
-- A WP admin feluleten a termek hozzaadasa a szokasos "Uj hozzaadasa" feluleten tortenik (mint egy bejegyzes).
-- A WP media feltoltes alapbol tamogatja a mobil fenykepezo/fajlfeltoltest.
+- Mezők:
+  - Cím (beépített WP title)
+  - Kép (beépített WP featured image, mobilról is feltölthető)
+  - Leírás (beépített WP editor vagy egyedi mező)
+  - **Ár** (egyedi meta mező, szám, Ft)
+  - **Címkék** (egyedi taxonomy: `fabrika_tag`)
+- A WP admin felületen a termék hozzáadása **egylépéses** formon történik: **Termékek → Termék feltöltés** (név, leírás, ár, 1 kép, címkék).
+  - A termék **azonnal publikus** mentéssel.
+  - A termék kód automatikus: a termék ID (szám).
+- A WP media feltöltés alapból támogatja a mobil fényképező/fájlfeltöltést.
 
-### 4. CTA-lanc osszefoglalo
+### 4. CTA-lánc összefoglaló
 
-```
+```text
 Hero
-  ├── Elsodleges CTA: "Egyedi rendeles" → #kapcsolat
-  └── Masodlagos CTA: "Katalogus" → /termekek
+  ├── Elsődleges CTA: "Egyedi rendelés" → #kapcsolat
+  └── Másodlagos CTA: "Katalógus" → /termekek
 
-Kategoriak szekcion
-  └── Kategoria kartya → "Nezd meg →" → /termekek?kategoria={slug}
+Kategóriák szekción
+  └── Kategória kártya → "Nézd meg →" → /termekek?kategoria={slug}
 
-Munkaink szekcion
-  └── "Osszes termek megtekintese" → /termekek
+Munkáink szekción
+  └── "Összes termék megtekintése" → /termekek
 
 /termekek oldal
-  └── Termek kartya → "Megrendelem / Erdekel" → /#kapcsolat?termek={slug}
+  └── Termék kártya → "Megrendelem / Érdekel" → /#kapcsolat?termek={slug}
 
-Kapcsolat urlap
-  └── Termek mezo automatikusan kitoltve (ha query param erkezett)
+Kapcsolat űrlap
+  └── Termék mező automatikusan kitöltve (ha query param érkezett)
 ```
 
-## Megvalositasi fazisok
+## Megvalósítási fázisok
 
-### Fazis 1: Kattinthato mock terv (6-3 statikus HTML)
+### Fázis 1: Kattintható mock terv (6-3 statikus HTML)
 
-A `6-3/` konyvtarba keszul egy kattinthato statikus prototipus, ami a jelenlegi `6-2/index.html`-re epul:
-- Fooldal mock: modositott kategoriak (linkekkel), modositott galeria (gombbal), Hero masodlagos CTA-val.
-- `/termekek` mock oldal: racsos grid, szuro savval, minta termekekkel, CTA gombokkal.
-- Kattinthato linkek osszekotik a ket oldalt.
+A `6-3/` könyvtárba készül egy kattintható statikus prototípus, ami a jelenlegi `6-2/index.html`-re épül:
+- Főoldal mock: módosított kategóriák (linkekkel), módosított galéria (gombbal), Hero másodlagos CTA-val.
+- `/termekek` mock oldal: rácsos grid, szűrő sávval, minta termékekkel, CTA gombokkal.
+- Kattintható linkek összekötik a két oldalt.
 - Nincs backend logika, csak HTML/CSS/JS.
 
-### Fazis 2: WP integralas
+### Fázis 2: WP integrálás
 
-- Custom Post Type regisztralas (`fabrika_termek`).
-- Custom taxonomy-k: `fabrika_kategoria`, `fabrika_tag`.
-- Admin meta box: ar mezo.
-- WP template: `archive-fabrika_termek.php` (katalogus oldal).
-- Fooldali template modositasok (`front-page.php`):
-  - Kategoriak repeater bovitese cimke mezoval + link generalas.
-  - Galeria szekcion: `WP_Query` a legutolso 10 termekre.
-- Kapcsolat urlap: query param feldolgozas JS-bol, mezo kitoltes.
-- Mobil kep feltoltes teszteles.
+- Custom Post Type regisztrálás (`fabrika_termek`).
+- Custom taxonomy: `fabrika_tag` (címkék).
+- Admin meta box: ár mező.
+- WP template: `archive-fabrika_termek.php` (katalógus oldal).
+- Főoldali template módosítások (`front-page.php`):
+  - Kategóriák repeater bővítése címke mezővel + link generálás.
+  - Galéria szekción: `WP_Query` a legutolsó 10 termékre.
+- Kapcsolat űrlap: query param feldolgozás JS-ből, mező kitöltés.
+- Mobil kép feltöltés tesztelés.
 
-## Kiegeszito szempontok (ajanlott)
+## Kiegészítő szempontok (ajánlott)
 
-- **Query param standard:** eldonteni, hogy `?termek=` slug / ID / "FA-XXX" kod legyen-e (es kell-e `?nev=` a displayhez).
-- **Termek azonosito (FA-XXX):** ha marad a mockban, akkor WP-ben is erdemes egy opcionális meta mezokent kezelni.
+- **Query param standard:** eldönteni, hogy `?termek=` slug / ID / "FA-XXX" kód legyen-e (és kell-e `?nev=` a displayhez).
+- **Termék azonosító (FA-XXX):** ha marad a mockban, akkor WP-ben is érdemes egy opcionális meta mezőként kezelni.
 - **SEO minimum:** `/termekek` title/description + canonical (ha nincs SEO plugin).
-- **Minoseg kapu:** legalabb 1-2 automata e2e teszt (Playwright) a CTA-lancra, hogy refaktoroknel se torjon.
+- **Minőség kapu:** legalább 1-2 automata e2e teszt (Playwright) a CTA-láncra, hogy refaktoroknál se törjön.
+
+## Képek: feltöltés és átméretezés (ingyen)
+
+### Cél
+- A termék kártyákon és a galériában a képek gyorsak legyenek, és a layout stabil maradjon.
+- Feltöltött "master" kép: **1200×1200** (1:1), normális fájlmérettel.
+
+### Első választás (ajánlott): WP core szerveroldali méretgenerálás
+- Theme-ben új képméretek: `square_600` és `square_1200` (hard crop, 1:1).
+- Template-ben `wp_get_attachment_image()` használata, hogy legyen `srcset` / `sizes` / lazy-load.
+- QA: ellenőrizni, hogy a szerver (Docker + később éles) tud-e thumbnails-t generálni.
+
+### Fallback (ha a szerver nem generál méreteket): JS-es átméretezés feltöltés előtt
+- Custom "Termék kép" mező a termék admin felületen (media picker).
+- JS: kép választás után canvas/WebP vagy JPEG export **1200×1200**-re, majd feltöltés.
+- Megkötés: továbbra is ingyen (saját theme kód), fizetős plugin nélkül.
