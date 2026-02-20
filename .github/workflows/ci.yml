@@ -89,6 +89,12 @@ jobs:
       - name: Empty catalog smoke
         run: node tests/wp-empty-state-smoke.mjs
 
+      - name: Collect WP logs (on failure)
+        if: failure()
+        run: |
+          mkdir -p test-results/ci-logs
+          docker compose logs --no-color > test-results/ci-logs/wp-empty-state-docker.log || true
+
       - name: Upload WP artifacts (on failure)
         if: failure()
         uses: actions/upload-artifact@v4
@@ -153,11 +159,23 @@ jobs:
       - name: Admin create product smoke
         run: node tests/wp-termek-create-smoke.mjs
 
+      - name: Admin create second product smoke
+        run: node tests/wp-termek-create-smoke.mjs
+
       - name: Admin edit product smoke
         run: node tests/wp-termek-edit-smoke.mjs
 
       - name: Catalog and CTA chain smoke
         run: node tests/wp-termek-catalog-smoke.mjs
+
+      - name: Product carousel smoke
+        run: node tests/wp-termek-carousel-smoke.mjs
+
+      - name: Collect WP logs (on failure)
+        if: failure()
+        run: |
+          mkdir -p test-results/ci-logs
+          docker compose logs --no-color > test-results/ci-logs/wp-seeded-state-docker.log || true
 
       - name: Upload WP artifacts (on failure)
         if: failure()

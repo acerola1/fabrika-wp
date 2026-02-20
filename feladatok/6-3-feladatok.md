@@ -109,7 +109,7 @@
   - Theme aktiválás, permalink flush, `fabrika62_options` alapértékek, alap címkék, CI user létrehozás (CF7 nélkül is stabil fallback űrlappal)
 - [x] **3.3** WP E2E – admin termék feltöltés (kritikus): belépés → egylépéses feltöltés → mentés → publikus megjelenés
 - [x] **3.4** WP E2E – admin termék szerkesztés (kritikus): listából szerkesztés → ugyanazon űrlap → mentés → frontend ellenőrzés
-- [x] **3.5** WP smoke – `/termekek` megjelenés: kártyák (kép, cím, ár/ár-egyeztetéssel), szűrő sáv, CTA gombok
+- [x] **3.5** WP smoke – `/termekek` megjelenés: kártyák (kép, cím, ár/ár-egyeztetéssel), szűrő sáv, CTA gombok, modal/carousel nyitás + lapozás
 - [x] **3.6** WP E2E – CTA lánc: Hero → Katalógus → Érdekel → Kapcsolat (`?termek=` + `?nev=`) mező előtöltés
 - [x] **3.7** WP smoke – üres állapot: seed nélküli futásban nincs termék, üres üzenet helyes
 - [x] **3.8** CI workflow frissítés: külön `empty-state` és `seeded-state` job, stabil smoke/E2E futtatás

@@ -22,9 +22,18 @@ async function main() {
       throw new Error(`Expected empty catalog, but found ${cards} product card(s).`);
     }
 
-    const emptyText = page.locator('#no-results', { hasText: 'Még nincsenek termékek' });
-    if (!(await emptyText.count())) {
-      throw new Error('Empty state text is missing.');
+    const emptyBox = page.locator('#no-results');
+    if (!(await emptyBox.count())) {
+      throw new Error('Empty state container (#no-results) is missing.');
+    }
+    const isVisible = await emptyBox.isVisible();
+    if (!isVisible) {
+      throw new Error('Empty state container is hidden.');
+    }
+    const emptyText = (await emptyBox.innerText()).trim().toLowerCase();
+    const normalized = emptyText.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    if (!normalized.includes('nincsenek termek')) {
+      throw new Error(`Empty state text is unexpected: "${emptyText}"`);
     }
 
     console.log('Empty state smoke OK');
