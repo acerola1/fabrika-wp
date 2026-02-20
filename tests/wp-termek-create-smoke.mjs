@@ -73,7 +73,7 @@ async function main() {
     await page.setInputFiles('#termek_image', uploadPath);
 
     const nav = page.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 120_000 });
-    await page.getByRole('button', { name: /Termek mentese/i }).click();
+    await page.getByRole('button', { name: /Termék mentése|Termek mentese/i }).click();
     await nav;
 
     const url = page.url();
@@ -82,10 +82,11 @@ async function main() {
       throw new Error(`Product create redirect did not include ?created=. URL: ${url}`);
     }
 
-    // Basic verification: edit page loads.
+    // Basic verification: legacy edit URL redirects to the unified form.
     await page.goto(`${WP_URL}/wp-admin/post.php?post=${created}&action=edit`, { waitUntil: 'domcontentloaded' });
-    if (!(await page.locator('#poststuff').count())) {
-      throw new Error('Product edit page did not load as expected.');
+    const editUrl = page.url();
+    if (!editUrl.includes('page=fabrika62-termek-add') || !editUrl.includes(`edit=${created}`)) {
+      throw new Error(`Product edit did not redirect to unified form. URL: ${editUrl}`);
     }
 
     console.log('Product appears created:', created, '-', title);
@@ -99,4 +100,3 @@ main().catch((err) => {
   console.error(err);
   process.exit(1);
 });
-

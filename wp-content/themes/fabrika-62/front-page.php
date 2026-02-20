@@ -448,6 +448,10 @@ $brand_name = fabrika62_opt_str('brand_name', 'Fabrika Ajándék');
               </div>
             </div>
             <div>
+              <label for="termek" class="block text-sm font-semibold text-[#3B2314] mb-1.5">Melyik termék érdekli?</label>
+              <input type="text" id="termek" name="termek" class="w-full rounded-lg border px-4 py-2.5 text-sm focus:outline-none focus:ring-2" style="border-color: rgba(184, 115, 51, 0.25); background: #FFFBF5;" placeholder="Pl.: 157 - Gravírozott fatábla" />
+            </div>
+            <div>
               <label for="uzenet" class="block text-sm font-semibold text-[#3B2314] mb-1.5">Üzenet *</label>
               <textarea id="uzenet" name="uzenet" required rows="5" class="w-full rounded-lg border px-4 py-2.5 text-sm focus:outline-none focus:ring-2 resize-y" style="border-color: rgba(184, 115, 51, 0.25); background: #FFFBF5;" placeholder="Írd le az elképzelésed..."></textarea>
             </div>

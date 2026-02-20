@@ -5,7 +5,7 @@ on:
   pull_request:
 
 jobs:
-  build-and-test:
+  static-mock:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -36,3 +36,137 @@ jobs:
           path: |
             playwright-report/
             test-results/
+
+  wp-empty-state:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      WP_URL: http://localhost:8080
+      WP_ADMIN_USER: ci-admin
+      WP_ADMIN_PASS: ci-admin-pass
+      WP_ADMIN_EMAIL: ci@example.com
+      WP_BOOTSTRAP_MODE: empty
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Install Playwright (Chromium)
+        run: npx playwright install --with-deps chromium
+
+      - name: Start WordPress stack
+        run: docker compose up -d
+
+      - name: Wait for WordPress
+        run: |
+          for i in {1..60}; do
+            if curl -fsS "$WP_URL/wp-login.php" >/dev/null; then
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "WordPress did not become ready in time."
+          docker compose logs
+          exit 1
+
+      - name: Bootstrap WordPress (empty mode)
+        run: |
+          docker exec \
+            -e WP_URL="$WP_URL" \
+            -e WP_ADMIN_USER="$WP_ADMIN_USER" \
+            -e WP_ADMIN_PASS="$WP_ADMIN_PASS" \
+            -e WP_ADMIN_EMAIL="$WP_ADMIN_EMAIL" \
+            -e WP_BOOTSTRAP_MODE="$WP_BOOTSTRAP_MODE" \
+            fabrika_wp_app \
+            php /var/www/html/wp-content/themes/fabrika-62/ci/bootstrap.php
+
+      - name: Empty catalog smoke
+        run: node tests/wp-empty-state-smoke.mjs
+
+      - name: Upload WP artifacts (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wp-empty-state-artifacts
+          path: |
+            test-results/
+
+      - name: Stop containers
+        if: always()
+        run: docker compose down -v
+
+  wp-seeded-state:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      WP_URL: http://localhost:8080
+      WP_ADMIN_USER: ci-admin
+      WP_ADMIN_PASS: ci-admin-pass
+      WP_ADMIN_EMAIL: ci@example.com
+      WP_BOOTSTRAP_MODE: seeded
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Install Playwright (Chromium)
+        run: npx playwright install --with-deps chromium
+
+      - name: Start WordPress stack
+        run: docker compose up -d
+
+      - name: Wait for WordPress
+        run: |
+          for i in {1..60}; do
+            if curl -fsS "$WP_URL/wp-login.php" >/dev/null; then
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "WordPress did not become ready in time."
+          docker compose logs
+          exit 1
+
+      - name: Bootstrap WordPress (seeded mode)
+        run: |
+          docker exec \
+            -e WP_URL="$WP_URL" \
+            -e WP_ADMIN_USER="$WP_ADMIN_USER" \
+            -e WP_ADMIN_PASS="$WP_ADMIN_PASS" \
+            -e WP_ADMIN_EMAIL="$WP_ADMIN_EMAIL" \
+            -e WP_BOOTSTRAP_MODE="$WP_BOOTSTRAP_MODE" \
+            fabrika_wp_app \
+            php /var/www/html/wp-content/themes/fabrika-62/ci/bootstrap.php
+
+      - name: Admin create product smoke
+        run: node tests/wp-termek-create-smoke.mjs
+
+      - name: Admin edit product smoke
+        run: node tests/wp-termek-edit-smoke.mjs
+
+      - name: Catalog and CTA chain smoke
+        run: node tests/wp-termek-catalog-smoke.mjs
+
+      - name: Upload WP artifacts (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wp-seeded-state-artifacts
+          path: |
+            test-results/
+
+      - name: Stop containers
+        if: always()
+        run: docker compose down -v
