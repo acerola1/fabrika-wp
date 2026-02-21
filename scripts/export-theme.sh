@@ -7,7 +7,7 @@
 #   2. Ha a Docker fut, exportálja az admin beállításokat → dist/fabrika62_options.json
 #
 # Futtatás:
-#   bash scripts/export-theme.sh [--lean]
+#   bash scripts/export-theme.sh [--full]
 #
 # Eredmény (dist/ mappa):
 #   fabrika-62-theme.zip   – feltölthető a célszerver WP admin-jába
@@ -23,16 +23,19 @@ ZIP_NAME="fabrika-62-theme.zip"
 CONTAINER="fabrika_wp_app"
 TMP_DIR="$(mktemp -d)"
 STAGE_THEME="$TMP_DIR/fabrika-62"
-LEAN_EXPORT=0
+LEAN_EXPORT=1
 
 for arg in "$@"; do
   case "$arg" in
     --lean)
       LEAN_EXPORT=1
       ;;
+    --full)
+      LEAN_EXPORT=0
+      ;;
     *)
       echo "Ismeretlen opció: $arg"
-      echo "Használat: bash scripts/export-theme.sh [--lean]"
+      echo "Használat: bash scripts/export-theme.sh [--full]"
       exit 1
       ;;
   esac

@@ -1,149 +1,159 @@
-# Fabrika Ajandek
+# Fabrika Ajándék
 
-Landing page design variations for a handmade wooden gift shop, plus a full WordPress theme built from the chosen design.
+Kézműves fa ajándékokhoz készült landing page variációk és a kiválasztott dizájnból épített, telepíthető WordPress téma.
 
-## What's in the repo
+## Mi van ebben a repóban?
 
-- **9 static landing page designs** (`1/` through `9/`) — different visual directions for the same brand, built with Tailwind CSS + Vite.
-- **`6-2/`** — the selected design variant, a single-page site with sections: hero, product categories, gallery, ordering steps, gift ideas, market info, contact form, FAQ.
-- **`wp-content/themes/fabrika-62/`** — a custom WordPress theme that reproduces the `6-2` design with fully editable content from the admin panel (no page builder, no ACF — just a custom admin page with repeaters).
-- **`tests/`** — Playwright visual regression and PHP repeater stress tests.
-- **`feladatok/`** — project documentation and roadmap (in Hungarian).
+- **9 statikus landing oldal variáció** (`1/` - `9/`) - ugyanarra a márkára több vizuális irány (Tailwind + Vite).
+- **`6-2/`** - a kiválasztott dizájn, egylapos felépítéssel (hero, termékkategóriák, galéria, rendelési lépések, ajándékötletek, piaci jelenlét, kapcsolat, GYIK).
+- **`wp-content/themes/fabrika-62/`** - a WordPress téma, ami a `6-2` dizájnt valósítja meg adminból szerkeszthető tartalommal.
+- **`tests/`** - Playwright vizuális regresszió + PHP repeater terheléses tesztek.
+- **`feladatok/`** - projektleírások és roadmap.
 
-## Previewing the static designs
+## Statikus oldalak futtatása
 
 ```bash
 npm install
 npm run dev
 ```
 
-Then open `http://localhost:5173/` for the main index, or go directly to any variant:
+Ezután a fő index: `http://localhost:5173/`, vagy közvetlenül bármelyik variáció:
 
 - `http://localhost:5173/1/`
 - `http://localhost:5173/2/`
 - ...
 - `http://localhost:5173/6-2/`
 
-## Running the WordPress site
+## WordPress futtatása lokálisan
 
-Requirements: Docker & Docker Compose.
+Előfeltétel: Docker + Docker Compose.
 
 ```bash
 docker compose up -d
 ```
 
-| Service   | URL                          |
-|-----------|------------------------------|
-| WordPress | http://localhost:8080         |
-| WP Admin  | http://localhost:8080/wp-admin/ |
-| MailHog   | http://localhost:8025         |
+| Szolgáltatás | URL |
+|---|---|
+| WordPress | http://localhost:8080 |
+| WP Admin | http://localhost:8080/wp-admin/ |
+| MailHog | http://localhost:8025 |
 
-On first run you'll go through the WordPress installer at `/wp-admin/install.php`, then activate the **fabrika-62** theme from Appearance → Themes.
+Első indításkor végig kell menni a WP telepítőn (`/wp-admin/install.php`), majd aktiválni a **fabrika-62** témát.
 
-The theme directory is bind-mounted, so edits to `wp-content/themes/fabrika-62/` are reflected live.
+A téma mappa bind mounttal csatolva van, ezért a `wp-content/themes/fabrika-62/` alatti módosítások azonnal látszanak.
 
-### Content editing
+### Tartalom szerkesztése
 
-All homepage content is managed from a single admin page: **WP Admin → Fabrika Kezdolap**. This includes text fields, repeaters for categories/gallery/steps/gift ideas/FAQ, and contact form settings. See [`feladatok/admin-hasznalati-leiras.md`](feladatok/admin-hasznalati-leiras.md) for a detailed guide.
+A nyitóoldal tartalma egy helyen kezelhető:
+**WP Admin -> Fabrika Kezdolap**.
 
-### Email testing
+Itt szerkeszthetők a szövegek, repeaterek (kategóriák/galéria/lépések/ajándékötletek/GYIK), valamint a kapcsolat blokk beállításai.
+Részletes útmutató: [`feladatok/admin-hasznalati-leiras.md`](feladatok/admin-hasznalati-leiras.md)
 
-The contact form (Contact Form 7) sends emails to MailHog in the dev environment — no real emails are sent. Check http://localhost:8025 to see them.
+### Email tesztelés
 
-## Running the tests
+A kapcsolat űrlap (Contact Form 7) fejlesztői környezetben MailHogba küld:
+`http://localhost:8025`
 
-**E2E (static mock `6-3/`)**:
+## Tesztek futtatása
+
+**E2E (statikus mock `6-3/`)**:
 
 ```bash
 npx playwright install chromium
 npm test
 ```
 
-**Visual regression** (compares static `6-2` design vs WordPress output):
+**Vizuális regresszió** (`6-2` statikus vs WordPress kimenet):
 
 ```bash
-npm run dev -- --port 3999 &   # static reference
+npm run dev -- --port 3999 &   # statikus referencia
 docker compose up -d            # WordPress
 node tests/visual-regression.mjs
-# Screenshots saved to tests/screenshots/
+# Képek: tests/screenshots/
 ```
 
-**Repeater stress test** (0/1/2/3/5/10 elements + long text):
+**Repeater stressz teszt** (0/1/2/3/5/10 elem + hosszú szöveg):
 
 ```bash
 docker cp tests/stress-test-repeaters.php fabrika_wp_app:/tmp/
 docker exec fabrika_wp_app php /tmp/stress-test-repeaters.php
 ```
 
-## Deploying to a live site (Theme telepítése)
+## Éles telepítés (téma export és feltöltés)
 
-### 1. Theme zip előállítása
+### 1. ZIP előállítása
 
 ```bash
 bash scripts/export-theme.sh
 ```
 
-Ha nagyon szűk a tárhely `upload_max_filesize` limite (pl. 2M), használhatod a lean módot:
+Ez alapból **lean** export:
+- a mock galéria/kategória képek kimaradnak,
+- kisebb lesz a ZIP (könnyebb feltöltés limitált tárhelyen).
+
+Ha a teljes mock referencia készlet is kell:
 
 ```bash
-bash scripts/export-theme.sh --lean
+bash scripts/export-theme.sh --full
 ```
 
-A script a `dist/` mappába generálja:
+A script a `dist/` mappába generál:
 
 | Fájl | Tartalom |
 |---|---|
-| `dist/fabrika-62-theme.zip` | A teljes WP theme, azonnal feltölthető |
-| `dist/fabrika62_options.json` | Az aktuális admin beállítások (ha Docker fut) |
+| `dist/fabrika-62-theme.zip` | Telepíthető WordPress téma |
+| `dist/fabrika62_options.json` | Aktuális admin beállítások (ha fut a Dockeres WP) |
 
-> A script automatikusan kihagyja a fejlesztői fájlokat (`test-results`, `ci/`, `inc/6-2-source.html`, `.DS_Store` stb.), és csomagoláskor optimalizálja a referencia képeket a kisebb ZIP méretért.  
-> `--lean` esetén a mock galéria/kategória képek (`01-...jpg`–`10-...jpg`) kimaradnak a ZIP-ből.
+Megjegyzés:
+- A script automatikusan kihagyja a fejlesztői fájlokat (`test-results`, `ci/`, `inc/6-2-source.html`, `.DS_Store`, stb.).
+- Csomagoláskor optimalizálja a referencia képeket.
+- Alapértelmezésben lean módot használ.
 
 ### 2. Telepítés a céloldalon
 
-**A. Theme feltöltése**
+**A. Téma feltöltése**
 
-WP Admin → Megjelenés → Témák → Témafeltöltés → `dist/fabrika-62-theme.zip` → Aktiválás.
+WP Admin -> Megjelenés -> Témák -> Témafeltöltés -> `dist/fabrika-62-theme.zip` -> Aktiválás
 
-Alternatíva: FTP-vel másold a `fabrika-62/` mappát a célszerver `wp-content/themes/` könyvtárába, majd aktiváld az adminban.
+Alternatíva: FTP-vel másold a `fabrika-62/` mappát a szerver `wp-content/themes/` könyvtárába, majd aktiváld.
 
-**B. Rewrite rules frissítése** (hogy a `/termekek/` URL működjön)
+**B. Rewrite frissítése**
 
-WP Admin → Beállítások → Állandó hivatkozások → Mentés gombra kattintás.
+WP Admin -> Beállítások -> Közvetlen hivatkozások -> Mentés
 
-Vagy WP-CLI-vel: `wp rewrite flush`
-
-**C. Admin beállítások importálása** (opcionális)
-
-Az összes szöveg alapértelmezett értékkel indul (lásd `inc/helpers.php: fabrika62_default_options()`), így ez a lépés csak akkor kell, ha a helyi fejlesztőn már testre szabtátok a szövegeket.
+Vagy WP-CLI:
 
 ```bash
-# WP-CLI-vel (ha elérhető a célszerveren):
-wp option update fabrika62_options "$(cat dist/fabrika62_options.json)"
-
-# Vagy PHP-val (ha nincs WP-CLI):
-# Töltsd fel az options.php fájlt (lásd alább), majd töröld.
+wp rewrite flush
 ```
 
-Ha a helyi WP-n az admin beállítások soha nem lettek elmentve (csak az alapértelmezett értékeket tartalmazza), a script jelzi, hogy nincs szükség importra – az alapértelmezett szövegek a kódban vannak (`inc/helpers.php`).
+**C. Admin beállítások importálása (opcionális)**
 
-**D. Termékek és képek** (új telepítésnél nincs mit importálni – mockadatok nem kerülnek be a zipbe)
+A téma alapértékekkel is működik (`inc/helpers.php`, `fabrika62_default_options()`), import csak akkor kell, ha lokálban már testreszabtátok a tartalmakat.
 
-A termékeket az admin felületen kell felvinni: WP Admin → Termékek → Új hozzáadása.
+```bash
+# WP-CLI (ha van a szerveren)
+wp option update fabrika62_options "$(cat dist/fabrika62_options.json)"
+```
 
-### Összefoglalás: mi kerül a zip-be, mi nem
+**D. Termékek és média**
 
-| Benne van ✓ | Nincs benne ✗ |
+A mock termékadatok nem kerülnek a ZIP-be (DB adat), ezeket az adminban kell létrehozni.
+
+## Mi kerül a ZIP-be?
+
+| Benne van | Nincs benne |
 |---|---|
-| PHP template-ek | Mock/teszt termékek (csak DB-ben vannak) |
-| CSS + JS assets | `wp-content/uploads/` (médiatár) |
-| Képek (`assets/references/`) | Admin beállítások (külön JSON-ban) |
-| Custom Post Type + taxonomy | Docker / dev config |
+| PHP template fájlok | Mock/teszt termékek (DB) |
+| CSS + JS assetek | `wp-content/uploads/` tartalma |
+| Referencia képek (`assets/references/`) | Docker/dev konfiguráció |
+| CPT + taxonómia logika | Lokális tesztfájlok |
 
-## Tech stack
+## Technológia
 
-- **Static sites:** Vite, Tailwind CSS 4
-- **WordPress theme:** PHP 8.3, custom admin page with repeaters (no ACF/page builder)
-- **Contact form:** Contact Form 7
-- **Dev environment:** Docker Compose (WordPress + MariaDB + MailHog)
-- **Testing:** Playwright, custom PHP stress test
+- **Statikus oldalak:** Vite, Tailwind CSS 4
+- **WordPress téma:** egyedi admin oldal repeaterekkel
+- **Űrlap:** Contact Form 7
+- **Lokális környezet:** Docker Compose (WordPress + MariaDB + MailHog)
+- **Tesztek:** Playwright, egyedi PHP stressz teszt

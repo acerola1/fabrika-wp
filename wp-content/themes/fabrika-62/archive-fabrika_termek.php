@@ -299,10 +299,28 @@ function fabrika62_hu_price(string $raw): string
       backdrop-filter: blur(4px);
     }
     body.modal-body-lock { overflow: hidden; }
+    .back-home-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      color: #C9A84C;
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-decoration: none;
+      margin-bottom: 1.5rem;
+      transition: color 0.2s ease;
+    }
+    .back-home-link:hover { color: #FFFBF5; }
+    .back-home-link svg { transition: transform 0.2s ease; }
+    .back-home-link:hover svg { transform: translateX(-4px); }
   </style>
 
   <section class="pt-28 pb-12 sm:pt-32 sm:pb-16" style="background-color: #3B2314;">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <a href="<?php echo esc_url(home_url('/')); ?>" class="back-home-link">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+        Vissza a főoldalra
+      </a>
       <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-[#FFFBF5] mb-4"><?php echo esc_html($catalog_title); ?></h1>
       <div class="copper-divider max-w-[200px] mx-auto mb-4"></div>
       <p class="text-[#E8DCC8] max-w-xl mx-auto"><?php echo esc_html($catalog_subtitle); ?></p>
