@@ -260,7 +260,7 @@ function fabrika62_delete_original_image_after_scaling(array $metadata, int $att
     $original_image = $metadata['original_image'];
     $original_path = '';
 
-    if (str_contains($original_image, '/')) {
+    if (strpos($original_image, '/') !== false) {
         $uploads = wp_upload_dir();
         $basedir = is_string($uploads['basedir'] ?? null) ? (string) $uploads['basedir'] : '';
         if ($basedir !== '') {

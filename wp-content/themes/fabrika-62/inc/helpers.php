@@ -95,7 +95,7 @@ function fabrika62_get_options(): array
     return array_merge(fabrika62_default_options(), $stored);
 }
 
-function fabrika62_opt(string $field_name, mixed $default = null): mixed
+function fabrika62_opt(string $field_name, $default = null)
 {
     $options = fabrika62_get_options();
     if (array_key_exists($field_name, $options)) {
@@ -118,7 +118,7 @@ function fabrika62_opt_str(string $field_name, string $default = ''): string
  * Returns a WordPress image URL from an ACF image field value.
  * Supports return formats: array, ID, URL.
  */
-function fabrika62_image_url(mixed $acf_image, string $fallback_url = ''): string
+function fabrika62_image_url($acf_image, string $fallback_url = ''): string
 {
     if (is_array($acf_image) && isset($acf_image['url'])) {
         return (string) $acf_image['url'];
@@ -128,7 +128,7 @@ function fabrika62_image_url(mixed $acf_image, string $fallback_url = ''): strin
         return $url ? (string) $url : $fallback_url;
     }
     if (is_string($acf_image) && $acf_image !== '') {
-        if (!str_starts_with($acf_image, 'http://') && !str_starts_with($acf_image, 'https://') && !str_starts_with($acf_image, '/')) {
+        if (strpos($acf_image, 'http://') !== 0 && strpos($acf_image, 'https://') !== 0 && strpos($acf_image, '/') !== 0) {
             return get_stylesheet_directory_uri() . '/assets/references/' . ltrim($acf_image, '/');
         }
         return $acf_image;

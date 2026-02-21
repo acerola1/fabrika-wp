@@ -83,6 +83,12 @@ docker exec fabrika_wp_app php /tmp/stress-test-repeaters.php
 bash scripts/export-theme.sh
 ```
 
+Ha nagyon szűk a tárhely `upload_max_filesize` limite (pl. 2M), használhatod a lean módot:
+
+```bash
+bash scripts/export-theme.sh --lean
+```
+
 A script a `dist/` mappába generálja:
 
 | Fájl | Tartalom |
@@ -90,7 +96,8 @@ A script a `dist/` mappába generálja:
 | `dist/fabrika-62-theme.zip` | A teljes WP theme, azonnal feltölthető |
 | `dist/fabrika62_options.json` | Az aktuális admin beállítások (ha Docker fut) |
 
-> A script automatikusan kihagyja a fejlesztői fájlokat (test-results, .DS_Store stb.).
+> A script automatikusan kihagyja a fejlesztői fájlokat (`test-results`, `ci/`, `inc/6-2-source.html`, `.DS_Store` stb.), és csomagoláskor optimalizálja a referencia képeket a kisebb ZIP méretért.  
+> `--lean` esetén a mock galéria/kategória képek (`01-...jpg`–`10-...jpg`) kimaradnak a ZIP-ből.
 
 ### 2. Telepítés a céloldalon
 

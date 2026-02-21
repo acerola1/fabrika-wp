@@ -102,7 +102,7 @@ function fabrika62_termek_disable_quick_edit(array $actions, WP_Post $post): arr
 }
 add_filter('post_row_actions', 'fabrika62_termek_disable_quick_edit', 10, 2);
 
-function fabrika62_termek_clean_tags(mixed $raw_tags): array
+function fabrika62_termek_clean_tags($raw_tags): array
 {
     if (!is_array($raw_tags) || $raw_tags === []) {
         return [];

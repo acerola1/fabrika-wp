@@ -92,7 +92,7 @@ if (is_array($categories)) {
                     $best_score = 10_000;
                     break;
                 }
-                if (str_contains($needle, $candidate) || str_contains($candidate, $needle)) {
+                if (strpos($needle, $candidate) !== false || strpos($candidate, $needle) !== false) {
                     $score = strlen($candidate);
                     if ($score > $best_score) {
                         $best_score = $score;

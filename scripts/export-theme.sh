@@ -7,7 +7,7 @@
 #   2. Ha a Docker fut, exportálja az admin beállításokat → dist/fabrika62_options.json
 #
 # Futtatás:
-#   bash scripts/export-theme.sh
+#   bash scripts/export-theme.sh [--lean]
 #
 # Eredmény (dist/ mappa):
 #   fabrika-62-theme.zip   – feltölthető a célszerver WP admin-jába
@@ -21,6 +21,27 @@ THEME_SRC="$REPO_ROOT/wp-content/themes/fabrika-62"
 OUT_DIR="$REPO_ROOT/dist"
 ZIP_NAME="fabrika-62-theme.zip"
 CONTAINER="fabrika_wp_app"
+TMP_DIR="$(mktemp -d)"
+STAGE_THEME="$TMP_DIR/fabrika-62"
+LEAN_EXPORT=0
+
+for arg in "$@"; do
+  case "$arg" in
+    --lean)
+      LEAN_EXPORT=1
+      ;;
+    *)
+      echo "Ismeretlen opció: $arg"
+      echo "Használat: bash scripts/export-theme.sh [--lean]"
+      exit 1
+      ;;
+  esac
+done
+
+cleanup() {
+  rm -rf "$TMP_DIR"
+}
+trap cleanup EXIT
 
 echo ""
 echo "=== Fabrika Ajándék – theme export ==="
@@ -29,15 +50,48 @@ echo ""
 # 1. dist/ könyvtár létrehozása
 mkdir -p "$OUT_DIR"
 
-# 2. Theme zip
+# 2. Theme staging + zip
 echo "▶ Theme csomagolása: $ZIP_NAME"
+rsync -a \
+  --exclude 'test-results/' \
+  --exclude '.DS_Store' \
+  --exclude '__pycache__/' \
+  --exclude 'ci/' \
+  --exclude 'inc/6-2-source.html' \
+  "$THEME_SRC/" "$STAGE_THEME/"
+
+if [ "$LEAN_EXPORT" -eq 1 ]; then
+  echo "  ℹ Lean mód: mock referencia képek kihagyása (01-10-*.jpg)"
+  rm -f "$STAGE_THEME/assets/references/"[0-9][0-9]-*.jpg
+fi
+
+# Képoptimalizálás csak a csomagban (eredeti forrásfájlokat nem módosítjuk)
+if command -v convert >/dev/null 2>&1; then
+  BG_IMG="$STAGE_THEME/assets/references/background.png"
+  for JPG in "$STAGE_THEME"/assets/references/*.jpg; do
+    [ -f "$JPG" ] || continue
+    convert "$JPG" \
+      -resize '2200x2200>' \
+      -sampling-factor 4:2:0 \
+      -interlace Plane \
+      -quality 78 \
+      -strip \
+      "$JPG"
+  done
+  if [ -f "$BG_IMG" ]; then
+    convert "$BG_IMG" \
+      -strip \
+      -quality 85 \
+      PNG8:"$BG_IMG"
+  fi
+else
+  echo "  ⚠ convert (ImageMagick) nem található: képoptimalizálás kihagyva."
+fi
+
+rm -f "$OUT_DIR/$ZIP_NAME"
 (
-  cd "$REPO_ROOT/wp-content/themes"
-  zip -r "$OUT_DIR/$ZIP_NAME" "fabrika-62" \
-    --exclude "*/test-results/*" \
-    --exclude "*/.DS_Store" \
-    --exclude "*/__pycache__/*" \
-    -q
+  cd "$TMP_DIR"
+  zip -r "$OUT_DIR/$ZIP_NAME" "fabrika-62" -q
 )
 echo "  ✓ Mentve: dist/$ZIP_NAME  ($(du -sh "$OUT_DIR/$ZIP_NAME" | cut -f1))"
 
