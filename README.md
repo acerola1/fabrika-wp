@@ -50,6 +50,38 @@ A nyitóoldal tartalma egy helyen kezelhető:
 Itt szerkeszthetők a szövegek, repeaterek (kategóriák/galéria/lépések/ajándékötletek/GYIK), valamint a kapcsolat blokk beállításai.
 Részletes útmutató: [`feladatok/admin-hasznalati-leiras.md`](feladatok/admin-hasznalati-leiras.md)
 
+## Beállítás képekkel (gyors útmutató)
+
+### 1. Kezdőoldal tartalmának beállítása
+
+Menü: **WP Admin -> Fabrika Kezdolap**  
+Itt tudod szerkeszteni a fő szekciókat (hero, kategóriák, galéria, lépések, kapcsolat, GYIK).
+
+![Fabrika Kezdolap admin](docs/readme-screenshots/01-fabrika-kezdolap.png)
+
+### 2. Új termék feltöltése
+
+Menü: **WP Admin -> Termékek -> Termék feltöltés**  
+Kötelező mezők: név + kép.  
+Ajánlott még: ár és címkék.
+
+![Termek feltoltes admin](docs/readme-screenshots/02-termek-feltoltes.png)
+
+### 3. Kategóriák/címkék kezelése
+
+Menü: **WP Admin -> Termékek -> Címkék**  
+Itt hozhatod létre és szerkesztheted a termékcímkéket (sluggal együtt).  
+Ezek jelennek meg szűrőként a katalógus oldalon.
+
+![Termek cimkek admin](docs/readme-screenshots/03-termek-cimkek.png)
+
+### 4. Terméklista ellenőrzése
+
+Menü: **WP Admin -> Termékek**  
+Itt látod a feltöltött tételeket, és innen tudod szerkeszteni/ellenőrizni őket.
+
+![Termek lista admin](docs/readme-screenshots/04-termek-lista.png)
+
 ### Email tesztelés
 
 A kapcsolat űrlap (Contact Form 7) fejlesztői környezetben MailHogba küld:
