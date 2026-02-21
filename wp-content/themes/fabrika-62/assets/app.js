@@ -276,7 +276,22 @@
         kapcsolat.querySelector('input#termek') ||
         kapcsolat.querySelector('input[name="termek"]') ||
         kapcsolat.querySelector('input[name="your-termek"]') ||
-        kapcsolat.querySelector('input[name="product"]');
+        kapcsolat.querySelector('input[name="product"]') ||
+        // WPForms (fixed ID on live form).
+        kapcsolat.querySelector('input[name="wpforms[fields][8]"]') ||
+        kapcsolat.querySelector('input[id^="wpforms-"][id$="-field_8"]') ||
+        // Fallback: text input with matching HU label.
+        (function() {
+          var labels = kapcsolat.querySelectorAll('.wpforms-field-label');
+          for (var i = 0; i < labels.length; i++) {
+            var txt = (labels[i].textContent || '').toLowerCase();
+            if (txt.indexOf('melyik term') !== -1 && labels[i].getAttribute('for')) {
+              var byFor = document.getElementById(labels[i].getAttribute('for'));
+              if (byFor) return byFor;
+            }
+          }
+          return null;
+        })();
     }
     if (input) {
       input.value = displayValue;
@@ -295,6 +310,68 @@
         window.scrollTo({ top: top, behavior: 'smooth' });
       }, 150);
     }
+  })();
+
+  // ========== WPFORMS I18N + UX PATCH ==========
+  (function() {
+    // Frontend fallback translations for WPForms messages.
+    if (window.wpforms_settings && typeof window.wpforms_settings === 'object') {
+      var hu = {
+        val_required: 'A mező kitöltése kötelező.',
+        val_email: 'Kérlek, adj meg egy érvényes e-mail címet.',
+        val_number: 'Kérlek, adj meg érvényes számot.',
+        val_inputmask_incomplete: 'Kérlek, töltsd ki a mezőt a megfelelő formátumban.',
+        network_error: 'Hálózati hiba. Próbáld újra később.',
+      };
+      Object.keys(hu).forEach(function(k) {
+        if (window.wpforms_settings[k]) {
+          window.wpforms_settings[k] = hu[k];
+        }
+      });
+    }
+
+    function patchConfirmation(container) {
+      if (!container) return;
+      var txt = (container.textContent || '').trim();
+      if (!txt) return;
+      if (txt.indexOf('Thanks for contacting us! We will be in touch with you shortly.') !== -1) {
+        container.textContent = 'Köszönjük az üzeneted! Hamarosan felvesszük veled a kapcsolatot.';
+      }
+    }
+
+    // AJAX submit success hook (WPForms dispatches jQuery event on document).
+    if (window.jQuery) {
+      window.jQuery(document).on('wpformsAjaxSubmitSuccess', function(_e, formData) {
+        var formId = formData && formData.formId ? String(formData.formId) : '';
+        var container = null;
+        if (formId) {
+          var form = document.getElementById('wpforms-form-' + formId);
+          if (form && form.parentElement) {
+            container =
+              form.parentElement.querySelector('.wpforms-confirmation-container-full') ||
+              form.parentElement.querySelector('.wpforms-confirmation-container');
+          }
+        }
+        if (!container) {
+          container =
+            document.querySelector('.wpforms-confirmation-container-full') ||
+            document.querySelector('.wpforms-confirmation-container');
+        }
+        patchConfirmation(container);
+        var kapcsolat = document.getElementById('kapcsolat');
+        if (kapcsolat) {
+          kapcsolat.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    }
+
+    // Non-AJAX fallback: patch confirmation text on load.
+    document.addEventListener('DOMContentLoaded', function() {
+      patchConfirmation(
+        document.querySelector('.wpforms-confirmation-container-full') ||
+        document.querySelector('.wpforms-confirmation-container')
+      );
+    });
   })();
 
   // ========== CATALOG FILTER BAR (6-3 mock parity) ==========

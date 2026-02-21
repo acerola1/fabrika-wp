@@ -8,3 +8,4 @@ tests/screenshots/
 playwright-report/
 test-results/
 wp-content/themes/fabrika-62/test-results/
+tmp/

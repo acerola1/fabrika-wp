@@ -7,7 +7,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "test:e2e": "playwright test",
-    "test": "npm run test:e2e"
+    "test": "npm run test:e2e",
+    "smoke:contact": "node scripts/smoke-test-contact.mjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",

@@ -50,6 +50,34 @@ A nyitóoldal tartalma egy helyen kezelhető:
 Itt szerkeszthetők a szövegek, repeaterek (kategóriák/galéria/lépések/ajándékötletek/GYIK), valamint a kapcsolat blokk beállításai.
 Részletes útmutató: [`feladatok/admin-hasznalati-leiras.md`](feladatok/admin-hasznalati-leiras.md)
 
+### WPForms gyors setup (lokál minta)
+
+Ha újrahúzod a lokál WP-t, ezzel a scriptel egy lépésben beállítható a kapcsolat űrlap:
+
+```bash
+bash scripts/setup-wpforms.sh
+```
+
+Mit állít be:
+- létrehoz/frissít egy magyar WPForms kapcsolat űrlapot,
+- bekapcsolja az AJAX beküldést,
+- magyar sikerüzenetet állít be,
+- a theme optionben beállítja a shortcode-ot.
+
+Ellenőrzés:
+- `http://localhost:8080/?nocache=1#kapcsolat`
+
+Smoke teszt (Playwright):
+
+```bash
+npm run smoke:contact
+```
+
+Ez ellenőrzi:
+- kontakt szekció + WPForms jelenlét,
+- `?termek=` előtöltés működés,
+- AJAX submit (ne legyen teljes oldalletöltés beküldéskor).
+
 ## Beállítás képekkel (gyors útmutató)
 
 ### 1. Kezdőoldal tartalmának beállítása
@@ -82,9 +110,30 @@ Itt látod a feltöltött tételeket, és innen tudod szerkeszteni/ellenőrizni 
 
 ![Termek lista admin](docs/readme-screenshots/04-termek-lista.png)
 
+### Kapcsolati űrlap (WPForms) beállítás
+
+A kapcsolat szekcióban most WPForms shortcode fut (`[wpforms id="..."]`).
+
+Menü:
+- **WP Admin -> WPForms -> All Forms -> kiválasztott form -> Edit**
+
+Javasolt mezők (magyar):
+- `Név` (kötelező), placeholder: `A neved`
+- `E-mail` (kötelező), placeholder: `pelda@email.com`
+- `Tárgy`, placeholder: `Miben segíthetünk?`
+- `Üzenet`, placeholder: `Írd le az elképzelésed...`
+
+Submit gomb:
+- `Üzenet küldése`
+
+Ha nem ugyanaz látszik, mint lokálban:
+1. Ellenőrizd a shortcode-ot: **WP Admin -> Fabrika Kezdolap -> Űrlap shortcode** (`[wpforms id="94"]` vagy a saját form ID).
+2. Mentsd a formot a WPForms builderben.
+3. Futtass cache purge-ot (lásd lent).
+
 ### Email tesztelés
 
-A kapcsolat űrlap (Contact Form 7) fejlesztői környezetben MailHogba küld:
+Lokálban a WordPress kimenő levelei MailHogba mennek:
 `http://localhost:8025`
 
 ## Tesztek futtatása
@@ -160,7 +209,14 @@ Vagy WP-CLI:
 wp rewrite flush
 ```
 
-**C. Admin beállítások importálása (opcionális)**
+**C. Cache purge (fontos)**
+
+Ha cache plugin/CDN fut, a módosítások csak cache ürítés után látszanak biztosan.
+
+- W3 Total Cache esetén: admin felső sáv -> **Performance -> Purge All Caches**
+- Ha Cloudflare is van: Cloudflare-ben is futtasd a **Purge Cache** műveletet.
+
+**D. Admin beállítások importálása (opcionális)**
 
 A téma alapértékekkel is működik (`inc/helpers.php`, `fabrika62_default_options()`), import csak akkor kell, ha lokálban már testreszabtátok a tartalmakat.
 
@@ -169,7 +225,7 @@ A téma alapértékekkel is működik (`inc/helpers.php`, `fabrika62_default_opt
 wp option update fabrika62_options "$(cat dist/fabrika62_options.json)"
 ```
 
-**D. Termékek és média**
+**E. Termékek és média**
 
 A mock termékadatok nem kerülnek a ZIP-be (DB adat), ezeket az adminban kell létrehozni.
 
@@ -186,6 +242,6 @@ A mock termékadatok nem kerülnek a ZIP-be (DB adat), ezeket az adminban kell l
 
 - **Statikus oldalak:** Vite, Tailwind CSS 4
 - **WordPress téma:** egyedi admin oldal repeaterekkel
-- **Űrlap:** Contact Form 7
+- **Űrlap:** WPForms (shortcode alapú)
 - **Lokális környezet:** Docker Compose (WordPress + MariaDB + MailHog)
 - **Tesztek:** Playwright, egyedi PHP stressz teszt

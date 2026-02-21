@@ -351,6 +351,115 @@ declare(strict_types=1);
       font-size: 0.8rem;
       margin-top: 0.25rem;
     }
+
+    /* WPForms styling (match theme look used by fallback / CF7 form) */
+    .wpforms-container .wpforms-form {
+      background-color: #FFFBF5;
+      border: 1px solid rgba(184, 115, 51, 0.15);
+      box-shadow: 0 4px 20px rgba(92, 61, 46, 0.08);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+    }
+    @media (min-width: 640px) {
+      .wpforms-container .wpforms-form { padding: 2rem; }
+    }
+    .wpforms-container .wpforms-field-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #3B2314;
+      margin-bottom: 0.375rem;
+    }
+    /* WPForms "label hide" should still be visible in this theme to match local layout. */
+    .wpforms-container .wpforms-field-label.wpforms-label-hide {
+      position: static !important;
+      width: auto !important;
+      height: auto !important;
+      margin: 0 0 0.375rem !important;
+      clip: auto !important;
+      overflow: visible !important;
+    }
+    .wpforms-container .wpforms-field-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem 1rem;
+    }
+    @media (min-width: 640px) {
+      .wpforms-container .wpforms-field-container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    .wpforms-container .wpforms-field { margin: 0 !important; }
+    /* Unified ordering by WPForms field ID (works for local and live). */
+    .wpforms-container .wpforms-field[data-field-id="0"] { order: 1; } /* Név */
+    .wpforms-container .wpforms-field[data-field-id="1"] { order: 2; } /* E-mail */
+    .wpforms-container .wpforms-field[data-field-id="7"] { order: 3; } /* Telefon */
+    .wpforms-container .wpforms-field[data-field-id="4"] { order: 4; } /* Kategória */
+    .wpforms-container .wpforms-field[data-field-id="8"] { order: 5; grid-column: 1 / -1; } /* Termék */
+    .wpforms-container .wpforms-field[data-field-id="2"] { order: 6; grid-column: 1 / -1; } /* Üzenet */
+    .wpforms-container .wpforms-field-hp { display: none !important; }
+    .wpforms-container .wpforms-field[style*="z-index: -1000"] { display: none !important; }
+    .wpforms-container .wpforms-field input[type="text"],
+    .wpforms-container .wpforms-field input[type="email"],
+    .wpforms-container .wpforms-field input[type="tel"],
+    .wpforms-container .wpforms-field select,
+    .wpforms-container .wpforms-field textarea {
+      width: 100%;
+      border-radius: 0.5rem;
+      border: 1px solid rgba(184, 115, 51, 0.25);
+      background: #FFFBF5;
+      padding: 0.625rem 1rem;
+      font-size: 0.875rem;
+      outline: none;
+      transition: box-shadow 0.2s ease;
+      max-width: none !important;
+    }
+    .wpforms-container .wpforms-field input:focus,
+    .wpforms-container .wpforms-field select:focus,
+    .wpforms-container .wpforms-field textarea:focus {
+      box-shadow: 0 0 0 2px #B87333;
+    }
+    .wpforms-container .wpforms-field textarea { resize: vertical; }
+    .wpforms-container .wpforms-submit {
+      width: 100%;
+      padding: 0.75rem 2rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      color: #FFFBF5;
+      background: linear-gradient(135deg, #B87333, #C9A84C);
+      box-shadow: 0 4px 15px rgba(184, 115, 51, 0.3);
+      cursor: pointer;
+      border: none;
+      font-size: 1rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    @media (min-width: 640px) {
+      .wpforms-container .wpforms-submit { width: auto; }
+    }
+    .wpforms-container .wpforms-submit:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(184, 115, 51, 0.4);
+    }
+    .wpforms-container .wpforms-confirmation-container,
+    .wpforms-container .wpforms-error-container {
+      border: 1px solid #B87333;
+      color: #3B2314;
+      margin-top: 1rem;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      background: #FFFBF5;
+    }
+    .wpforms-container .wpforms-field.wpforms-has-error input,
+    .wpforms-container .wpforms-field.wpforms-has-error textarea,
+    .wpforms-container .wpforms-field.wpforms-has-error select {
+      border-color: #c0392b;
+      box-shadow: 0 0 0 1px rgba(192, 57, 43, 0.2);
+    }
+    .wpforms-container .wpforms-error {
+      color: #c0392b;
+      font-size: 0.8rem;
+      margin-top: 0.25rem;
+    }
   </style>
 </head>
 <body <?php body_class('bg-[#FFFBF5] antialiased'); ?>>

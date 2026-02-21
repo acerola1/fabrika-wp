@@ -415,7 +415,52 @@ $brand_name = fabrika62_opt_str('brand_name', 'Fabrika Ajándék');
           <?php
           $contact_shortcode = fabrika62_opt_str('contact_form_shortcode', '');
           if ($contact_shortcode !== '') {
-              echo do_shortcode($contact_shortcode);
+              $contact_html = do_shortcode($contact_shortcode);
+
+              // Keep WPForms text Hungarian even if the live form settings are in English.
+              if (stripos($contact_shortcode, 'wpforms') !== false) {
+                  $contact_html = str_replace(
+                      [
+                          '>Your Name<',
+                          '>Your Message<',
+                          '>Name<',
+                          '>Email<',
+                          '>Subject<',
+                          '>Message<',
+                          '>Please enable JavaScript in your browser to complete this form.<',
+                          '>Sending...<',
+                          'placeholder="Name"',
+                          'placeholder="Email"',
+                          'placeholder="Subject"',
+                          'placeholder="Message"',
+                          'data-alt-text="Sending..."',
+                          'data-submit-text="Send Message"',
+                          '>Send Message<',
+                          'value="Send Message"',
+                      ],
+                      [
+                          '>Név<',
+                          '>Üzenet<',
+                          '>Név<',
+                          '>E-mail<',
+                          '>Tárgy<',
+                          '>Üzenet<',
+                          '>A böngészőben engedélyezd a JavaScriptet az űrlap kitöltéséhez.<',
+                          '>Küldés...<',
+                          'placeholder="A neved"',
+                          'placeholder="pelda@email.com"',
+                          'placeholder="Miben segíthetünk?"',
+                          'placeholder="Írd le az elképzelésed..."',
+                          'data-alt-text="Küldés..."',
+                          'data-submit-text="Üzenet küldése"',
+                          '>Üzenet küldése<',
+                          'value="Üzenet küldése"',
+                      ],
+                      $contact_html
+                  );
+              }
+
+              echo $contact_html;
           } else {
           ?>
           <form class="rounded-xl p-6 sm:p-8 space-y-5" style="background-color: #FFFBF5; border: 1px solid rgba(184, 115, 51, 0.15); box-shadow: 0 4px 20px rgba(92, 61, 46, 0.08);">
